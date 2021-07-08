@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[40]:
+# In[53]:
 
 
 def sans(phrase):
@@ -16,7 +16,7 @@ def sans(phrase):
     return nouvelle_phrase
 
 
-# In[41]:
+# In[54]:
 
 
 def asci(phrase, r = False):
@@ -52,7 +52,7 @@ def asci(phrase, r = False):
     return nouvelle_phrase
 
 
-# In[42]:
+# In[55]:
 
 
 def find_invite_by_code(invite_list, code):
@@ -62,7 +62,7 @@ def find_invite_by_code(invite_list, code):
         
 
 
-# In[43]:
+# In[56]:
 
 
 def dixi(latence):
@@ -75,7 +75,7 @@ def dixi(latence):
             p += latence[k]
 
 
-# In[44]:
+# In[57]:
 
 
 def reaction(channel,emoji,name_role,message): # reaction(#channel,'👀','new role')
@@ -87,7 +87,7 @@ def reaction(channel,emoji,name_role,message): # reaction(#channel,'👀','new r
     
 
 
-# In[45]:
+# In[58]:
 
 
 def get_user(message,tag):
@@ -99,7 +99,7 @@ def get_user(message,tag):
             return user
 
 
-# In[46]:
+# In[59]:
 
 
 def get_channel(message,tag):#<#857278947066642442>
@@ -110,7 +110,7 @@ def get_channel(message,tag):#<#857278947066642442>
             return channel
 
 
-# In[47]:
+# In[60]:
 
 
 def sond(phrase):
@@ -134,7 +134,7 @@ def sond(phrase):
     return nouvelle_phrase
 
 
-# In[48]:
+# In[61]:
 
 
 import json
@@ -148,7 +148,7 @@ def load(file):
     return new_dict
 
 
-# In[49]:
+# In[62]:
 
 
 def search(phrase, mot):
@@ -170,7 +170,7 @@ def search(phrase, mot):
           
 
 
-# In[50]:
+# In[63]:
 
 
 import youtube_dl
@@ -213,7 +213,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return filename 
 
 
-# In[51]:
+# In[64]:
 
 
 def name_url(url):
@@ -223,7 +223,7 @@ def name_url(url):
     return info['title']
 
 
-# In[52]:
+# In[65]:
 
 
 import asyncio
@@ -233,7 +233,6 @@ from datetime import datetime
 from discord.utils import get
 from discord import FFmpegPCMAudio
 import os
-from dotenv import load_dotenv
 from googletrans import Translator
 import googletrans
 nest_asyncio.apply()
@@ -246,7 +245,7 @@ import traceback
 
 
 
-#fichier[t] = [[load(donnée)[t][0]], [load(donnée)[t][1]] , [load(donnée)[t][2]] , [load(donnée)[t][3]]]
+
 @client.event
 async def on_ready():
     user = client.get_user(407189858755280896)
@@ -266,7 +265,7 @@ async def on_ready():
             t = str(guild.id)
             fichier[t] = {'lol': {} ,'invite' : {} ,'count' : {} ,'langue' : {} ,'dico' : {} , 'glo': [] , 'rappel' : {},
                          'lg' : False , 'new' : [] , 'warn' : {} ,'attente' : [] , 'registre' : []}
-        fichier['TOKEN'] = "ODI2ODkyMzE0MTIyNjQ5NjQw.YGTFeg.SSjfgxgPOjfyFQMrzm8Fiz2htK0" #load("données")["TOKEN"]
+        
         save(fichier,'données')
     await client.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name ="le serveur en action"))
     await user.send(f"**{client.user} est connecté **", delete_after = 20)
@@ -1298,7 +1297,7 @@ async def on_message(message):
         except AttributeError:
             pass
                         
-client.run("ODI2ODkyMzE0MTIyNjQ5NjQw.YGTFeg.SSjfgxgPOjfyFQMrzm8Fiz2htK0")#load("données")["TOKEN"] # (os.getenv("TOKEN"))
+client.run(load("données")["TOKEN"]) # (os.getenv("TOKEN"))
 
 
 # In[ ]:
