@@ -2,3 +2,4 @@ gunicorn ==19.7.1
 youtube_dl
 discord 
 nest_asyncio
+googletrans
