@@ -1,17 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
-def maj(string):
-    t = ""
-    string = string
-    t = t + string[0].upper()
-    for k in range(1,len(string)): C:\Program Files\heroku        t = t + string[k]
-    return t
-
-
 # In[2]:
 
 
