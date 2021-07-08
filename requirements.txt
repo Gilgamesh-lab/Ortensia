@@ -4,4 +4,3 @@ discord
 nest_asyncio
 googletrans
 requests
-traceback
