@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[40]:
 
 
 def sans(phrase):
@@ -16,7 +16,7 @@ def sans(phrase):
     return nouvelle_phrase
 
 
-# In[3]:
+# In[41]:
 
 
 def asci(phrase, r = False):
@@ -52,7 +52,7 @@ def asci(phrase, r = False):
     return nouvelle_phrase
 
 
-# In[4]:
+# In[42]:
 
 
 def find_invite_by_code(invite_list, code):
@@ -62,7 +62,7 @@ def find_invite_by_code(invite_list, code):
         
 
 
-# In[5]:
+# In[43]:
 
 
 def dixi(latence):
@@ -75,7 +75,7 @@ def dixi(latence):
             p += latence[k]
 
 
-# In[6]:
+# In[44]:
 
 
 def reaction(channel,emoji,name_role,message): # reaction(#channel,'👀','new role')
@@ -87,7 +87,7 @@ def reaction(channel,emoji,name_role,message): # reaction(#channel,'👀','new r
     
 
 
-# In[7]:
+# In[45]:
 
 
 def get_user(message,tag):
@@ -99,7 +99,7 @@ def get_user(message,tag):
             return user
 
 
-# In[8]:
+# In[46]:
 
 
 def get_channel(message,tag):#<#857278947066642442>
@@ -110,7 +110,7 @@ def get_channel(message,tag):#<#857278947066642442>
             return channel
 
 
-# In[9]:
+# In[47]:
 
 
 def sond(phrase):
@@ -134,7 +134,7 @@ def sond(phrase):
     return nouvelle_phrase
 
 
-# In[10]:
+# In[48]:
 
 
 import json
@@ -148,7 +148,7 @@ def load(file):
     return new_dict
 
 
-# In[11]:
+# In[49]:
 
 
 def search(phrase, mot):
@@ -170,7 +170,7 @@ def search(phrase, mot):
           
 
 
-# In[12]:
+# In[50]:
 
 
 import youtube_dl
@@ -213,7 +213,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return filename 
 
 
-# In[13]:
+# In[51]:
 
 
 def name_url(url):
@@ -223,7 +223,7 @@ def name_url(url):
     return info['title']
 
 
-# In[26]:
+# In[52]:
 
 
 import asyncio
@@ -273,7 +273,6 @@ async def on_ready():
    
 @client.event
 async def on_raw_reaction_add(payload):
-    print('nice')
     lol = load("données")[str(payload.guild_id)]['lol']
     for cle, valeur in lol.items():
         if cle == str(payload.message_id):
@@ -325,7 +324,7 @@ async def on_member_join(member):
                     if 10 > date.minute:
                         retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
                     t = f" à rejoint le serveur grâce à l'invitation de {invite.inviter} :partying_face:"
-                    o = f'compte crée depuis {member.created_at[:4]}' # print(f'compte crée en {t[:4]}')
+                    o = f'compte crée depuis {member.created_at[:4]}' 
                     embed.add_field(name = t , value= o   )
                     p = f'id invitation : {invite.id}'
                     embed.add_field(name = p , value=  retStr ) 
@@ -481,7 +480,7 @@ async def on_message_edit( avant , après ):# à {date.hour}h : {date.minute}m :
                                 # embed.add_field(name = t , value= retStr))
                                 await log.send(embed=embed)
 
-print('ok')
+
 
 @client.event
 async def on_message_delete(message):
@@ -634,7 +633,6 @@ async def on_message(message):
                     t = f"{date.year}/{date.month}/{date.day}"
                     try:
                         warn[str(user.id)][1] += 1
-                        print('ok')
                         fichier[str(message.guild.id)]['warn'] = warn
                         save(fichier,'données')
                         nb_warn = warn[str(user.id)][1]
@@ -675,19 +673,16 @@ async def on_message(message):
                         await message.delete()
                         
                     if warn[str(user.id)][0] != t:# mauvaise date
-                        print('s')
                         del warn[str(user.id)]
                         warn[str(user.id)] = [t,1]
                         fichier[str(message.guild.id)]['warn'] = warn
                         save(fichier,"données")
                     else:
-                        print('w',warn)
                         if warn[str(user.id)][1] % 3 == 0 :
                             await message.channel.send(f"!mute  {warn[str(user.id)][1]*10} {user.mention} Récidives")
                         
                         
                    # except ValueError: # pas de dico crée
-                        #print('ok')
                         #warn[user.id] = [t,1]
                         #fichier[str(message.guild.id)]['warn'] = warn
                         #save(fichier,"données")
@@ -714,7 +709,6 @@ async def on_message(message):
                     commande = message.content.split()[3:]
                     rappel = fichier[str(message.guild.id)]['rappel']
                     rappel[message.content.split()[2]] = [commande,channel.mention]
-                    print("rappel init",rappel)
                     fichier[str(message.guild.id)]['rappel'] = rappel
                     save(fichier,'données')
                     await message.reply("Le rappel as bien été enregistré")
@@ -741,7 +735,6 @@ async def on_message(message):
                                     sup.append(cle)
 
                         for k in range(len(sup)):
-                            print(rappel[sup[k]],rappel)
                             del rappel[sup[k]]
                         fichier[str(message.guild.id)]['rappel'] = rappel
                         save(fichier,'données')
@@ -809,7 +802,6 @@ async def on_message(message):
                     glo.append(message.content.split()[2])
                     fichier[str(message.guild.id)]['glo'] = glo
                     save(fichier,'données')
-                    print(glo)
                     await message.reply("Les langues globals ont bien été enregistré")
                 
                 elif message.content.startswith("!del_gl") and message.author.guild_permissions.administrator:
@@ -894,7 +886,6 @@ async def on_message(message):
                         server = message.guild
                         voice_channel = music
                         voice_client = message.guild.voice_client
-                        print('a',attente)
                         registre = load("données")[str(message.guild.id)]['registre']
                         registre.append(message.author.id)
                         attente = load("données")[str(message.guild.id)]['attente']
@@ -906,18 +897,14 @@ async def on_message(message):
                         fichier[str(message.guild.id)]['attente'] = attente
                         save(fichier,"données")
                         if voice_client.is_playing() or voice_client.is_paused():
-                            print('n')
                             await message.reply(f"La music as été mise en file d'attente ")
                         
                             w = len(attente)
-                            print(w)
                             while len(load("données")[str(message.guild.id)]['attente']) != 0:
                                 if voice_client.is_playing() or voice_client.is_paused() :
                                     while voice_client.is_playing() or voice_client.is_paused() :
                                         await asyncio.sleep(2)
-                                print('go')
                                 async with song.typing():
-                                    print('taille',len(attente),'contenue',attente)
                                     msg = await message.reply("chargement en cours...")
                                     filename = await YTDLSource.from_url(str(attente[0]), loop=client.loop)
                                     start = await song.fetch_message(int(attente[1]))
@@ -930,9 +917,6 @@ async def on_message(message):
                                     save(fichier,"données")
                                     nom = name_url(message.content.split()[1])
                                     await start.reply(f'** {client.user.display_name} est entrain de jouer :** {nom}')
-                                    print('c',attente)
-                                print('fin',attente)
-                                print('d',attente)
                                 await msg.delete()
                                 while voice_client.is_playing() or voice_client.is_paused() :
                                     await asyncio.sleep(1)
@@ -950,11 +934,9 @@ async def on_message(message):
                         else:
                             w = 0
                             msg = await message.reply("Chargement en cours, veuillez patienter")
-                            print('u')
                             try:
                                 async with song.typing():
                                     attente = load("données")[str(message.guild.id)]['attente']
-                                    print('l')
                                     del attente[0]
                                     del attente[0]
                                     del attente[0]
@@ -969,12 +951,9 @@ async def on_message(message):
                                     await msg.delete()#{str(filename)[:-16]}
                                     nom = name_url(message.content.split()[1])
                                     await song.send(f'{client.user.display_name} est entrain de jouer : ** {nom} ** ')
-                                print('t')
                                 while voice_client.is_playing() or  voice_client.is_paused():
                                     await asyncio.sleep(5)
                                 os.remove(str(filename))
-                                print('g')
-                                print('e')
                                 del registre[0]
                                 fichier = load("données")
                                 fichier[str(message.guild.id)]['registre'] = registre
@@ -982,7 +961,6 @@ async def on_message(message):
                                 attente = fichier[str(message.guild.id)]['attente'] 
                                 while len(attente) != 0:
                                     await asyncio.sleep(1)
-                                print('attent',attente)
                                 await song.send("Fin de la diffusion")
                                 await voice_client.disconnect()
                             except FileNotFoundError:
@@ -996,23 +974,17 @@ async def on_message(message):
                     voice_client = message.guild.voice_client
                     if message.channel == song:
                         if voice_client.is_playing() or  voice_client.is_paused():
-                            print('pause',voice_client.is_paused())
                             if str(message.author.id) == str(registre[0]) and voice_client.is_playing():
-                                print('r')
                                 voice_client.pause()
 
                             if int(registre[0]) not in song.members.id and voice_client.is_playing():
-                                print('2')
                                 voice_client.pause()
                                 
                             if int(registre[0])  in song.members.id and voice_client.is_playing():
-                                print('test')
                                 if str(message.author.id) != str(attente[2]):
-                                    print('1248')
                                     await message.reply(f"Vous ne disposer pas des droits suffisants ")
                                 
                             else:
-                                print('nice')
                                 await message.reply("La  diffusion est déjà en pause ")
                             
                         else:
@@ -1327,506 +1299,6 @@ async def on_message(message):
             pass
                         
 client.run("ODI2ODkyMzE0MTIyNjQ5NjQw.YGTFeg.SSjfgxgPOjfyFQMrzm8Fiz2htK0")#load("données")["TOKEN"] # (os.getenv("TOKEN"))
-
-
-# In[ ]:
-
-
-ydl_opts = {'format': 'bestaudio'}
-FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    info = ydl.extract_info(str(message.content.split()[1]), download=False)
-    URL = info['formats'][0]['url']
-voice = get(client.voice_clients, guild=message.guild)
-voice.play(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
-
-
-# In[21]:
-
-
-def name(url):
-    ydl_opts = {'format': 'bestaudio'}
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(str(url), download=False)
-    return info['title']
-
-
-# In[20]:
-
-
-t = "https://www.youtube.com/watch?v=uUeqyxNUoMQ&ab_channel=Daedron12"
-ydl_opts = {'format': 'bestaudio'}
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    info = ydl.extract_info(str(t), download=False)
-info
-
-
-# In[ ]:
-
-
-import pyyoutube as youtube
-help(youtube.api)
-
-
-# In[ ]:
-
-
-import pyyoutube
-api = pyyoutube.Api(api_key="your api key")
-#api.get_video_categories('fr')
-api.get("https://www.googleapis.com/youtube/v3/videoCategories")
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-a = [[65, 76, 71, 79, 82, 73, 84, 72, 77, 73, 81, 85, 69, 77, 69, 78, 84],# ALGORITHMIQUEMENT
-[76, 79, 83, 65, 78, 71, 69], # LOSANGE
-[80, 79, 85, 86, 79, 73, 82], # POUVOIR
-[82, 69, 78, 201, 71, 65, 84], # RENÉGAT
-[79, 88, 89, 71, 200, 78, 69], # OXYGÈNE
-[83, 89, 77, 80, 84, 212, 77, 69], # SYMPTÔME
-[85, 84, 79, 80, 73, 81, 85, 69], # UTOPIQUE
-[71, 79, 84, 72, 73, 81, 85, 69], # GOTHIQUE
-[66, 82, 79, 85, 72, 65, 72, 65], # BROUHAHA
-[66, 65, 67, 67, 65, 76, 65, 85, 82, 201, 65, 84], # BACCALAURÉAT
-[65, 66, 82, 65, 67, 65, 68, 65, 66, 82, 65], # ABRACADABRA
-[77, 201, 84, 65, 77, 79, 82, 80, 72, 79, 83, 69], # MÉTAMORPHOSE
-[70, 82, 65, 78, 67, 79, 80, 72, 73, 76, 69], # FRANCOPHILE
-[81, 85, 65, 76, 73, 70, 73, 67, 65, 84, 73, 79, 78], # QUALIFICATION
-[67, 79, 78, 81, 85, 73, 83, 84, 65, 68, 79, 82], # CONQUISTADOR
-[67, 79, 78, 83, 80, 73, 82, 65, 84, 69, 85, 82],
-[81, 85, 65, 68, 82, 73, 76, 65, 84, 200, 82, 69],
-[83, 79, 82, 67, 69, 76, 76, 69, 82, 73, 69],
-[67, 79, 78, 84, 82, 79, 86, 69, 82, 83, 69],
-[65, 80, 79, 67, 65, 76, 89, 80, 83, 69],
-[66, 79, 85, 73, 76, 76, 79, 84, 84, 69],
-[67, 73, 84, 82, 79, 85, 73, 76, 76, 69],
-[70, 76, 73, 66, 85, 83, 84, 73, 69, 82],
-[68, 73, 83, 83, 73, 77, 85, 76, 69, 82],
-[76, 65, 66, 89, 82, 73, 78, 84, 72, 69],
-[80, 82, 85, 68, 69, 77, 77, 69, 78, 84],
-[81, 85, 65, 68, 82, 73, 67, 69, 80, 83],
-[83, 85, 66, 74, 69, 67, 84, 73, 86, 69],
-[86, 69, 83, 84, 73, 65, 73, 82, 69],
-[84, 65, 77, 66, 79, 85, 82, 73, 78],
-[81, 85, 201, 77, 65, 78, 68, 69, 82],
-[80, 82, 73, 78, 84, 69, 77, 80, 83],
-[80, 79, 80, 85, 76, 65, 73, 82, 69],
-[80, 201, 82, 73, 80, 201, 84, 73, 69], # Péripétie
-[78, 65, 82, 82, 65, 84, 69, 85, 82],
-[77, 201, 84, 65, 80, 72, 79, 82, 69],
-[77, 65, 83, 67, 65, 82, 65, 68, 69],
-[75, 76, 65, 88, 79, 78, 78, 69, 82], 
-[73, 78, 84, 82, 201, 80, 73, 68, 69]]
-def random(a):
-    from random import randint
-    return a[randint(0,len(a))]
-
-
-# In[ ]:
-
-
-def pendu(message2):    
-    mot_liste = random(a)
-    reponse_liste = [45] * len(mot_liste)
-    mot = '-' * len(mot_liste)
-    await message.channel.send(f'Mot à deviner : {mot}')
-    coups = 0
-    while reponse_liste != mot_liste:
-        await message.channel.send('Choisissez une lettre : ')
-        async def on_message(message):
-            if len(str(message.contain)) == 1:
-                lettre = message.contain.upper()
-        coups = coups + 1
-        for k in range(len(mot_liste)):
-            if mot_liste[k] == ord(lettre):
-                reponse_liste[k] = ord(lettre)
-        mot = ''
-        for k in range(len(reponse_liste)):
-            mot = mot + str(chr(reponse_liste[k]))
-        await message.channel.send(f'Mot à deviner : {mot}')
-    await message.channel.send(f'Vous avez trouvé le mot en {coups} coups.')
-
-
-# In[ ]:
-
-
-help(discord.message)
-
-
-# In[ ]:
-
-
-import logging
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
-
-
-# In[ ]:
-
-
-from datetime import datetime
-date = datetime.now()
-date.hour
-
-
-# In[ ]:
-
-
-t = 'Lol'
-t = t.lower()
-t
-
-
-# In[ ]:
-
-
-def durée (h,m,s,statut,membre):
-    tab = []
-    if statut == 'connecte':
-        tab.append(membre , h,m,s)
-    if statut == 'deconnecte':
-        for k in range(len(tab)):
-            if membre == tab[k]:
-                h = h - tab[k+1]
-                m = m - tab[k+2]
-                s = s - tab[k+3]
-                for n in range(k,k+3):
-                    del tab[n]
-                    
-        return int((int(h),int(m),int(s)))
-
-
-# In[ ]:
-
-
-help(discord.embed)
-
-
-# In[ ]:
-
-
-t = 'https://cdn.discordapp.com/avatars/407189858755280896/9f862240d29803a4ac95223c5bd0d782.webp?size=1024'
-print(t)
-
-
-# In[ ]:
-
-
-def remove_reaction(channel_id,emoji,name_role):
-    intents = discord.Intents.default()
-intents.members = True
-bot = commands.Bot(intents=intents,command_prefix = '!')
-
-Channel = client.get_channel(channel_id) 
-        if reaction.message.channel == Channel:
-            if reaction.emoji == emoji:
-                Role = discord.utils.get(user.guild.roles, name= name_role)
-                await discord.Member.add_roles(user, Role)
-
-
-# In[ ]:
-
-
-def mot(chaine):
-    chaine = chaine.upper()
-    j = []
-    for k in range(len(chaine)):
-         j.append(ord(chaine[k]))
-    return j , ','
-
-
-# In[ ]:
-
-
-def mo(tab):
-    j = ''
-    for k in range(len(chaine)):
-         j += (chr(chaine[k]))
-    return j 
-
-
-# In[ ]:
-
-
-for k in range(len(a)):
-    mo(a[k])
-    print('#',mo(a[k]), end = '')
-
-
-# In[ ]:
-
-
-mot('Intrépide')
-
-
-# In[ ]:
-
-
-tab =  ['ALGORITHMIQUEMENT' ,'LOSANGE', 'POUVOIR', 'RENÉGAT', 'OXYGÈNE', 'SYMPTÔME', 'UTOPIQUE', 'GOTHIQUE', 'BROUHAHA',
-        'BACCALAURÉATABRACADABRA', 'MÉTAMORPHOSE', 'FRANCOPHILE', 'QUALIFICATION', 'CONQUISTADOR', 'CONSPIRATEUR'
-        'QUADRILATÈRE', 'SORCELLERIE', 'CONTROVERSE',  'APOCALYPSE', 'BOUILLOTTE', 'CITROUILLE', 'FLIBUSTIER','DISSIMULER',
-        'LABYRINTHE', 'PRUDEMMENT' ,'QUADRICEPS', 'SUBJECTIVE' , 'VESTIAIRE', 'TAMBOURIN' ,'QUÉMANDER', 'PRINTEMPS',
-        'POPULAIRE', 'PÉRIPÉTIE','Métaphore','Narrateur','Mascarade','Klaxonner','Intrépide']
-def search(chaine,tab):
-    chaine = chaine.upper()
-    for k in range(len(tab)):
-        if tab[k] == chaine:
-            return True
-    return False
-
-
-# In[ ]:
-
-
-search('Intrépide',tab)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-if message.content == '!pendu':
-            mot_liste = random(a)
-            reponse_liste = [45] * len(mot_liste)
-            mot = '-' * len(mot_liste)
-            await message.channel.send(f'Mot à deviner : {mot}')
-            coups = 0
-            u = True
-            while reponse_liste != mot_liste:
-                if message.author != client.user :
-                    await message.channel.send('Choisissez une lettre : ')
-                    while u:
-                        @client.event
-                        async def on_message(message1):
-                            print(message1.contain)
-                            if message.contain == type(str):
-                                u = False
-                    print('ok')
-                    if message.author != client.user :
-                        if len(str(message.contain)) == 1:
-                            lettre = message.contain.upper()
-                            coups = coups + 1
-                            for k in range(len(mot_liste)):
-                                if mot_liste[k] == ord(lettre):
-                                    reponse_liste[k] = ord(lettre)
-                                    mot = ''
-                                    for k in range(len(reponse_liste)):
-                                        mot = mot + str(chr(reponse_liste[k]))
-                                    await message.channel.send(f'Mot à deviner : {mot}')
-            await message.channel.send(f'Vous avez trouvé le mot en {coups} coups.')
-
-
-# In[ ]:
-
-
-l = [<Attachment id=828378013334896670 filename='images.jpeg-47.jpg' url='https://cdn.discordapp.com/attachments/826889157078024244/828378013334896670/images.jpeg-47.jpg'>]
-
-
-# In[ ]:
-
-
-@client.event
-async def on_reaction_add(reaction, user ):
-    Channel = client.get_channel(826889157078024244) 
-    if reaction.message.channel == Channel:
-        print('emojis =',reaction.emoji)
-        if reaction.emoji == "👀":
-            Role = discord.utils.get(user.guild.roles, name= "new role")
-            await discord.Member.add_roles(user, Role)
-
-
-# In[ ]:
-
-
-t = 826889157078024244  
-m = 826889157078024244
-if m == t:
-    print('ok')
-
-
-# In[ ]:
-
-
-list1 = ['1', '2', '3']
-str1 = ' '.join(list1)
-str1
-
-
-# In[ ]:
-
-
-j = {'k' : 'lol'}
-try:
-    j['d'] 
-except KeyError:
-    print('ok')
-
-
-# In[ ]:
-
-
-def ju(lol): 
-    return
-
-
-# In[ ]:
-
-
-ju(5)*if message.channel == log:
-                    message.author = client.user
-                    await message.delete()
-
-
-# In[ ]:
-
-
-get_ipython().run_line_magic('matplotlib', 'inline')
-        im2 = Image.open('/Users/fabri/Downloads/Nouveau dossier (4)/p.bmp')
-        t = display(im2)
-        print(t)
-
-
-# In[ ]:
-
-
-import googletrans
-from googletrans import Translator
-help(Translator)
-
-
-# In[ ]:
-
-
-translator = Translator()
-t = translator.translate('안녕하세요.', dest = 'fr')
-k = translator.translate('안녕하세요.', dest = 'fr')
-print(t.text)
-
-
-# In[ ]:
-
-
-t = Translator()
-a = t.translate('hi', dest = 'fr')
-print(t.detect('hi').lang)
-
-
-# In[ ]:
-
-
-t = "2018-11-28 19:49:15.283000"
-print(f'compte crée en {t[:4]}')
-
-
-# In[ ]:
-
-
-t = 'nombre'
-t = maj(t)
-t
-
-
-# In[ ]:
-
-
-t = 'Belle journée , Beau , oui'
-print(sond(str(t.split())))
-
-
-# In[ ]:
-
-
-y = 'lol'
-y.split()
-
-
-# In[ ]:
-
-
-names = {'carlos': 2, 'daoud': 1, 'bob': 4, 'alex': 3}
-tab = {}
-t = 1
-for k, v in sorted(names.items(), key=lambda x: x[1], reverse = True ):
-    if k == 'daoud':
-        print(t)
-    else:
-        t += 1
-
-
-# In[ ]:
-
-
-help(sorted)
-
-
-# In[ ]:
-
-
-a = 5
-b = a
-a += 2
-b
-a
-
-
-# In[ ]:
-
-
-t = 'lol'
-t[:1]
-len(t[1:])
-
-
-# In[ ]:
-
-
-grille = [[0 for _ in range(8)]for _ in range(7)]
-grille.append(5)
-grille.append(4)
-grille.append(6)
-grille
-
-
-# In[ ]:
-
-
-tab = [[]]
-tab[0].append(5)
-tab[1][0].append(7)
-tab
-
-
-# In[ ]:
-
-
-tab = ['l','m']
-f'l{tab[1]}' = 5
-
-
-# In[ ]:
-
-
-grille = [[0 for _ in range(20)]for _ in range(7)]
-tab = ['l','m']
-for k in range(len(tab)):
-    grille[0][k] = tab[k]
-grille
 
 
 # In[ ]:
