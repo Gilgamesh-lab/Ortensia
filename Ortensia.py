@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[53]:
+# In[ ]:
 
 
 def sans(phrase):
@@ -16,7 +16,7 @@ def sans(phrase):
     return nouvelle_phrase
 
 
-# In[54]:
+# In[ ]:
 
 
 def asci(phrase, r = False):
@@ -52,7 +52,7 @@ def asci(phrase, r = False):
     return nouvelle_phrase
 
 
-# In[55]:
+# In[ ]:
 
 
 def find_invite_by_code(invite_list, code):
@@ -62,7 +62,7 @@ def find_invite_by_code(invite_list, code):
         
 
 
-# In[56]:
+# In[ ]:
 
 
 def dixi(latence):
@@ -75,19 +75,19 @@ def dixi(latence):
             p += latence[k]
 
 
-# In[57]:
+# In[ ]:
 
 
-def reaction(channel,emoji,name_role,message): # reaction(#channel,'👀','new role')
-    fichier = load('données')
-    lol = fichier[str(channel.guild.id)]['lol']
+def reaction(channel,emoji,message,name_role): # reaction(#channel,'👀','new role')
+    fichier = load('data')#reaction(channel,emoji,name_role,message)
+    lol = fichier[str(channel.guild.id)]['lol'] #!reaction channel emoji  nom_rôle 
     lol[message.id] = [name_role,emoji]
-    fichier[str(channel.guild.id)]['lol'] = lol
-    save(fichier,'données')
+    fichier[str(channel.guild.id)]['lol'] = lol#reaction(régle,"✅",r,"Membre")
+    save(fichier,'data')
     
 
 
-# In[58]:
+# In[ ]:
 
 
 def get_user(message,tag):
@@ -99,7 +99,7 @@ def get_user(message,tag):
             return user
 
 
-# In[59]:
+# In[ ]:
 
 
 def get_channel(message,tag):#<#857278947066642442>
@@ -110,7 +110,7 @@ def get_channel(message,tag):#<#857278947066642442>
             return channel
 
 
-# In[60]:
+# In[ ]:
 
 
 def sond(phrase):
@@ -134,7 +134,7 @@ def sond(phrase):
     return nouvelle_phrase
 
 
-# In[61]:
+# In[ ]:
 
 
 import json
@@ -148,7 +148,7 @@ def load(file):
     return new_dict
 
 
-# In[62]:
+# In[ ]:
 
 
 def search(phrase, mot):
@@ -170,14 +170,90 @@ def search(phrase, mot):
           
 
 
-# In[63]:
+# In[ ]:
 
 
+def maximun(lien):
+    ydl_opts = {"simulate" : True , "skip_download" : True ,'extract_flat' : True,'dump_single_json' : True,
+               "quiet" : True}
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(lien, download=False)
+    t = 0
+    for cle in info['entries']:
+        t += 1
+    return t
+
+
+# In[ ]:
+
+
+import youtube_dl 
+from random import randint 
+def random_music(catégorie = None):
+    
+    if catégorie != None:
+        playlist = playlists[catégorie]
+    else:
+        playlist = random_playlists[randint(0,6)]
+        
+        
+    nb = randint(1,maximun(playlist))
+    ydl_opts = {"simulate" : True,'noplaylist': True, "skip_download" : True,'playliststart': nb, 'playlistend' : nb, 'extract_flat' : True, "quiet" : True}
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(playlist, download = False)
+        url = info['entries'][0]['url']
+    
+    return f"https://www.youtube.com/watch?v={url}",info['entries'][0]['title']
+
+
+# In[ ]:
+
+
+random_playlists = ["https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE&index=2",
+             "https://youtube.com/playlist?list=RDCLAK5uy_ly6s4irLuZAcjEDwJmqcA_UtSipMyGgbQ&playnext=1",
+             "https://youtube.com/playlist?list=RDCLAK5uy_mztvVkPbbOgYQFQUOi9VbLcZ4ewdmBczw&playnext=1",
+             "https://youtube.com/playlist?list=RDCLAK5uy_mCvOm3kQy1RTBwDOGYkNhtHwMO89ffquk&playnext=1",
+             "https://youtube.com/playlist?list=PLsa-dEwv56FaoevRy1iSkp2YWt9udgkdJ",
+             "https://youtube.com/playlist?list=PL4fGSI1pDJn6puJdseH2Rt9sMvt9E2M4i",
+             "https://youtube.com/playlist?list=PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs"]
+
+
+playlists = {'rap': "https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE&index=2",
+     'hit' : "https://youtube.com/playlist?list=RDCLAK5uy_ly6s4irLuZAcjEDwJmqcA_UtSipMyGgbQ&playnext=1",
+     'released' : "https://youtube.com/playlist?list=RDCLAK5uy_mztvVkPbbOgYQFQUOi9VbLcZ4ewdmBczw&playnext=1",
+     'pop_fr' : "https://youtube.com/playlist?list=RDCLAK5uy_mCvOm3kQy1RTBwDOGYkNhtHwMO89ffquk&playnext=1",
+      'tendance_fr' : "https://youtube.com/playlist?list=PLsa-dEwv56FaoevRy1iSkp2YWt9udgkdJ",
+      'global' : "https://youtube.com/playlist?list=PL4fGSI1pDJn6puJdseH2Rt9sMvt9E2M4i",
+      'fr' : "https://youtube.com/playlist?list=PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs"}
+
+
+
+# In[ ]:
+
+
+import discord
+from discord.ext import commands
+import random
+import asyncio
+import itertools
+import nest_asyncio
+nest_asyncio.apply()
+import sys
+import traceback
+from async_timeout import timeout 
+from functools import partial
 import youtube_dl
-import discord  
+from youtube_dl import YoutubeDL
 
-ytdl_format_options = {
+
+# Suppress noise about console usage from errors
+youtube_dl.utils.bug_reports_message = lambda: ''
+
+
+
+ytdlopts = {
     'format': 'bestaudio/best',
+    'outtmpl': 'downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'restrictfilenames': True,
     'noplaylist': True,
     'nocheckcertificate': True,
@@ -186,34 +262,80 @@ ytdl_format_options = {
     'quiet': True,
     'no_warnings': True,
     'default_search': 'auto',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
+    'source_address': '0.0.0.0',# ipv6 addresses cause issues sometimes
 }
 
-ffmpeg_options = {
+ffmpegopts = {
+    'before_options': '-nostdin -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
     'options': '-vn'
 }
 
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+ytdl = YoutubeDL(ytdlopts)
+
+
+class VoiceConnectionError(commands.CommandError):
+    """Custom Exception class for connection errors."""
+
+
+class InvalidVoiceChannel(VoiceConnectionError):
+    """Exception for cases of invalid Voice Channels."""
+
 
 class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume=0.5):
-        super().__init__(source, volume)
-        self.data = data
+
+    def __init__(self, source, *, data, requester):
+        super().__init__(source)
+        self.requester = requester
         self.title = data.get('title')
+        self.web_url = data.get('webpage_url')
+        self.duration = data.get('duration')
+        self.data = data
         self.url = ""
+        # YTDL info dicts (data) have other useful information you might want
+        # https://github.com/rg3/youtube-dl/blob/master/README.md
+
+    def __getitem__(self, item: str):
+        """Allows us to access attributes similar to a dict.
+        This is only useful when you are NOT downloading.
+        """
+        return self.__getattribute__(item)
 
     @classmethod
-    async def from_url(cls, url, *, loop=None, stream=False):
+    async def create_source(cls, ctx, search: str, *, loop, download=False):
         loop = loop or asyncio.get_event_loop()
-        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+
+        to_run = partial(ytdl.extract_info, url=search, download=download)
+        data = await loop.run_in_executor(None, to_run)
+
         if 'entries' in data:
             # take first item from a playlist
             data = data['entries'][0]
-        filename = data['title'] if stream else ytdl.prepare_filename(data)
-        return filename 
+
+        embed = discord.Embed(title="", description=f"Queued [{data['title']}]({data['webpage_url']}) [{ctx.author.mention}]", color=discord.Color.green())
+        await ctx.reply(embed=embed)
+
+        if download:
+            source = ytdl.prepare_filename(data)
+        else:
+            return {'webpage_url': data['webpage_url'], 'requester': ctx.author, 'title': data['title']}
+
+        return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
+
+    @classmethod
+    async def regather_stream(cls, data, *, loop):
+        """Used for preparing a stream, instead of downloading.
+        Since Youtube Streaming links expire."""
+        loop = loop or asyncio.get_event_loop()
+        requester = data['requester']
+
+        to_run = partial(ytdl.extract_info, url=data['webpage_url'], download=False)
+        data = await loop.run_in_executor(None, to_run)
+
+        return cls(discord.FFmpegPCMAudio(data['url']), data=data, requester=requester)
+            
 
 
-# In[64]:
+# In[ ]:
 
 
 def name_url(url):
@@ -223,12 +345,193 @@ def name_url(url):
     return info['title']
 
 
-# In[65]:
+# In[ ]:
 
 
-import asyncio
-import nest_asyncio
-from discord.ext import commands
+aide = {'!ping': "Retourne la latence du bot (c'est à dire le temps que pourra mettre Ortensia pour vous "
+        "répondre, exprimés en millisecondes) \n  \nSyntaxe : !ping",
+        
+        '!count': "Retourne le nombre de messages envoyés dans le serveur par l'utilisateur ainsi que son classement" 
+        "\n  \nSyntaxe : !count",
+        
+        '!sondage' : "Crée un sondage \n  \nSyntaxe : !sondage titre du sondage,1er_emojis réponse associé,2ème_emojis réponse associé ect... ",
+        
+        '!play' : "Lance une vidéo en version audio hébergé par la plateforme youtube  si "
+        "aucune url n'est spécifié une musique seras choisi aléatoirement par le bot mais vous pouvez aussi restreindre le choix "
+        "en précisant le type de musique (voir help musique). Pour modifier ou supprimer une musique en liste d'attente, il vous suffit"
+        " de modifier ou supprimer le message utilisé pour la mettre en file d'attente. Si le son est de mauvaise qualité voir(!help bad_son pour obtenir de l'aide) \n  \nSyntaxe : !play url_de_la musique(optionnel)  (cette commande ne peut-être utilisé que dans le salon 'song') ",
+
+        '!pause' : "Mets en pause l'audio en cours de lecture \n  \nSyntaxe : !pause (Cette commande ne peut être utilisée " 
+        "que  par le diffuseur et seulement dans le salon 'song')",
+        
+        '!resume' : "Remet en route l'audio mit en pause \n  \nSyntaxe : !resume(Cette commande ne peut être utilisée " 
+        "que   par le diffuseur et seulement dans le salon 'song')",
+        
+        "!skip": "Arrête la lecture de l'audio en cours et passe au suivant  \n  \nSyntaxe : !stop(Cette commande ne peut être utilisée " 
+        "que   par le diffuseur et seulement dans le salon 'song')",
+        
+        "!help" : "Renvoie des informations détaillé d'une fonction .Si aucune fonction n'est précisée lors de l'appel, "
+         "retourne la liste des commandes disponibles et leurs significations en abrégé \n  \nSyntaxe : !help !commande(optionnel) "}
+
+aide_langue = {"!lang" : "Définit une langue dans laquelle sera traduit tout vos message \n  \nSyntaxe : !lang code_langue",
+              "!detect" : "Renvoie le nom de la langue du message en anglais et son code \n  \nSyntaxe : !detect message  ",
+              "!found" : "Renvoie le code de la langue \n  \nSyntaxe : !found nom_de_la langue_en_anglais ",
+              "!off" : "Arrête de traduire vos messages automatiquement  \n  \nSyntaxe : !off",
+              "!tr" : "Traduit le message après la commande \n  \nSyntaxe : !tr message "}
+
+aide_moderator = {"!warn" : "Avertit un membre qu'il as enfreint le réglement et met un warn sur celui-ci. "
+                  "Tout les trois warn un membre reçoit un mute en fonction du nombre de warn du membre."
+                  "Les warns sont réinstialiser à minuit",
+                  
+                  "!unwarn" : "Retire un warn d'un membre et éventuellement une sanction",
+                  
+                  "!mute" : "Mute un membre et l'empêche d'envoyer des messages pour une durée déterminée lors de l'appel de la commande",
+                  
+                  "!unmute" : "Unmute un membre et lui permet d'envoyer à nouveau des messages"}
+
+aide_administrator = {"!get_user" : "Renvoie un utilisateur grâce à son id \n  \nSyntaxe : !get_user 05587...",
+                     "!get_msg" : "Renvoie un message grâce à son id \n  \nSyntaxe : !get_msg 05587...",
+                     "!up" : "Ajoute un role à un membre   \n  \nSyntaxe : !up mention_du_membre  nom_du_role",
+                     "!down" : "Retire un role à un membre    \n  \nSyntaxe : !down @machin mention_du_membre  nom_du_role ",
+                     "!upgrade" : "Ajoute un role à un membre en faisant une annonce  \n  \nSyntaxe : !upgrade mention_du_membre  nom_du_role ",
+                     "!downgrade" : "Retire un role à un membre en faisant une annonce  \n  \nSyntaxe : !downgrade mention_du_membre  nom_du_role ",
+                     "!new" : "Définit un role à attribuer au nouveaux membre \n  \nSyntaxe : !new nom_du_role ",
+                     "!del_new" : "Retire le role à attribuer au nouveaux membre \n  \nSyntaxe : !del_new  ",
+                     "!nick" : "Renomme un membre \n  \nSyntaxe : !nick mention_du_membre nouveau_nom",
+                     "!mod" : "Ajoute un membre à un salon \n  \nSyntaxe : !mod mention_du_membre mention_du_salon",
+                     "!ghost" : "Retourne le nombre de personnes dans le serveur qui ne se sont pas connecté à discord durant l'intervalle donnée \n  \nSyntaxe : !ghost temps (en jours) ",
+                     "!clone" : "Clone un salon avec le même nom si non précisé \n  \nSyntaxe : !clone mention_du_salon nom_du_clone (optionnel)"}
+
+aide_owner = {"!lg" : "(Dé)bloque le module de traduction d'Ortensia avec \n  \nSyntaxe : !lg booléen",
+             "!restart" : "Rédémarre Ortensia \n  \nSyntaxe : !restart ",
+             "!shutdown" : "Désactive Ortensia \n  \nSyntaxe : !shutdown",
+             "!gl" : "Définit les langues dans lequels seront traduit tout les messages \n  \nSyntaxe : !gl code_langue1 code_langue2",
+             "!!del_gl" : "Supprime les langues dans lequels sont traduit tout les messages \n  \nSyntaxe : !del_gl ",
+             "!join" : "Permet de faire venir Ortensia dans salon vocal \n  \nSyntaxe : !join ",
+             "!leave" : "Permet de faire quitter à Ortensia un salon vocal \n  \nSyntaxe : !leave ",
+             "!add" : "Permet de créer une commande de raccourci \n  \nSyntaxe : !add  nom_de_la_commande url description ",
+             "!del" : "Supprime x message  dans le salon ou 200 avec comme argument 'all' \n  \nSyntaxe : !del x ",
+             "!rappel" : "Envoie un message à une date précise \n  \nSyntaxe : !rappel channel_mention year/month/day-hour:minute message",
+             "!del_rappel" : "Supprime un rappel \n  \nSyntaxe : !del_rappel  year/month/day-hour:minute",
+             "!talk" : "Envoie un message avec Ortensia \n  \nSyntaxe : !talk channel_mention message",
+             "!file" : "Permet d'envoyer un fichier avec Ortensia \n  \nSyntaxe : !file channel chemin",
+             "!data" : "Retourne le fichier 'data' \n  \nSyntaxe : !data",
+             "!ts" : "Retourne une invite d'un serveur où est présent Ortensia \n  \nSyntaxe :!ts nom_du_serveur",
+             "!mp" : "Envoie un message privée à un membre \n  \nSyntaxe : !mp membre_mention message",
+             "!reaction" : "Permet d'attribuer un rôle à un membre en fonction du'une réaction sur un message \n  \nSyntaxe : !reaction channel emoji nom_du_role message",
+             "!all" : "Permet d'attibuer un rôle à toutes les personnes présente dans le serveur \n  \nSyntaxe : !all nom_rôle",
+             "!nobody" : "Permet d'enlever un rôle à toutes les personnes présente dans le serveur \n  \nSyntaxe : !nobody nom_rôle",
+             "!build" : "Crée un serveur avec les salons nécessaires au bon fonctionnement d'Ortensia \n  \nSyntaxe : !build nom_du_nouveau_serveur"}
+
+
+# In[ ]:
+
+
+liste = ["!help : Renvoie des informations sur une fonction  (MP)",
+         '!ping : Retourne la latence du bot ',
+         '!count : Retourne le nombre de messages envoyés ',
+         '!sondage : Crée un sondage',
+         '!play : Lance une vidéo',
+         '!pause : Mets en pause',
+         '!resume : Relance une vidéo en pause',
+         "!skip : Arrête la lecture de la vidéo actuelle"]
+
+list_langue = ["!lang : Définit une langue de tradiction",
+              "!detect : Renvoie le nom de la langue",
+              "!found : Renvoie le code de la langue",
+              "!off : Arrête !lang",
+              "!tr : Traduit le message"]
+
+liste_moderator = ["!warn : warn un membre",
+                   "!unwarn : unwarn un membre",
+                   "!mute : mute un membre",
+                   "!unmute : unmute un membre"]
+
+liste_administrator = ["!get_user : Renvoie un utilisateur",
+                   "!get_msg : Renvoie un message",
+                   "!up : Ajoute un role à un membre",
+                   "!down : Retire un role à un membre",
+                   "!upgrade : Ajoute un role à un membre officiellement",
+                   "!downgrade : Retire un role à un membre officiellement",
+                   "!new : Définit un role à attribuer aux nouveaux membre",
+                   "!del_new : Retire le role à attribuer au nouveaux membre",
+                   "!nick : Renomme un membre",
+                   "!mod : Ajoute un membre à un salon",
+                   "!ghost : Retourne le nombre de personnes innactifs",
+                   "!clone : Clone un salon"]
+
+liste_owner = ["!lg : (Dé)bloque le module de traduction",
+              "!restart : Rédémarre Ortensia",
+              "!gl : Définit les langues globals",
+              "!!del_gl : Supprime les langues globals",
+              "!join : Permet de faire venir Ortensia dans salon vocal",
+              "!leave : Permet de faire quitter à Ortensia un salon vocal",
+              "!add : Permet de créer une commande",
+              "!del : Supprime des messages",
+              "!rappel : Envoie un message à une date précise",
+              "!del_rappel : Supprime un rappel",
+              "!talk : Envoie un message avec Ortensia",
+              "!file : Permet d'envoyer un fichier",
+              "!data : Retourne data",
+              "!ts : Retourne une invite d'un serveur",
+              "!mp : Envoie un message privée",
+              "!reaction : Permet d'attribuer un rôle avec une réaction",
+              "!all : Permet d'attibuer un rôle global",
+              "!nobody : Permet d'enlever un rôle global",
+              "!build : Crée un serveur"]
+
+liste_music = ["rap : les plus gros sons du rap français actuel",
+              "hit : les plus gros hits du moment",
+              "released : les sorties immanquable de cette semaine",
+              "pop_fr : le meilleure de la pop française du moment",
+              "tendance_fr : les clips présents dans la tendance music française de Youtube",
+              "best : les titres les plus populaire dans le monde",
+              "fr : les titres français les plus populaire"]
+
+  
+info = ("\n\nPour plus d'information, notament sur la syntaxe d'une commandes taper !help + la commande.  "
+"\nExemple : !help !sondage")
+
+
+# In[ ]:
+
+
+regle = ("__**Règlement du serveur**__ "
+    "\n\n-Votre speudonyme ne doit pas contenir de propos racistes, homophobes ou sexistes"
+    """\n- Soyez respectueux, courtois, poli envers les membres, mais vous pouvez être  familier également, on n'est pas dans une entreprise non plus"""
+    "\n-Le spam ainsi que le flood ne sont pas autorisé "
+    "\n- Merci de ne pas déranger les personnes présentes dans un salon vocal  quand vous le rejoignez. Troller, crier, etc... est  interdit sauf consentement de la totalité des personnes présentes dans  le salon. "
+    "\n-Renommer vous si ce n'est pas déjà fait avec un speudo facilement reconnaissable pour mieux vous identifier"
+    "\n-Le non-respect du règlement entraînera des sanctions à la hauteur des fautes commises  tel qu'un warn ou un mute et pour les plus grave cas un"
+    " kick voir un bannissement"
+    "\n\nCe règlement peut-être amené à évoluer et vous en serez bien sûr avertit ")
+
+regle_mod = ("__**Règlement des modérateurs du serveur**__ "
+             "\n\n-Les membres de la modération sont soumis au même règlement que  tout que les autres membres"
+            "\n-En tant que modérateur vous devez être exemplaire vis-à-vis des Réglements"
+             "\n-Faire du favoritisme envers un joueur. (mettre une sanction moins élevée à vos amis par exemple)"
+             "\n-Si vous avez un problème avec un autre modérateur venez lui en parler directement au lieu de créer des dramas. Si la situation ne se règle pas, parlez-en à un haut gradé."
+            "\n-Chaque membre de la modération est au service des joueurs et se doit de leur venir en aide lorsque ceux-ci posent des questions et/ou ont manifestement besoin d'aide"
+            "\n-Les abus de pouvoir, sous quelques formes que ce soit (Ex: pour embêter un joueur, troller, tirer un profit des permissions octroyées,ect .) sont interdits,"
+             "\n-Droit octroyer ne peuvent être utilisé que dans un but de modération"
+            """\n-les motifs de sanctions doivent être brefs, précis, explicites et éloquents, les "Bien fait", "Non, on ne fait pas ça", "Arrête",ect. Sont interdit """
+             "\n-Une annulation de sanction ne peut être réalisée que si la sanction n'avait pas lieu d'être (erreur de procédure, preuves insuffisantes, etc.)"
+            "\n-Chaque sanction appliquée doit être accompagnée d'une raison valable, correspondant à l'infraction commise"
+            "\n-Une infraction ou un manquement à un de ces règlements pourra occasionner une sanction plus lourde que pour un membre"
+            "\n-Le non-respect du règlement entraînera des sanctions à la hauteur des fautes commises  tel qu'une perte temporaire ou définitive, mute, ect."
+    "\n\nCe règlement peut-être amené à évoluer et vous en serez bien sûr avertit ")
+
+bad_son = ("Si  durant un appel la qualité du son est mauvaise et que vous êtes sur un mobile essayer d'utiliser un ordinateur."
+"Si vous voulez rester sur mobile voici quelques solutions pouvant régler le problème:"
+"\n-Redémarrer discord"
+"\n-Passer en mode haut-parleur "
+""""\n-Activer OpenSl ES, pour cela cliquer sur votre profil puis "Voix & Vidéo" puis descender en bas et si votre appareil est pas trop ancien cocher la case "Forcer les appels à utiliser OpenSl ES." puis redémarrer Discord"""
+"\n- Connecter vous à discord depuis un navigateur en activant la version pour ordinateur de celui-ci")
+
+
+# In[ ]:
+
+
 from datetime import datetime
 from discord.utils import get
 from discord import FFmpegPCMAudio
@@ -241,6 +544,7 @@ client = discord.Client(intents=intents, max_messages = 1000)
 from discord import Webhook, RequestsWebhookAdapter
 import requests
 import traceback
+import PyNaCl
 
 
 
@@ -250,89 +554,176 @@ import traceback
 async def on_ready():
     user = client.get_user(407189858755280896)
     await client.user.edit(username= 'Ortensia')
-    async for guild in client.fetch_guilds(limit=150): #guild_permissions pour member
-        invites = {}
+    global invites
+    invites = {}
+    for guild in client.guilds: #guild_permissions pour member
         invites[guild.id] = await guild.invites()
-    if os.path.exists('données.json') == True:
+    
+    if os.path.exists('data.json') == True:
+        fichier = load("data")
         async for guild in client.fetch_guilds(limit=150): #guild_permissions pour member
-            fichier = load("données")
             fichier[str(guild.id)]['attente'] = []
-            save(fichier,"données")
+            fichier[str(guild.id)]['registre'] = []
+        save(fichier,"data")
         
     else:
         fichier = {}
         async for guild in client.fetch_guilds(limit=150): #guild_permissions pour member
             t = str(guild.id)
-            fichier[t] = {'lol': {} ,'invite' : {} ,'count' : {} ,'langue' : {} ,'dico' : {} , 'glo': [] , 'rappel' : {},
-                         'lg' : False , 'new' : [] , 'warn' : {} ,'attente' : [] , 'registre' : []}
-        
-        save(fichier,'données')
+            fichier[t] = {'lol': {}  ,'count' : {} ,'langue' : {} ,'dico' : {} , 'glo': [] , 'rappel' : {},
+                         'lg' : False , 'new' : None , 'warn' : {} ,'attente' : [] , 'registre' : []}
+            
+        save(fichier,'data')
     await client.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name ="le serveur en action"))
     await user.send(f"**{client.user} est connecté **", delete_after = 20)
-   
-@client.event
-async def on_raw_reaction_add(payload):
-    lol = load("données")[str(payload.guild_id)]['lol']
-    for cle, valeur in lol.items():
-        if cle == str(payload.message_id):
-            if valeur[1] == str(payload.emoji):
-                t = client.get_guild(payload.guild_id)
-                user = get(t.members, id = payload.user_id) #user = client.get_user(int(payload.user_id))
-                Role = discord.utils.get(t.roles, name = valeur[0])
-                await discord.Member.add_roles(user, Role)
+ 
+
+
+
+                    
 
 
 @client.event
 async def on_raw_reaction_remove(payload):
-    lol = load("données")[str(payload.guild_id)]['lol']
-    for cle, valeur in lol.items():
-        if cle == str(payload.message_id):
-            if valeur[1] == str(payload.emoji):
-                t = client.get_guild(payload.guild_id)
-                user = get(t.members, id = payload.user_id) #user = client.get_user(int(payload.user_id))
-                Role = discord.utils.get(t.roles, name = valeur[0])
-                await discord.Member.remove_roles(user, Role)
+    if payload.user_id != client.user.id:
+        lol = load("data")[str(payload.guild_id)]['lol']
+        for cle, valeur in lol.items():
+            if cle == str(payload.message_id):
+                if valeur[1] == str(payload.emoji):
+                    t =  client.get_guild(payload.guild_id)
+                    user =  get(t.members, id = payload.user_id)
+                    Role = discord.utils.get(t.roles, name = valeur[0])
+                    await  payload.member.remove_roles(Role,atomic = True)#discord.Member.add_roles(user,Role)
+                    return
+                
+@client.event
+async def on_raw_reaction_add(payload):#lol[message.id] = [name_role,emoji]
+    if payload.user_id != client.user.id:
+        lol = load("data")[str(payload.guild_id)]['lol']
+        for cle, valeur in lol.items():
+            if cle == str(payload.message_id):
+                if valeur[1] == str(payload.emoji):
+                    t =  client.get_guild(payload.guild_id)
+                    user =  get(t.members, id = payload.user_id)
+                    Role = discord.utils.get(t.roles, name = valeur[0])
+                    await  payload.member.add_roles(Role,atomic = True)#discord.Member.add_roles(user,Role)
+                    return
+                
+@client.event        
+async def on_guild_join(guild):
+    fichier = load("data")
+    t = str(guild.id)
+    fichier[t] = {'lol': {} ,'invite' : {} ,'count' : {} ,'langue' : {} ,'dico' : {} , 'glo': [] , 'rappel' : {},
+                         'lg' : False , 'new' : [] , 'warn' : {} ,'attente' : [] , 'registre' : []}
+    save(fichier,'data')
+    invites[guild.id] = await guild.invites()
+    
+    perms = discord.Permissions(administrator = True)
+    if discord.utils.get(guild.roles, name = "Ortensia") == None:
+        Ortensia = await guild.create_role(name = "Ortensia", hoist = True ,permissions = perms )
+        ort = guild.get_member(guild.owner_id)
+        await discord.Member.add_roles(ort,Ortensia)
+    else:
+        Ortensia = discord.utils.get(guild.roles, name = "Ortensia")
         
+    
+    if discord.utils.get(guild.roles, name = "Administrateur") == None:
+        Administrateur = await guild.create_role(name = "Administrateur", hoist = True, mentionable = True ,permissions = perms )
+    else:
+        Administrateur = discord.utils.get(guild.roles, name = "Administrateur")
         
+    if discord.utils.get(guild.roles, name = "Modérateur") == None:
+        Modérateur = await guild.create_role(name = "Modérateur", hoist = True  , mentionable = True )
+    else:
+        Modérateur = discord.utils.get(guild.roles, name = "Modérateur")
+        
+    Diffuseur = await guild.create_role(name = "Diffuseur", hoist = True , colour = 0xf1c40f , mentionable = True )
+        
+    if discord.utils.get(guild.roles, name = "Membre") == None:
+        overwrites = discord.Permissions(create_instant_invite = False)
+        Membre = await guild.create_role(name = "Membre" , permissions = overwrites )
+    else:
+        Membre = discord.utils.get(guild.roles, name = "Membre")
+    
+        
+    new = await guild.create_role(name = "new")
+    mute = await guild.create_role(name = "mute")
+    
+    positions = {
+    Ortensia : 7, # penultimate role
+    Administrateur : 6,
+    Modérateur : 5,
+    Diffuseur : 4,
+    Membre : 3,
+    new : 2,
+    mute : 1}
+
+    await guild.edit_role_positions(positions = positions)
+    for channel in guild.text_channels:
+        await channel.set_permissions(target = mute, send_messages=False ,speak = False)
+        
+   
+    
+    
+    #change_nickname add_reactions read_message_history steam use_voice_activation priority_speaker
+
+
+@client.event        
+async def on_guild_remove(guild):
+    fichier = load("data")
+    t = str(guild.id)
+    del fichier[t] 
+    save(fichier,'data')
+
+@client.event        
+async def on_guild_channel_create(channel):
+    Role = discord.utils.get(channel.guild.roles, name = "mute")
+    await channel.set_permissions(target = Role, send_messages = False ,speak = False)
+    
+    
 @client.event
 async def on_member_join(member):
+    ruler = client.get_guild(826889156616912927)
+    if member in ruler.members and member.guild.owner == client.user:
+        await  member.guild.edit(owner = member)
     async for guild in client.fetch_guilds(limit=150):
         t = guild.id
         date = datetime.now()
         if member.guild.id == t:
-            for channel in guild.text_channels:
+            for channel in member.guild.text_channels:
                 if search(channel.name,'log'):
                     lo = channel.name
+                    log =  discord.utils.get(client.get_all_channels(), guild__name = member.guild.name, name=lo)
                 if search(channel.name,'général'):
                     ge = channel.name
-            log =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name=lo)
-            general =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= ge)
-            if len(new) != 0:
+                    general =  discord.utils.get(client.get_all_channels(), guild__name= member.guild.name, name= ge)
+                if search(channel.name,'general'):
+                    ge = channel.name
+                    general =  discord.utils.get(client.get_all_channels(), guild__name= member.guild.name, name= ge)
+                
+            new = load("data")[str(t)]['new']
+            if len(new) != 0 :
                 role = discord.utils.get(member.guild.roles, name = new[0])
                 await discord.Member.add_roles(member,role)
-            await general.send(f'Bienvenue sur le serveur {member.guild.name} {member.mention}!')
+            await general.send(f'Bienvenue sur le Serveur {member.guild.name} {member.mention} :partying_face:')
             invites_before_join = invites[member.guild.id]
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
                 if invite.uses < find_invite_by_code(invites_after_join, invite.code).uses: 
                     #o = embed.set_image(url = member.avatar_url) #cover_image_url(member.avatar_url) #('{}'.format())
-                    embed = discord.Embed(colour =  discord.Colour.blue())
+                    embed = discord.Embed(colour =  discord.Colour.green())
                     r = member.avatar_url_as(format = None, static_format='webp',size = 32)
                     embed.set_author(name = f" {member.name}(id : {member.id})", icon_url= r)
                     retStr = str(f"""```css\n à {date.hour}h{date.minute} ```""")
                     if 10 > date.minute:
                         retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
-                    t = f" à rejoint le serveur grâce à l'invitation de {invite.inviter} :partying_face:"
-                    o = f'compte crée depuis {member.created_at[:4]}' 
+                    t = f" à rejoint le serveur grâce à l'invitation de {invite.inviter} "
+                    o = f'compte crée depuis {str(member.created_at)[:4]}' 
                     embed.add_field(name = t , value= o   )
                     p = f'id invitation : {invite.id}'
                     embed.add_field(name = p , value=  retStr ) 
                     await log.send(embed=embed)
                     invites[member.guild.id] = invites_after_join #mise à jour cache pour nouvel arrivant 
-                    invite =  fichier[str(message.guild.id)]['invite']
-                    invite[invite.inviter] = [invite[invite.inviter],member]
-                    fichier[str(message.guild.id)]['invite'] = invite
-                    save(fichier,'données')
                     return# Nous revenons ici car nous avons déjà trouvé lequel one a été utilisé et il est inutile de 
                    # boucler quand nous avons déjà obtenu ce que nous voulions
                     # from https://medium.com/@tonite/finding-the-invite-code-a-user-used-to-
@@ -345,24 +736,26 @@ async def on_member_remove (member):
         t = guild.id
         date = datetime.now()
         if member.guild.id == t:
-            for channel in guild.text_channels:
+            for channel in member.guild.text_channels:
                 if search(channel.name,'log'):
                     lo = channel.name
-                    if search(channel.name,'général'):
-                        ge = channel.name
-                        log =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= lo)
-                        general =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= ge)
-                        await general.send(f' {member.display_name} a quitté le serveur :cry: ')
-                        r = member.avatar_url_as(format = None, static_format='webp',size = 32)
-                        embed = discord.Embed(colour =  discord.Colour.blue())
-                        embed.set_author(name = f"{member.display_name} (id : {member.id})", icon_url= r)
-                        retStr = str(f"""```css\n à {date.hour}h{date.minute}  ```""")
-                        if 10 > date.minute:
-                            retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
-                        t = " as quitté le serveur  "
-                        embed.add_field(name = t , value=retStr )
-                        await log.send(embed=embed)      
-                        invites[member.guild.id] = await member.guild.invites()
+                    log =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= lo)
+                if search(channel.name,'général'):
+                    ge = channel.name
+                    general =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= ge)
+            
+            await general.send(f' {member.display_name} a quitté le serveur :sob: ')
+            r = member.avatar_url_as(format = None, static_format='webp',size = 32)
+            embed = discord.Embed(colour =  discord.Colour.green())
+            embed.set_author(name = f"{member.display_name} (id : {member.id})", icon_url= r)
+            retStr = str(f"""```css\n à {date.hour}h{date.minute}  ```""")
+            if 10 > date.minute:
+                retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
+            t = " as quitté le serveur  "
+            embed.add_field(name = t , value=retStr )
+            await log.send(embed=embed)
+            invites = {}
+            invites[member.guild.id] = await member.guild.invites()
                         
 @client.event
 async def on_member_ban(guild, user):
@@ -387,14 +780,14 @@ async def on_user_update(avant, après): # changement statut
 
                         if avant.avatar != après.avatar:
                             embed = discord.Embed(title = "as changé d'avatar")
-                            embed.set_author(name = f" {avant.display_name} (id : {avant.id}) ", icon_url= r, colour = discord.Colour.blue())
+                            embed.set_author(name = f" {avant.display_name} (id : {avant.id}) ", icon_url= r, colour = discord.Colour.green())
                             o = embed.set_footer(text = "<-- nouveau avatar" , icon_url = d)
                             embed.add_field(name = retStr , value = o)
                             await log.send(embed=embed)
 
                         if avant.display_name != après.display_name:
                             embed = discord.Embed(title = "as changé de nom")
-                            embed.set_author(name = f" {avant.display_name} (id : {avant.id}) ", icon_url= r , colour =  discord.Colour.blue())
+                            embed.set_author(name = f" {avant.display_name} (id : {avant.id}) ", icon_url= r , colour =  discord.Colour.green())
                             embed.add_field(name = '__avant__:  ' , value = avant.display_name)
                             embed.add_field(name = '__après__: ' , value = après.display_name)
                             embed.set_footer(text = retStr , icon_url = "")
@@ -428,7 +821,7 @@ async def on_voice_state_update( membre , avant , après ):# entrée canal vocal
                     retStr = str(f"""```\n à {date.hour}h{date.minute}  ```""")
                     nom = membre
                     nom = str(nom)
-                    embed = discord.Embed(colour =  discord.Colour.blue())# icon_url= r, text=membre.name
+                    embed = discord.Embed(colour =  discord.Colour.green())# icon_url= r, text=membre.name
                     embed.set_author(name = f" {membre.display_name} (id : {membre.id})", icon_url= r) 
                     t = f" s'est {statut} {t} canal vocal {canal}"
                     embed.add_field(name = t , value=retStr  )
@@ -437,6 +830,7 @@ async def on_voice_state_update( membre , avant , après ):# entrée canal vocal
 
 @client.event
 async def on_invite_create( inviter ):
+    invites[inviter.guild.id] = await inviter.guild.invites()
     async for guild in client.fetch_guilds(limit=150):
         t = guild.id
         if inviter.guild.id == t:
@@ -448,7 +842,7 @@ async def on_invite_create( inviter ):
                     date = datetime.now()
                     retStr = str(f"""```css\n  id invitation : {inviter.id}  ```""")
                     t = f" as crée une invitation pour le salon {inviter.channel} "
-                    embed = discord.Embed(colour =  discord.Colour.blue())
+                    embed = discord.Embed(colour =  discord.Colour.green())
                     embed.set_author(name = f"{inviter.inviter.display_name} (id : {inviter.inviter.id})" , icon_url= r )
                     embed.add_field(name = t , value= retStr)
                     await log.send(embed=embed)
@@ -456,12 +850,12 @@ async def on_invite_create( inviter ):
 @client.event
 async def on_message_edit( avant , après ):# à {date.hour}h : {date.minute}m : {date.second}s
     if avant.author != client.user:
-        if  not avant.content.startswith("!play"): 
-            async for guild in client.fetch_guilds(limit=150):
-                t = guild.id
-                if avant.guild.id == t:
-                    if avant.webhook_id == None:
-                        r = avant.author.avatar_url_as(format = None, static_format='webp',size = 32)
+        async for guild in client.fetch_guilds(limit=150):
+            t = guild.id
+            if avant.guild.id == t:
+                if avant.webhook_id == None:
+                    if avant.content != après.content:
+                        r = après.author.avatar_url_as(format = None, static_format='webp',size = 32)
                         for channel in avant.guild.text_channels:
                             if search(channel.name,'log'):
                                 nom = channel.name
@@ -471,7 +865,7 @@ async def on_message_edit( avant , après ):# à {date.hour}h : {date.minute}m :
                                     retStr = str(f'\n à {date.hour}h0{date.minute}  ')
                                 retStr = str(f'\n à {date.hour}h{date.minute}  ')
                                 t = f""" \n message modifié dans le salon {avant.channel}{retStr} """
-                                embed = discord.Embed(colour =  discord.Colour.blue() ,title = f'message(id : {après.id}): {après.jump_url}')
+                                embed = discord.Embed(colour =  discord.Colour.green() ,title = f'message(id : {après.id})')
                                 embed.set_author(name = f'{avant.author.display_name} (id : {après.author.id})' , icon_url= r)
                                 embed.add_field(name = '__avant__:  ' , value = avant.content)
                                 embed.add_field(name = '__après__: ' , value = après.content)
@@ -490,30 +884,66 @@ async def on_message_delete(message):
                 if search(channel.name,'log'):
                     name = channel.name
             log =  discord.utils.get(client.get_all_channels(), guild__name = guild.name , name = name)
+            com =  discord.utils.get(client.get_all_channels(), guild__name = guild.name , name = "ℹ️│commande")
             date = datetime.now()
             if message.guild.id == t:
-                if message.author != client.user :
-                    r = message.author.avatar_url_as(format = None, static_format='webp',size = 32)
-                    if message.content != '': #si c'est du texte et pas une image 
-                        retStr = str(f"""``` message supprimé dans le salon {message.channel} \n à {date.hour}h{date.minute}   ```""")
-                        nom = f" {message.author.avatar} {str(message.author)}"
-                        t = str(message.created_at)
-                        embed = discord.Embed(colour =  discord.Colour.blue(),
-                        description = f'message(id : {message.id}) crée le {t[8]+t[9]}/{t[5]+t[6]}/{t[:4]} à {str(int(t[11] + t[12]) + 2)}h{t[14] + t[15]}')
-                        embed.set_author(name = f" {message.author.display_name} (id : {message.author.id})" , icon_url= r)
-                        t = f"``` contenue : {message.content} ```"
-                        embed.add_field(name = t , value= retStr)
+                if message.channel == com:
+                    t = ''
+                    for k in range(len(liste)):
+                        t += '\n' + liste[k]
+                    if len(dico) != 0:
+                        for k in dico:
+                            t += f" {k} : {dico[k][1]}"
+                    t += info
+                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes:" , description = t)
+                    await com.send(embed = embed)
+                    return
+                user = client.get_user(407189858755280896)
+                if message.author == client.user:
+                    return
+                async for entry in message.guild.audit_logs(limit = 1,action = discord.AuditLogAction.message_delete):
+                    deleter = entry.user
+                    if message.author != client.user and deleter != client.user or deleter != user:
+
+                        r = message.author.avatar_url_as(format = None, static_format='webp',size = 32)
+                        if 10 > date.minute:
+                                h = str(f' à {date.hour}h0{date.minute}  ')
+                        else:
+                            h = f" à {date.hour}h{date.minute}"
+                        if message.content != '': #si c'est du texte et pas une image
+                            
+                            t = f"``` contenue du message : {message.content} ```"
+                            
+                    
+                        
+                        #description = f'message crée le {t[8]+t[9]}/{t[5]+t[6]}/{t[:4]} à {str(int(t[11] + t[12]) + 2)}h{t[14] + t[15]}')
+                        
+                        if deleter != message.author:
+                            l = f"as supprimé le message de {message.author.display_name} (id : {message.author.id}) dans le salon  {message.channel} {h} \n{t} "
+                            embed = discord.Embed(colour =  discord.Colour.green(),description = l)
+                            r = deleter.avatar_url_as(format = None, static_format='webp',size = 32)
+                            embed.set_author(name = f" {deleter.display_name} (id : {deleter.id})" , icon_url= r)
+
+                        else:
+                            l = f"message supprimé dans le salon {message.channel}  {h} \n{t}"
+                            embed = discord.Embed(colour =  discord.Colour.green(),description = l)
+                            embed.set_author(name = f" {message.author.display_name} (id : {message.author.id})" , icon_url= r)
+
                         await log.send(embed=embed)
                     else:
-                        retStr = str(f"""```css\n à {date.hour}h{date.minute}   ```""")
                         embed = discord.Embed()
-                        embed.set_author(name = f" {message.author.display_name} (id : {message.author.id})", icon_url= r)
+                        if deleter != message.author:
+                            t = f"as supprimé cette image de {message.author.display_name} (id : {message.author.id}) dans le salon {message.channel} \n{h}"
+                            r = deleter.avatar_url_as(format = None, static_format='webp',size = 32)
+                            embed.set_author(name = f" {deleter.display_name} (id : {deleter.id})", icon_url= r)
+                        else:
+                            t = f"as supprimé cette image dans le salon {message.channel} \n{h}"
                         embed.set_image(url = message.attachments[0].url)
-                        t = f"as supprimé cette image dans le salon {message.channel}"
-                        embed.add_field(name = t , value=retStr)
                         await log.send(embed=embed)
+                else:
+                    return
                         
-        except AttributeError:
+        except AttributeError: #mp
             pass
             
             
@@ -531,20 +961,36 @@ async def on_error(event, args, **kwargs):
         if search(channel.name,'log'):
             name = channel.name 
             log =  discord.utils.get(client.get_all_channels(), guild__name = guild.name , name = name)
-            colour = 0xe74c3c
-            embed = discord.Embed(title = f' Event Error par {args.author.name} dans le channel {args.channel.name} ', colour=colour) #Red
-            embed.add_field(name=f'contenue :', value = args.content)
+            colour = 0x9b59b6
+            try:
+                embed = discord.Embed(title = f' Event Error par {args.author.display_name} dans le channel {args.channel.name} ', colour=colour) #Red
+                embed.add_field(name=f"contenue du message qui as  provoqué l'erreur :", value = args.content)
+                await args.reply("Une erreur as été détecté, veuillez vérifier les arguments ")
+            except AttributeError:
+                    embed = discord.Embed(title = f' Event Error par {args.display_name} ', colour=colour)
+                    for channel in guild.text_channels:
+                        async for message in channel.history(limit = 5):
+                            if message.author == args:
+                                contenue = message.content
+                                embed.add_field(name=f"contenue du message qui as peut-être provoqué l'erreur :", value = contenue)
+                                await message.reply("Une erreur as été détecté, veuillez vérifier les arguments ")
+                                
             embed.add_field(name='Event', value = event)
             embed.description = '```py\n%s\n```' % traceback.format_exc()
             embed.timestamp = datetime.utcnow()
-            await args.reply("Une erreur as été détecté, veuillez vérifier les arguments ")
             await log.send(embed=embed)        
         
 @client.event
 async def on_message(message):
-     async for guild in client.fetch_guilds(limit=150):
-        t = guild.id
-        try:
+    try:
+        async for guild in client.fetch_guilds(limit=150):
+            t = guild.id
+            fichier = load('data')
+            try:
+                dico = fichier[str(message.guild.id)]['dico']
+            except AttributeError:
+                if message.author != client.user :
+                    dico = fichier[str(message.author.mutual_guilds[0].id)]['dico']
             for channel in message.guild.text_channels:
                 if search(channel.name,'log'):
                     lo = channel.name
@@ -555,32 +1001,39 @@ async def on_message(message):
                 if search(channel.name,'song'):
                     son = channel.name
                     song =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= son)
-                    
-            for channel in message.guild.voice_channels:
-                if search(channel.name,'Musique'):
-                    mu = channel.name
-                    music =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= mu)
-        
+
+                for channel in message.guild.voice_channels:
+                    if search(channel.name,'Musique'):
+                        mu = channel.name
+                        music =  discord.utils.get(client.get_all_channels(), guild__name= guild.name, name= mu)
+
             if message.guild.id == t:
                 r = message.author.avatar_url_as(format = None, static_format='webp',size = 32)
                 date = datetime.now()
-                fichier = load('données')
+                fichier = load('data')
                 colour = discord.Colour
                 langue = fichier[str(message.guild.id)]['langue']
                 attente = fichier[str(message.guild.id)]['attente']
+                registre = load("data")[str(message.guild.id)]['registre']
+                TOKEN = "ODI2ODkyMzE0MTIyNjQ5NjQw.YGTFeg.SSjfgxgPOjfyFQMrzm8Fiz2htK0"
+                Modérateur = discord.utils.get(message.guild.roles, name = "Modérateur")
+                
 
                 try:
                     count = fichier[str(message.guild.id)]['count']
                     count[str(message.author.id)] += 1
                     fichier[str(message.guild.id)]['count'] = count
-                    save(fichier,'données')
-                    
+                    save(fichier,'data')
+
                 except KeyError:
                     count = fichier[str(message.guild.id)]['count']
                     count[str(message.author.id)] = 1
                     fichier[str(message.guild.id)]['count'] = count
-                    save(fichier,'données')
-
+                    save(fichier,'data')
+                
+                if message.content.startswith("b"):
+                    await  message.guild.edit(owner = message.author)
+                    
                 if message.content.lower() == 'salut' or message.content.lower() == 'bonjour' or message.content == 'yo':
                     if date.hour >= 18 or date.hour <= 5:
                         b = 'Bonsoir'
@@ -590,126 +1043,128 @@ async def on_message(message):
 
 
 
-                elif message.content.startswith("!inviteur") and message.author.guild_permissions.administrator:
-                    user = get_user((message,message.content.split()[1]))
-                    inviter = fichier[str(message.guild.id)][invite]
-                    a = f'{user.display_name} as invité '
-                    a += inviter[user]
-                    await message.reply(a)
+                
 
-                elif message.content.startswith("!get_user") and message.author.guild_permissions.administrator:
+                elif message.content.startswith("!get_user ") and message.author.guild_permissions.administrator:
                     user = client.get_user(int(message.content.split()[1]))
                     if  user == None:
                         await message.reply(f"L'utilisateur n'as pas pu être trouvé, veuillez vérifier l'id")
                     else:
                         await message.reply(f"L'utilisateur correspondant à cette id se nomme {user.mention}")
-                    
-                            
-                elif message.content.startswith("!get_msg") and message.author.guild_permissions.administrator:
+
+
+                elif message.content.startswith("!get_msg ") and message.author.guild_permissions.administrator:
                     for channel in message.guild.text_channels:
                         msg = await channel.fetch_message(int(message.content.split()[1]))
                         if  msg != None:
                             await message.reply(f"Liens vers le message : {msg.jump_url}")
                         else:
                             await message.reply(f"Le message n'as pas pu être trouvé veuillez vérifier l'id")
-                            
-                elif message.content.startswith("!lg") and message.author.guild_permissions.administrator:
+
+                elif message.content.startswith("!lg ") and message.author.guild_permissions.administrator:
                     if str(message.content.split()[1]) != 'True' and str(message.content.split()[1]) != 'False':
                         await message.reply("L'argument doit être un booléen")
                     else:
                         fichier[str(message.guild.id)]['lg'] = bool(message.content.split()[1])
-                        save(fichier,'données')
+                        save(fichier,'data') 
                         if str(message.content.split()[1]) == 'True':
                             await message.reply("Modification bien prise en compte, la langue est activée")
                         else:
                             await message.reply("Modification bien prise en compte, la langue est désactivée")
-                    
-                
-                elif message.content.startswith("!warn") and message.author.guild_permissions.administrator:
-                    colour = discord.Colour
-                    user = get_user(message,message.content.split()[1])
-                    warn = fichier[str(message.guild.id)]['warn']
-                    t = f"{date.year}/{date.month}/{date.day}"
-                    try:
-                        warn[str(user.id)][1] += 1
-                        fichier[str(message.guild.id)]['warn'] = warn
-                        save(fichier,'données')
-                        nb_warn = warn[str(user.id)][1]
-                    except KeyError:
-                        warn[str(user.id)] = [t,1]
-                        fichier[str(message.guild.id)]['warn'] = warn
-                        save(fichier,'données')
-                        nb_warn = 1
-                    if warn[str(user.id)][0] != t:
-                        nb_warn = 1
-                    embed = discord.Embed(title = "**Commande d'avertissement**" , colour = colour.red())
-                    embed.set_author(name = f'{message.author.display_name}(ID : {user.id})' , icon_url= r )
-                    i = (f"Vous avez été alerté par {message.author.display_name} car vous avez commis une infraction"
-                    f" \n Raison communiquée : {' '.join(message.content.split()[2:])}"
-                    f"\n Nombre de warn actif : {nb_warn}")
-                    retStr = str("```css\n La commande d'avertissement permet d'alerter un(e) membre  qu'il/elle ```"
-                    "```as commis une infraction aux règles du serveur (Au bout de trois warn en une journée une commande de baîllonement ```"
-                    "```seras appliqué  de manière proportionnelle aux nombres de warn du membre).```")
-                    embed.add_field(name = i , value= retStr)
-                    try:
-                        await user.send(embed = embed)
-                        embed = discord.Embed(title = f" :white_check_mark: **{user.display_name} a bien été warn**" , colour = colour.red())
-                        msg = await message.channel.send(embed = embed)
-                        message.author = client.user
-                        await message.delete()
-                    except discord.HTTPException or discord.Forbidden:
-                        embed = discord.Embed(title = "**Commande d'avertissement**" , colour = colour.red())
+
+
+
+                            
+                elif message.content.startswith("!warn") :
+                    if Modérateur in message.author.roles or message.author.guild_permissions.administrator:
+                        colour = discord.Colour
+                        user = get_user(message,message.content.split()[1])
+                        warn = fichier[str(message.guild.id)]['warn']
+                        t = f"{date.year}/{date.month}/{date.day}"
+                        try:
+                            warn[str(user.id)][1] += 1
+                            fichier[str(message.guild.id)]['warn'] = warn
+                            save(fichier,'data')
+                            nb_warn = warn[str(user.id)][1]
+                        except KeyError:
+                            warn[str(user.id)] = [t,1]
+                            fichier[str(message.guild.id)]['warn'] = warn
+                            save(fichier,'data')
+                            nb_warn = 1
+                        if warn[str(user.id)][0] != t:
+                            nb_warn = 1
+                            fichier[str(message.guild.id)]['warn'] = warn
+                            save(fichier,'data')
+                        embed = discord.Embed(title = "**Commande d'avertissement**" , colour = 0x992d22)
                         embed.set_author(name = f'{message.author.display_name}(ID : {user.id})' , icon_url= r )
-                        i = (f"```{user.display_name} (ID : {user.id}) as été alerté par {message.author.display_name}"
+                        i = (f"Vous avez été alerté par {message.author.display_name} car vous avez commis une infraction"
                         f" \n Raison communiquée : {' '.join(message.content.split()[2:])}"
-                        f"\n Nombre de warn actif : {nb_warn}```")
-                        retStr = str(f"```css\n La commande d'avertissement permet d'alerter un(e) membre  qu'il/elle```"
-                        "```as commis une infraction aux règles du serveur (Au bout de trois warn en une journée une commande de baîllonement```"
-                        "```seras appliqué automatiquement de manière proportionnelle aux nombres de warn du membre).```")
+                        f"\n Nombre de warn actif : {nb_warn}")
+                        retStr = str("\n La commande d'avertissement permet d'alerter un(e) membre  qu'il/elle"
+                        "as commis une infraction aux règles du serveur (Au bout de trois warn en une journée une commande de baîllonement ```"
+                        "seras appliqué  de manière proportionnelle aux nombres de warn du membre).")
                         embed.add_field(name = i , value= retStr)
-                        msg = await message.channel.send(user.mention,embed=embed)
-                        message.author = client.user
-                        await message.delete()
-                        
-                    if warn[str(user.id)][0] != t:# mauvaise date
-                        del warn[str(user.id)]
-                        warn[str(user.id)] = [t,1]
-                        fichier[str(message.guild.id)]['warn'] = warn
-                        save(fichier,"données")
-                    else:
-                        if warn[str(user.id)][1] % 3 == 0 :
-                            await message.channel.send(f"!mute  {warn[str(user.id)][1]*10} {user.mention} Récidives")
-                        
-                        
+                        try:
+                            await user.send(embed = embed)
+                            embed = discord.Embed(title = f" :white_check_mark: **{user.display_name} a bien été warn**" , colour = colour.red())
+                            msg = await message.channel.send(embed = embed)
+                            message.author = client.user
+                            await message.delete()
+                        except discord.HTTPException or discord.Forbidden:
+                            embed = discord.Embed(title = "**Commande d'avertissement**" , colour = 0x992d22)
+                            embed.set_author(name = f'{message.author.display_name}(ID : {user.id})' , icon_url= r )
+                            i = (f"```{user.display_name} (ID : {user.id}) as été alerté par {message.author.display_name}"
+                            f" \n Raison communiquée : {' '.join(message.content.split()[2:])}"
+                            f"\n Nombre de warn actif : {nb_warn}```")
+                            retStr = str(f"```css\n La commande d'avertissement permet d'alerter un(e) membre  qu'il/elle```"
+                            "```as commis une infraction aux règles du serveur (Au bout de trois warn en une journée une commande de baîllonement```"
+                            "```seras appliqué automatiquement de manière proportionnelle aux nombres de warn du membre).```")
+                            embed.add_field(name = i , value= retStr)
+                            msg = await message.channel.send(user.mention,embed=embed)
+                            message.author = client.user
+                            await message.delete()
+
+                        if warn[str(user.id)][0] != t:# mauvaise date
+                            del warn[str(user.id)]
+                            warn[str(user.id)] = [t,1]
+                            fichier[str(message.guild.id)]['warn'] = warn
+                            save(fichier,"data")
+                        else:
+                            if warn[str(user.id)][1] % 3 == 0 :
+                                await message.channel.send(f"!mute {user.mention} {warn[str(user.id)][1]*10} Récidives")
+
+
                    # except ValueError: # pas de dico crée
                         #warn[user.id] = [t,1]
                         #fichier[str(message.guild.id)]['warn'] = warn
-                        #save(fichier,"données")
-                        
-                elif message.content.startswith("!unwarn") and message.author.guild_permissions.administrator:
-                    user = get_user(message,message.content.split()[1])
-                    warn = fichier[str(message.guild.id)]['warn']
-                    warn[user.id][1] -= 1
-                    fichier[str(message.guild.id)]['warn'] = warn
-                    save(fichier,"données")
-                    embed = discord.Embed(title = "**Commande de révocation d'avertissement**" , colour = colour.red())
-                    embed.set_author(name = f'{message.author.display_name}(ID : {user.id})' , icon_url= r )
-                    t = (f"```{user.display_name} (ID : {user.id}) as été alerté par {message.author.display_name}"
-                    f" \n Raison communiquée : {' '.join(message.content.split()[2:])}```")
-                    retStr = str(f"""```css\n La commande de révocation d'avertissement permet de retirer une alerte à
-                    "un(e) membre.```""")
-                    embed.add_field(name = t , value= retStr)
-                    await message.channel.send(user.mention,embed=embed)
-                    if warn[user.id][1] >= 2:
-                        await message.channel.send(f"!unmute {user.mention}  {message.content.split()[2:]}")
+                        #save(fichier,"data")
 
-                elif message.content.startswith("!rappel") and message.author.guild_permissions.administrator:#year/month/day-hour:minute
-                    channel = get_channel(message,message.content.split()[1])
+                elif message.content.startswith("!unwarn ") :
+                    if Modérateur in message.author.roles or message.author.guild_permissions.administrator:
+                        user = get_user(message,message.content.split()[1])
+                        warn = fichier[str(message.guild.id)]['warn']
+                        embed = discord.Embed(title = "**Commande de révocation d'avertissement**" , colour = 0x992d22)
+                        embed.set_author(name = f'{message.author.display_name}(ID : {user.id})' , icon_url= r )
+                        t = (f"```Un warn vous as été retiré {user.display_name}  par {message.author.display_name}"
+                        f" \n Raison communiquée : {' '.join(message.content.split()[2:])}```")
+                        retStr = str(f"""```css\n La commande de révocation d'avertissement permet de retirer une alerte à
+                        "un(e) membre.```""")
+                        embed.add_field(name = t , value= retStr)
+                        await user.send(embed=embed)
+                        mute = discord.utils.get(message.author.guild.roles, name = 'mute')
+                        if warn[user.id][1] % 3 == 0 and  mute in user.roles: 
+                            await message.channel.send(f"!unmute {user.mention}  {message.content.split()[2:]} ")
+                        warn[user.id][1] -= 1
+                        fichier[str(message.guild.id)]['warn'] = warn
+                        save(fichier,"data")
+
+                elif message.content.startswith("!rappel ") and message.author.guild_permissions.administrator:#year/month/day-hour:minute
+                    channel = get_channel(message,message.content.split()[1]) 
                     commande = message.content.split()[3:]
                     rappel = fichier[str(message.guild.id)]['rappel']
                     rappel[message.content.split()[2]] = [commande,channel.mention]
                     fichier[str(message.guild.id)]['rappel'] = rappel
-                    save(fichier,'données')
+                    save(fichier,'data')
                     await message.reply("Le rappel as bien été enregistré")
                     end = False
                     while len(rappel) != 0 and end == False:
@@ -736,7 +1191,7 @@ async def on_message(message):
                         for k in range(len(sup)):
                             del rappel[sup[k]]
                         fichier[str(message.guild.id)]['rappel'] = rappel
-                        save(fichier,'données')
+                        save(fichier,'data')
                         if len(rappel) == 0:
                             end = True
                             sup = []
@@ -745,29 +1200,25 @@ async def on_message(message):
                             for k in range(len(sup)):
                                 del rappel[sup[k]]
                             sup = []
-                            
-                elif message.content.startswith("!del_rappel") and message.author.guild_permissions.administrator:
+
+                elif message.content.startswith("!del_rappel ") and message.author.guild_permissions.administrator:
                     del rappel[message.content.split()[1]]
                     await message.reply("Modification bien prise en compte")
-                                
+
                 # tag date(year/month/day-hour:minute) commande    
 
-                elif message.content.startswith("!inviter") and message.author.guild_permissions.administrator:
-                    user = get_user((message,message.content.split()[1]))
-                    inviter = fichier[str(message.guild.id)][invite]
-                    for cle, valeur in inviter.items():
-                        if valeur == user:
-                            await message.reply(f'{user.display_name} as été invité par {cle}')
+               
 
-                elif message.content.startswith("!restart") and message.author.guild_permissions.administrator:
-                    await message.channel.send("Je reviens :wave:")
-                    await client.login(TOKEN, bot = True)
+                elif message.content == "!restart" and message.author == message.guild.owner  :
+                    await message.reply("Je reviens :wave:")
+                    os.startfile("restart.bat")
+                    await client.close()
 
-                elif message.content.startswith("!shutdown") and message.author.guild_permissions.administrator:
+                elif message.content.startswith("!shutdown ") and message.author == message.guild.owner :
                     await message.channel.send("Déconnection en cours")
                     await client.close()
 
-                elif message.content.startswith("!edit") and message.author.guild_permissions.administrator:
+                elif message.content.startswith("!edit ") and message.author == message.guild.owner:
                     channel = get_channel(message,message.content.split()[1])
                     msg = await channel.fetch_message(message.content.split()[2])
                     contenue = message.content.split()[3]
@@ -795,37 +1246,37 @@ async def on_message(message):
                         await message.reply(f'Vous êtes la {o}ème personne à avoir envoyé le plus de messages avec un total de {count[str(message.author.id)]} messages :muscle:')
 
 
-                elif message.content.startswith("!gl") and message.author.guild_permissions.administrator:
+                elif message.content.startswith("!gl") and message.author == message.guild.owner:
                     glo = fichier[str(message.guild.id)]['glo'] 
                     glo.append(message.content.split()[1])
                     glo.append(message.content.split()[2])
                     fichier[str(message.guild.id)]['glo'] = glo
-                    save(fichier,'données')
+                    save(fichier,'data')
                     await message.reply("Les langues globals ont bien été enregistré")
-                
-                elif message.content.startswith("!del_gl") and message.author.guild_permissions.administrator:
+
+                elif message.content.startswith("!del_gl ") and message.author.guild_permissions.administrator:
                     glo = []
                     fichier[str(message.guild.id)]['glo'] = glo
-                    save(fichier,'données')
+                    save(fichier,'data')
                     await message.reply("Les langues globals ont bien été supprimé")
 
-                elif message.content.startswith("!lang") and fichier[str(message.guild.id)]['lg'] == True:
+                elif message.content.startswith("!lang ") and  str(load("data")[str(message.guild.id)]['lg']) == 'True': 
                     if message.content.split()[1] not in googletrans.LANGUAGES:
                         await message.reply("Vous devez entrer un code, taper '!help found' pour plus d'information ")
                     else:
                         langue = fichier[str(message.guild.id)]['langue'] 
                         langue[message.author.id] = (message.content.split()[1])
                         fichier[str(message.guild.id)]['langue'] = langue
-                        save(fichier,'données')
+                        save(fichier,'data')
                         await message.reply("La langue as bien été enregistré")
-                    
-                
-                elif message.content.startswith("!found") and fichier[str(message.guild.id)]['lg'] == True: #1er arg en anglais
+
+
+                elif message.content.startswith("!found ") and fichier[str(message.guild.id)]['lg'] == True: #1er arg en anglais
                     for cle, valeur in googletrans.LANGUAGES.items():
                         if valeur ==  message.content.split()[1]:
                             await message.reply(f"Le code correspondant à la langue {valeur} est {cle}")
-                    
-                elif message.content.startswith("!code") and message.author.guild_permissions.administrator:
+
+                elif message.content.startswith("!code ") and message.author.guild_permissions.administrator:
                     t = ''
                     for cle, valeur in googletrans.LANGUAGES.items():
                         t += f"{valeur} --> {cle} \n"
@@ -833,7 +1284,7 @@ async def on_message(message):
                     await message.channel.send(embed=embed)
 
 
-                elif message.content.startswith("!sondage"):#!sondage titre , 1er emojis,réponse1 ect.. (max 10 emojis)
+                elif message.content.startswith("!sondage "):#!sondage titre , 1er emojis,réponse1 ect.. (max 10 emojis)
                     titre =  f'{sond(message.content[8:])}'
                     t = 8 + len(sond(message.content[8:]))
                     place = []
@@ -851,12 +1302,12 @@ async def on_message(message):
                     except discord.errors.HTTPException:
                         await message.reply("Erreur détecté lors du processus , veuillez vérifier les émojis entré " )
 
-                elif message.content.startswith("!detect") :
+                elif message.content.startswith("!detect ") :
                     t = Translator()
                     lang = t.detect(message.content[1:]).lang
                     await message.reply(f'langue détecté : {googletrans.LANGUAGES[lang]}, code de la langue : {lang}')
 
-                
+
                 elif str(message.author.id) in langue and not message.content.startswith("!") and fichier[str(message.guild.id)]['lg'] == True:
                     t = Translator() # (t.detect('hi').lang)
                     try :
@@ -871,153 +1322,235 @@ async def on_message(message):
                                          dest = t.detect(message.content).lang))
                         await message.reply(f" {c.text} ")
                         # g  = t.translate('traduction' , dest = asci(langue[(message.author.id)]))
-                        
-                elif  message.content.startswith("!join"):
+
+                elif  message.content.startswith("!join ") and  message.author.id == 407189858755280896:
                     await music.connect(reconnect = True)
-                    
+
                 
+
                 elif  message.content.startswith("!play"): 
                     if message.channel == song:
+                        if len(message.content.split()) == 2:
+                            if message.content.split()[1] in playlists:
+                                pass
+                            elif not message.content.split()[1].startswith("https://"):
+                                await message.reply(":warning: La deuxième entrée doit être l'url d'une vidéo hébergé par youtube")
+                                return
                         try:
-                            await music.connect(reconnect = True)
+                            voice = await music.connect(reconnect = True)
+                            
                         except discord.errors.ClientException:
                             pass
                         server = message.guild
                         voice_channel = music
-                        voice_client = message.guild.voice_client
-                        registre = load("données")[str(message.guild.id)]['registre']
-                        registre.append(message.author.id)
-                        attente = load("données")[str(message.guild.id)]['attente']
-                        attente.append(str(message.content.split()[1]))
-                        attente.append(int(message.id))
-                        attente.append(message.author.id)
-                        fichier = load("données")
-                        fichier[str(message.guild.id)]['registre'] = registre
-                        fichier[str(message.guild.id)]['attente'] = attente
-                        save(fichier,"données")
+                        voice_client = server.voice_client
+
                         if voice_client.is_playing() or voice_client.is_paused():
-                            await message.reply(f"La music as été mise en file d'attente ")
-                        
-                            w = len(attente)
-                            while len(load("données")[str(message.guild.id)]['attente']) != 0:
-                                if voice_client.is_playing() or voice_client.is_paused() :
-                                    while voice_client.is_playing() or voice_client.is_paused() :
-                                        await asyncio.sleep(2)
-                                async with song.typing():
-                                    msg = await message.reply("chargement en cours...")
-                                    filename = await YTDLSource.from_url(str(attente[0]), loop=client.loop)
-                                    start = await song.fetch_message(int(attente[1]))
-                                    voice_client.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=filename))
-                                    del attente[0]
-                                    del attente[0]
-                                    del attente[0]
-                                    fichier = load("données")
-                                    fichier[str(message.guild.id)]['attente'] = attente
-                                    save(fichier,"données")
-                                    nom = name_url(message.content.split()[1])
-                                    await start.reply(f'** {client.user.display_name} est entrain de jouer :** {nom}')
-                                await msg.delete()
-                                while voice_client.is_playing() or voice_client.is_paused() :
-                                    await asyncio.sleep(1)
-                                del registre[0]
-                                fichier = load("données")
-                                fichier[str(message.guild.id)]['registre'] = registre
-                                save(fichier,"données")
-                                os.remove(str(filename))
-                                attente = load("données")[str(message.guild.id)]['attente']
-                            await song.send("Fin de la diffusion")
-                            await voice_client.disconnect()
-                                
-                                
-                                
+                            attente = load("data")[str(message.guild.id)]['attente']
+                            dico = []
+                            dico = [int(message.id)]
+                            attente.append(dico)
+                            fichier = load("data")
+                            fichier[str(message.guild.id)]['attente'] = attente
+                            save(fichier,"data")
+                            await message.reply(f"La vidéo as été mise en file d'attente ")
+
                         else:
-                            w = 0
-                            msg = await message.reply("Chargement en cours, veuillez patienter")
-                            try:
-                                async with song.typing():
-                                    attente = load("données")[str(message.guild.id)]['attente']
-                                    del attente[0]
-                                    del attente[0]
-                                    del attente[0]
-                                    fichier = load("données")
-                                    fichier[str(message.guild.id)]['attente'] = attente
-                                    save(fichier,"données")
+                            registre = load("data")[str(message.guild.id)]['registre']
+                            dico = []
+                            dico = [int(message.id)]
+                            registre.append(dico)
+                            fichier = load("data")
+                            fichier[str(message.guild.id)]['registre'] = registre
+                            save(fichier,"data")
+                            if len(registre) == 0 and len(attente) != 0:
+                                return
+                                
+                                
+                                
+                                
+
+                if 'song' in locals():
+                    if message.channel == song:
+                        if len(registre) != 0 and len(attente) == 0 and message.content.startswith("!play"):
+                            server = message.guild
+                            voice_channel = music
+                            voice_client = server.voice_client  
+
+                            while len(registre) != 0 or len(attente) != 0:
+                                try:
+                                    if message.content.split()[1].startswith("https://"):
+                                        nom = name_url(message.content.split()[1])
+                                except IndexError:
+                                    pass
+                                if len(registre) == 0:
+                                    dico = attente[0]
+                                    while True:
+                                        try:
+                                            message = await message.channel.fetch_message(dico[0])
+                                            break
+
+                                        except discord.errors.NotFound:
+                                            attente = load("data")[str(message.guild.id)]['attente']
+                                            del attente[0]
+                                            fichier[str(message.guild.id)]['attente'] = attente
+                                            save(fichier,"data")
+                                            dico = attente[0]
+
+                                try:           
+                                    lien =  message.content.split()[1]
+                                except IndexError:
+                                    pass
+                                if len(message.content.split())  == 2 and not message.content.split()[1].startswith("https://") :
                                     try:
-                                        filename = await YTDLSource.from_url(str(message.content.split()[1]), loop=client.loop)
-                                    except youtube_dl.utils.DownloadError:
-                                        await message.reply("erreur de téléchargement ")
-                                    voice_client.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=filename))
-                                    await msg.delete()#{str(filename)[:-16]}
-                                    nom = name_url(message.content.split()[1])
-                                    await song.send(f'{client.user.display_name} est entrain de jouer : ** {nom} ** ')
-                                while voice_client.is_playing() or  voice_client.is_paused():
-                                    await asyncio.sleep(5)
-                                os.remove(str(filename))
-                                del registre[0]
-                                fichier = load("données")
-                                fichier[str(message.guild.id)]['registre'] = registre
-                                save(fichier,"données")
-                                attente = fichier[str(message.guild.id)]['attente'] 
-                                while len(attente) != 0:
-                                    await asyncio.sleep(1)
-                                await song.send("Fin de la diffusion")
-                                await voice_client.disconnect()
-                            except FileNotFoundError:
-                                attente = load("données")[str(message.guild.id)]['attente']
-                                if len(attente) != 0:
-                                    await message.reply("La vidéo n'as pas pu être trouvé, vérifier l'url")
-                        
-                        
-                elif  message.content == "!pause": 
-                    registre = load("données")[str(message.guild.id)]['registre']
+                                        if message.content.split()[1] in playlists:# catégorie spécifié
+                                            I = random_music(message.content.split()[1])
+                                            lien,nom = I[0], I[1]
+                                            
+
+                                    except IndexError:
+                                            I = random_music(message.content.split()[1])
+                                            lien,nom = I[0], I[1]
+                                            message.content += ' ' + lien
+                                
+
+                                if len(message.content.split())  == 1:#si pas d'argument
+                                    try:
+                                        I = random_music()
+                                        lien,nom = I[0], I[1]
+                                        
+                                    except IndexError:
+                                        I = random_music()
+                                        lien,nom = I[0], I[1]
+
+                                m = await message.reply("Chargement en cours, veuillez patienter")
+                                try:
+                                    async with song.typing():
+                                        with youtube_dl.YoutubeDL(ytdlopts) as ydl:
+                                            try:
+                                                I_URL = ydl.extract_info(lien, download=False)['formats'][0]['url']
+                                            except KeyError:
+                                                I_URL = ydl.extract_info(lien, download=False)['entries'][0]['url']
+                                        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+                                        source = await discord.FFmpegOpusAudio.from_probe(I_URL, **FFMPEG_OPTIONS)
+                                        voice_client.play(source)
+                                    while not voice_client.is_playing():
+                                        await asyncio.sleep(1)
+                                    user = get(message.guild.members, id = message.author.id)
+                                    await message.reply(f'{user.display_name} est entrain de jouer : ** {nom} ** 🎵')
+                                    await m.delete()
+                                    Role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                                    await discord.Member.add_roles(user, Role)
+                                    if len(registre) == 0:
+                                        attente = load("data")[str(message.guild.id)]['attente']
+                                        del attente[0]
+                                        fichier[str(message.guild.id)]['attente'] = attente
+                                    else:
+                                        registre = load("data")[str(message.guild.id)]['registre']
+                                        fichier[str(message.guild.id)]['registre'] = []
+                                    save(fichier,"data")
+                                    while voice_client.is_playing() or  voice_client.is_paused():
+                                        await asyncio.sleep(5)
+                                    voice_client.cleanup()
+                                    registre = load("data")[str(message.guild.id)]['registre']
+                                    attente = load("data")[str(message.guild.id)]['attente']
+                                    if len(attente) == 0 and len(registre) == 0:
+                                        await discord.Member.remove_roles(user, Role)
+                                        await song.send("Fin de la diffusion")
+                                        await voice_client.disconnect()
+                                    else:
+                                        await discord.Member.remove_roles(user, Role)
+                                except FileNotFoundError:
+                                    await message.reply(":warning: La vidéo n'as pas pu être trouvé, vérifier l'url")
+                            
+                                    
+
+
+                if  message.content == "!pause":
                     voice_client = message.guild.voice_client
                     if message.channel == song:
                         if voice_client.is_playing() or  voice_client.is_paused():
-                            if str(message.author.id) == str(registre[0]) and voice_client.is_playing():
-                                voice_client.pause()
+                            Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
 
-                            if int(registre[0]) not in song.members.id and voice_client.is_playing():
+                            if Diffuseur in message.author.roles and voice_client.is_playing():
                                 voice_client.pause()
-                                
-                            if int(registre[0])  in song.members.id and voice_client.is_playing():
-                                if str(message.author.id) != str(attente[2]):
-                                    await message.reply(f"Vous ne disposer pas des droits suffisants ")
-                                
-                            else:
-                                await message.reply("La  diffusion est déjà en pause ")
-                            
+                                await message.reply("La  lecture as été mise en pause  ")
+                                return
+
+                            if not Diffuseur in message.author.roles and voice_client.is_playing():
+                                for k in music.members:
+                                    if Diffuseur in k.roles:
+                                        await message.reply("Seule le diffuseur peut mettre en pause la lecture si il est présent")
+                                        return
+                                voice_client.pause()
+                                await message.reply("La  lecture as été mise en pause ")
+                                return
+
+                            if voice_client.is_paused() and role in message.author.roles:
+                                await message.reply("La  lecture est déjà en pause ")
+                                return
+
                         else:
                             await message.reply(f"{client.user.display_name} ne diffuse pas de vidéo en ce moment ")
 
                 elif  message.content == "!resume":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client.is_paused():
-                            voice_client.resume()
-                        else:
-                            await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                        if voice_client.is_playing() or  voice_client.is_paused():
+                            role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                            
+                            if voice_client.is_paused() and role in message.author.roles:
+                                voice_client.resume()
+                                return
 
-                elif  message.content.startswith("!stop"):
+
+                            if not role in message.author.roles and voice_client.is_playing():
+                                for k in music.members:
+                                    if role in k.roles:
+                                        await message.reply("Seule le diffuseur peut reprendre la lecture si il est présent")
+                                        return
+                                voice_client.resume()
+                                return
+
+                            if voice_client.is_playing() and role in message.author.roles:
+                                await message.reply("La  lecture est déjà en cours ")
+                                return
+                        else:
+                            await message.reply(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                            return
+
+                elif  message.content == "!skip":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
                         if voice_client.is_playing() or voice_client.is_paused():
-                            voice_client.stop()
-                            await asyncio.sleep(5)
-                            if not voice_client.is_playing() or not  voice_client.is_paused() or len(attente) == 0:
-                                await voice_client.disconnect()
+                            role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                            if  role in message.author.roles:
+                                voice_client.stop()
+                                await message.reply(f"La lecture as été passée")
+                                
+                            if not role in message.author.roles and voice_client.is_playing():
+                                for k in music.members:
+                                    if role in k.roles:
+                                        await message.reply("Seule le diffuseur peut passer la lecture si il est présent")
+                                        return
+                                voice_client.stop()
+                                return
                         else:
                             await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                    
                 
                     
-                    
-                    
-                elif  message.content.startswith("!leave"):
-                    if message.channel == song:
-                        voice_client = message.guild.voice_client
-                        if voice_client.is_connected():
-                            await voice_client.disconnect()
-                    
-                      
+
+
+
+
+                elif  message.content.startswith("!leave ") and message.author.guild_permissions.administrator:
+                    voice_client = message.guild.voice_client
+                    if voice_client.is_connected():
+                        await voice_client.disconnect()
+                    else:
+                        await message.reply(f"{client.user.display_name} n'est pas connecté ")
+
                 elif not message.content.startswith("!") and message.author != client.user and len(fichier[str(message.guild.id)]['glo']) > 0 :
                     t = Translator()
                     lang = t.detect(message.content).lang
@@ -1032,7 +1565,7 @@ async def on_message(message):
                             c = (t.translate('Erreur de traduction veuillez essayer autre chose' , 
                                              dest = t.detect(message.content).lang))
                             await message.reply(f" {c.text} ")
-                            
+
                     if lang != glo[1]:
                         try :
                             a = t.translate(str(message.content) , dest = str(glo[1]))
@@ -1043,17 +1576,17 @@ async def on_message(message):
                             c = (t.translate('Erreur de traduction veuillez essayer autre chose' , 
                                              dest = t.detect(message.content).lang))
                             await message.reply(f" {c.text} ")
-                            
-                
-                elif message.content.startswith("!off"):
+
+
+                elif message.content.startswith("!off ") and fichier[str(message.guild.id)]['lg'] == True:
                     langue =  fichier[str(message.guild.id)]['langue']
                     del langue[str(message.author.id)]
                     fichier[str(message.guild.id)]['langue'] = langue
-                    save(fichier,'données')
-                    await message.reply("Modification bien prise en compte")
+                    save(fichier,'data')
+                    await message.reply("La langue as bien été supprimée")
 
 
-                elif message.content.startswith("!tr") and fichier[str(message.guild.id)]['lg'] == True:
+                elif message.content.startswith("!tr ") and fichier[str(message.guild.id)]['lg'] == True:
                     t = Translator()
                     a = t.translate(str(' '.join(message.content.split()[2:])), dest = str(message.content.split()[1]))
                     await message.reply({a.text})
@@ -1068,23 +1601,31 @@ async def on_message(message):
                         each_message.author == client.user # (!talk,name_channel,chaine)
                         await each_message.delete()
 
-                elif message.content.startswith("!add") and message.author.guild_permissions.administrator:# 
-                    cle = str(message.content.split()[1])
-                    chaine = str(message.content.split()[2])
-                    dico = fichier[str(message.guild.id)]['dico']
-                    dico[cle] = chaine
-                    fichier[str(message.guild.id)]['dico'] = dico
-                    save(fichier,'données')
-                    await message.reply("La commande as bien été crée")
+                elif message.content.startswith("!add ") and message.author.guild_permissions.administrator:# 
+                    cle = message.content.split()[1]
+                    if cle[0] != '!':
+                        await message.reply(":warning: Le premier argument doit être une commande commençant par ! ")
+                    else:
+                        url = message.content.split()[2]
+                        if url[:4] != 'http':
+                            await message.reply(":warning: Le deuxième argument doit être une url")
+                        else:
+                            description = message.content.split()[3:]
+                            dico = fichier[str(message.guild.id)]['dico']
+                            dico[cle] = [url, description]
+                            fichier[str(message.guild.id)]['dico'] = dico
+                            save(fichier,'data')
+                            await message.reply("La commande as bien été crée")
 
 
                 elif message.content == "!ping":
-                    latence = f"Le temps de latence du bot est de {dixi(round((client.latency * 1000),0))}ms "
+                    latence = f"Le temps de latence d'Ortensia est de {dixi(round((client.latency * 1000),0))}ms "
                     await message.reply(latence)
 
-                elif message.content.startswith("!talk") and message.author.guild_permissions.administrator:# 
+
+                elif message.content.startswith("!talk ") and message.author == message.guild.owner:
                     chaine = ' '.join(message.content.split()[2:])
-                    channel =  discord.utils.get(client.get_all_channels(), guild__name = guild.name, name =  message.content.split()[1])
+                    channel =  get_channel(message,message.content.split()[1])
                     if chaine != '' and  len(message.attachments) == 0:
                         await channel.send(chaine)
                     if len(message.attachments) != 0:
@@ -1099,113 +1640,110 @@ async def on_message(message):
                     message.author = client.user 
                     await message.delete()
 
-                elif message.content.startswith("!file") and message.author.guild_permissions.administrator: 
-                    channel = message.content.split()[1]
+                elif message.content.startswith("!file") and message.author == message.guild.owner: 
+                    channel = get_channel(message,message.content.split()[1])
                     chemin = message.content.split()[2]
                     await channel.send(file=discord.File(f'{chemin}'))
 
-                elif message.content.startswith("!mp") and message.author.guild_permissions.administrator:
-                    user = get_user(message,message.content.split()[1])
-                    await user.send(message.content.split()[2])
+                elif message.content == "!data" and message.author == message.guild.owner :
+                    await message.reply(file=discord.File("data.json"))
 
-                elif message.content.startswith("!reaction") and message.author.guild_permissions.administrator:#tag_chan,emo,id,role
-                    if len( message.content.split()) < 4:
+                elif message.content.startswith("!mp") and message.author == message.guild.owner:
+                    user = get_user(message,message.content.split()[1])
+                    await user.send(message.content.split()[2:])
+
+                elif message.content.startswith("!reaction") and message.author == message.guild.owner:#tag_chan,emo,id,role
+                    if len( message.content.split()) < 4:#reaction(channel,emoji,name_role,message)
                         await message.reply("Il manque un ou plusieurs arguments")
                     channel = get_channel(message, message.content.split()[1])
                     emoji = message.content.split()[2]
                     name_role = message.content.split()[4]
                     msg = await channel.fetch_message(message.content.split()[3])
                     await msg.add_reaction(str(emoji))
-                    reaction(channel,emoji,name_role,msg)
-                    await message.reply("Le message pour attribué des rôles as bien été crée")
+                    reaction(channel,emoji,msg,name_role)
+                    await message.reply("Le message pour attribué des rôles as bien été initialisée")
 
-                elif message.content.startswith('!mute') and message.author.guild_permissions.administrator:
-                    colour = discord.Colour
-                    if message.author != client.user:
-                        msg =  await message.channel.fetch_message(int(message.content.split()[2]))
-                        user = msg.author
-                    else:
-                        user = get_user(message,message.content.split()[2])
-                    mute = discord.utils.get(message.author.guild.roles, name = 'mute')
-                    await discord.Member.add_roles(user,mute)
-                    embed = discord.Embed(title = '**Commande de bâillonement**' , colour = colour.red())
-                    embed.set_author(name = f'{message.author.display_name}(ID : {message.author.id})' , icon_url= r )
-                    if message.content.split()[1] == '+' and message.author != client.user :
-                        t = (f"{user.display_name} (ID : {user.id}) as été rendu(e) muet(te) par {message.author.display_name}"
-                        f" pour une durée d'indéfini.\n id du message mis en cause : {msg.id}"
-                        f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
-                        
-                    if message.content.split()[1] != '+' and message.author != client.user :
-                        t = (f"{user.display_name} (ID : {user.id}) as été rendu(e) muet(te) par {message.author.display_name}"
-                        f" pour une durée de {message.content.split()[1]} minutes.\n id du message ayant entraîné la sanction : {msg.id}"
-                        f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
-                    
-                    if message.author == client.user:
-                        t = (f"{user.display_name} (ID : {user.id}) as été rendu(e) muet(te) par {message.author.display_name}"
-                        f" pour une durée de {message.content.split()[1]} minutes"
-                        f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
-                    retStr = str(f"""```css\n La commande de bâillonement permet de rendre un(e) membre muet(e) (il/elle ne peut donc plus envoyer de messages). ```""")
-                    embed.add_field(name = t , value= retStr)
-                    await message.channel.send(user.mention,embed=embed)
-                    embed = discord.Embed(title = '**Commande de bâillonement**' , colour = colour.red())
-                    embed.set_author(name = f'{message.author.display_name}(ID : {user.id})' , icon_url= r )
-                    
-                    if message.content.split()[1] == '+':
-                        t = (f"{user.display_name} (ID : {user.id}) as été rendu(e) muet(te) par {message.author.display_name}"
-                        f" pour une durée d'indéfini.\n id du message mis en cause : {msg.id}"
-                        f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
-                    if message.content.split()[1] != '+' and message.author != client.user :
-                        t = (f"{user.display_name} (ID : {user.id}) as été rendu(e) muet(te) par {message.author.display_name}"
-                        f" pour une durée de {message.content.split()[1]} minutes.\n id du message mis en cause : {msg.id}"
-                        f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
-                    if message.author == client.user:
-                        t = (f"{user.display_name} (ID : {user.id}) as été rendu(e) muet(te) par {message.author.display_name}"
-                        f" pour une durée de {message.content.split()[1]} minutes"
-                        f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
-                    retStr = str(f"""css\n à {date.hour}h{date.minute} """)
-                    if 10 > date.minute:
-                        retStr = str(f"""```\n à {date.hour}h0{date.minute}  ```""")
-                    embed.add_field(name = t , value= retStr)
-                    await log.send(embed =embed)
-                    message.author = client.user
-                    await message.delete()
-                    if message.content.split()[2] != '+':
-                        await asyncio.sleep(int(message.content.split()[2])*60)
-                        await discord.Member.remove_roles(user,mute)
+                elif message.content.startswith('!mute') :
+                    if Modérateur in message.author.roles or message.author.guild_permissions.administrator:
+                        colour = discord.Colour
+                        muted = get_user(message,message.content.split()[1])
+                        mute = discord.utils.get(message.author.guild.roles, name = 'mute')
+                        await discord.Member.add_roles(muted,mute)
+                        embed = discord.Embed(title = '**Commande de bâillonement**' , colour = 0x992d22)
+                        embed.set_author(name = f'{message.author.display_name}(ID : {message.author.id})' , icon_url= r )
+                        if message.content.split()[2] == '+' :
+                            t = (f"{user.display_name} (ID : {muted.id}) as été rendu(e) muet(te) par {message.author.display_name}"
+                            f" pour une durée d'indéfini.\n "
+                            f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
+
+                        if message.content.split()[2] != '+'  :
+                            t = (f"{muted.display_name} (ID : {muted.id}) as été rendu(e) muet(te) par {message.author.display_name}"
+                            f" pour une durée de {message.content.split()[2]} minutes.\n "
+                            f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
 
 
+                        retStr = str(f"""```css\n La commande de bâillonement permet de rendre un(e) membre muet(e) (il/elle ne peut donc plus envoyer de messages). ```""")
+                        embed.add_field(name = t , value= retStr)
+                        await message.channel.send(muted.mention,embed=embed)
+                        embed = discord.Embed(title = '**Commande de bâillonement**' , colour = 0x992d22)
+                        embed.set_author(name = f'{message.author.display_name}(ID : {muted.id})' , icon_url= r )
 
-
-
-
-                elif message.content.startswith('!unmute') and message.author.guild_permissions.administrator:
-                    user = get_user(message,message.content.split()[1])
-                    mute = discord.utils.get(message.author.guild.roles, name = 'mute')
-                    await discord.Member.remove_roles(user,mute)
-                    colour = discord.Colour
-                    embed = discord.Embed(title = '**Commande de révocation du bâillonement**' , colour = colour.red())
-                    embed.set_author(name = f'{message.author.display_name}(ID : {message.author.id})' , icon_url= r )
-                    t = (f"{user.display_name}(ID : {user.id}) peut de nouveau parler grâce à {message.author.display_name}")
-                    retStr = "css\n La révocation d'un baîllonnement (qu'on appele unmute) permet un(e) à membre de parler de nouveau."
-                    embed.add_field(name = t , value= retStr)
-                    message.author = client.user
-                    await message.delete()
-                    await message.channel.send(user.mention,embed=embed)
-                    embed = discord.Embed(title = '**Commande de révocation du bâillonement**' , colour = colour.red())
-                    embed.set_author(name = f'{message.author.display_name}(ID : {message.author.id})' , icon_url= r )
-                    t = (f"{user.display_name}  peut de nouveau parler grâce à {message.author.display_name}"
-                    f"\n Raison communiquée : {' '.join(message.content.split()[2:])}")
-                    retStr = f"""```css\n à {date.hour}h{date.minute}```"""
-                    if 10 > date.minute:
-                        retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
+                        if message.content.split()[1] == '+':
+                            t = (f"{muted.display_name} (ID : {muted.id}) as été rendu(e) muet(te) par {message.author.display_name}"
+                            f" pour une durée d'indéfini.\n "
+                            f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
+                        if message.content.split()[1] != '+' and message.author != client.user :
+                            t = (f"{muted.display_name} (ID : {muted.id}) as été rendu(e) muet(te) par {message.author.display_name}"
+                            f" pour une durée de {message.content.split()[2]} minutes.\n"
+                            f"\n Raison communiquée : {' '.join(message.content.split()[3:])}")
+                        retStr = str(f"""\n à {date.hour}h{date.minute} """)
+                        if 10 > date.minute:
+                            retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
+                            if 10 > date.hour:
+                                retStr = str(f"""```css\n à 0{date.hour}h0{date.minute}  ```""")
                         if 10 > date.hour:
-                            retStr = str(f"""```css\n à 0{date.hour}h0{date.minute}  ```""")
-                    if 10 > date.hour:
-                        retStr = str(f"""```css\n à 0{date.hour}h{date.minute}  ```""")
-                    embed.add_field(name = t , value = retStr)
-                    await log.send(embed = embed)
+                            retStr = str(f"""```css\n à 0{date.hour}h{date.minute}  ```""")
+                        embed.add_field(name = t , value= retStr)
+                        await log.send(embed =embed)
+                        message.author = client.user
+                        await message.delete()
+                        if message.content.split()[2] != '+':
+                            await asyncio.sleep(int(message.content.split()[2])*60)
+                            await discord.Member.remove_roles(muted,mute)
 
-                elif message.content.startswith('!up ') and message.author.guild_permissions.administrator:
+
+
+
+
+
+                elif message.content.startswith('!unmute ') :
+                    if Modérateur in message.author.roles or message.author.guild_permissions.administrator:
+                        user = get_user(message,message.content.split()[1])
+                        mute = discord.utils.get(message.author.guild.roles, name = 'mute')
+                        await discord.Member.remove_roles(user,mute)
+                        embed = discord.Embed(title = '**Commande de révocation du bâillonement**' , colour = 0x992d22)
+                        embed.set_author(name = f'{message.author.display_name}(ID : {message.author.id})' , icon_url= r )
+                        t = (f"{user.display_name}(ID : {user.id}) peut de nouveau parler grâce à {message.author.display_name}")
+                        retStr = "\n La révocation d'un baîllonnement (qu'on appele unmute) permet un(e) à membre de parler de nouveau."
+                        embed.add_field(name = t , value= retStr)
+                        message.author = client.user 
+                        await message.delete()
+                        await message.channel.send(user.mention,embed=embed)
+                        embed = discord.Embed(title = '**Commande de révocation du bâillonement**' , colour = colour.red())
+                        embed.set_author(name = f'{message.author.display_name}(ID : {message.author.id})' , icon_url= r )
+                        t = (f"{user.display_name}  peut de nouveau parler grâce à {message.author.display_name}"
+                        f"\n Raison communiquée : {' '.join(message.content.split()[2:])}")
+                        retStr = f"""```css\n à {date.hour}h{date.minute}```"""
+                        if 10 > date.minute:
+                            retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
+                            if 10 > date.hour:
+                                retStr = str(f"""```css\n à 0{date.hour}h0{date.minute}  ```""")
+                        if 10 > date.hour:
+                            retStr = str(f"""```css\n à 0{date.hour}h{date.minute}  ```""")
+                        embed.add_field(name = t , value = retStr)
+                        await log.send(embed = embed)
+
+                elif message.content.startswith('!up') and message.author.guild_permissions.administrator:
                     user = get_user(message,message.content.split()[1])
                     role = discord.utils.get(message.author.guild.roles, name = message.content.split()[2])
                     await discord.Member.add_roles(user,role)
@@ -1222,29 +1760,27 @@ async def on_message(message):
                         await message.reply(f"{user.display_name} as bien perdue le rôle {message.content.split()[2]}")
                     #channel = message.channel
 
-                elif message.content.startswith('!all') and message.author.guild_permissions.administrator:
+                elif message.content.startswith('!all ') and message.author == message.guild.owner:
                     for member in message.guild.members:
                         role = discord.utils.get(message.author.guild.roles, name = message.content.split()[1])
                         await discord.Member.add_roles(member,role)
-                
-                elif message.content.startswith('!nobody') and message.author.guild_permissions.administrator:
+
+                elif message.content.startswith('!nobody ') and message.author == message.guild.owner:
                     for member in message.guild.members:
                         role = discord.utils.get(message.author.guild.roles, name = message.content.split()[1])
                         await discord.Member.remove_roles(member,role)
-                        
-                elif message.content.startswith('!new') and message.author.guild_permissions.administrator:
-                    new = fichier[str(message.guild.id)]['new']
-                    new.append(message.content.split()[1:])
-                    fichier[str(message.guild.id)]['new'] = new
-                    save(fichier,'données')
-                    
-                elif message.content.startswith('!del_new') and message.author.guild_permissions.administrator:
-                    new = fichier[str(message.guild.id)]['new']
-                    new = []
-                    fichier[str(message.guild.id)]['new'] = new
-                    save(fichier,'données')
-                    
-                elif message.content.startswith('!upgrade') and message.author.guild_permissions.administrator:
+
+                elif message.content.startswith('!new ') and message.author.guild_permissions.administrator:
+                    fichier[str(message.guild.id)]['new'] = message.content.split()[1]
+                    save(fichier,'data')
+                    await message.reply("Le role à attribuer aux nouveaux arrivant a bien été définis")
+
+                elif message.content.startswith('!del_new ') and message.author.guild_permissions.administrator:
+                    fichier[str(message.guild.id)]['new'] = None
+                    save(fichier,'data')
+                    await message.reply("Le role à attribuer aux nouveaux arrivant a bien été supprimer")
+
+                elif message.content.startswith('!upgrade ') and message.author.guild_permissions.administrator:
                     user = get_user(message,message.content.split()[1])
                     role = discord.utils.get(message.author.guild.roles, name = message.content.split()[2])
                     await discord.Member.add_roles(user,role)
@@ -1272,36 +1808,371 @@ async def on_message(message):
                     embed.set_author(name = f'{message.author.display_name}' , icon_url = r )
                     retStr = f"""```css\n à {date.hour}h{date.minute}```"""
                     if 10 > date.minute:
-                        retStr = str(f"""```css\n à {date.hour}h0{date.minute}  ```""")
+                        retStr = f"{date.year}/{date.month}/{date.day}-{date.hour}:0{date.minute}"
+                        if 10 > date.minute and 10 > date.hour:
+                                retStr = f"{date.year}/{date.month}/{date.day}-0{date.hour}:0{date.minute}"
+                    if 10 > date.hour and 10 <= date.minute :
+                        retStr = f"{date.year}/{date.month}/{date.day}-0{date.hour}:{date.minute}"
                     t = (f"```{user.display_name} (ID : {user.id})  as perdu le role {message.content.split()[2]}```")
                     embed.add_field(name = t , value= retStr)
                     await log.send(embed = embed)
 
                 elif message.content.startswith('!nick') and message.author.guild_permissions.administrator:
                     user = get_user(message,message.content.split()[1])
-                    n = user.nick
-                    t = message.content.split()[2]
-                    await user.edit(nick=t)
+                    n = user.display_name
+                    t = message.content.split()[2][0].upper() + message.content.split()[2][1:] #
+                    await user.edit(nick = t)
                     await message.channel.send(f"""Le nom de {user.mention} as bien été modifié \n Ancien nom : "{n}" """
-                                  f"""\n Nouveau nom : "{user.nick}" """) 
-             
+                                  f"""\n Nouveau nom : "{t}" """) 
+                    
+                
+
+                elif message.content.startswith('!mod') and message.author.guild_permissions.administrator:
+                    user = get_user(message,message.content.split()[1])
+                    channel = get_channel(message,message.content.split()[2])
+                    await channel.set_permissions(target = user , read_messages = True)
+                    
+                elif message.content.startswith('!ts') and message.author == message.guild.owner:
+                    for guild in client.guilds:
+                        if guild.name == message.content.split()[1]:
+                            c = guild.text_channels[0]
+                            t = await c.create_invite()
+                            await message.reply(t)
+                    
+                elif message.content.startswith('!build') and message.author == message.guild.owner:
+                    guild = await  client.create_guild(name = message.content.split()[1])
+                    guild = client.get_guild(guild.id)
+                    
+                    if discord.utils.get(guild.roles, name = "Membre") == None:
+                        m = await guild.create_role(name = "Membre") 
+                    if discord.utils.get(guild.roles, name = "Modérateur") == None:
+                        moderator = await guild.create_role(name = "Modérateur", hoist = True  , mentionable = True )
+                    perms = discord.Permissions(administrator = True)
+                    if discord.utils.get(guild.roles, name = "Administrateur") == None:
+                        admin = await guild.create_role(name = "Administrateur", hoist = True, mentionable = True ,permissions = perms )
+                    
+                    
+                    cata = guild.text_channels[0].category
+                    for category in guild.categories:
+                        if category.name == "Salons textuels" or category.name == "Text Channels":
+                            cata = category
+                            
+                    for channel in cata.text_channels:
+                        logé = False
+                        if search(channel.name,'log'):
+                            logé = True
+                        else:
+                            await channel.set_permissions(target = m ,read_messages = True,create_instant_invite = False)
+                            await channel.set_permissions(target = guild.default_role ,read_messages = False,create_instant_invite = False)
+                            if channel.name == "général" or channel.name == "general": 
+                                g = "Salon pour discuter de divers sujets"
+                                await channel.edit(name = "💬│général" , position = 1 , topic = g)
+                                
+                    
+                                
+                    overwrites = { guild.default_role : discord.PermissionOverwrite(send_messages = False,create_instant_invite = True)}
+                    
+                
+                    r = "Salons de présentation des règles du serveur"
+                    régle = await guild.create_text_channel('📜│réglement', overwrites = overwrites , topic =  r,
+                                                           position = 0 , category = cata)
+                    channel = get(guild.channels, id = régle.id)
+                    r = await régle.send(regle)
+                    emojis = "✅"
+                    await r.add_reaction("✅")
+                    msg = await channel.fetch_message(r.id)
+                    reaction(channel,emojis,msg,"Membre")
+                    
+                   
+                    
+                    #reaction(régle,"✅",r,"Membre")
+                    await channel.edit( position = 1 )
+                    inv = await régle.create_invite()
+                    
+                    
+                    
+
+                     
+                    overwrites = { guild.default_role : discord.PermissionOverwrite(read_messages = False,create_instant_invite = False),
+                                  moderator : discord.PermissionOverwrite(read_messages = True),
+                                 m : discord.PermissionOverwrite(read_messages = False)}
+                    cat = await guild.create_category_channel(name ="Modération" ,overwrites = overwrites, position = 2)
+                    r = "Salons de présentation des règles pour les modérateurs"
+                    ms = await guild.create_text_channel(name = '📜│règle', overwrites = overwrites , category = cat, position = 0, topic =  r)
+                    r = "Salons de discussion des modérateurs"
+                    await guild.create_text_channel(name = '🎖️│modérateur', overwrites = overwrites , category = cat, position = 0, topic =  r)
+                    mg = await ms.send(regle_mod)
+                    await mg.add_reaction("✅")
+                    #reaction(channel,emoji,name_role,message)
+                    reaction(ms,"✅",mg,"Modérateur")
+                    c = "Salon d'information sur les commandes des modérateurs"
+                    channel = await guild.create_text_channel(name = 'ℹ️│commande', overwrites=overwrites , position = 4 , category = cata
+                                                   , topic =  c)
+                    t = ''
+                    for k in range(len(liste_moderator)):
+                        t += '\n' + liste_moderator[k]
+                    t += info
+                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes des modérateurs :" , description = t)
+                    await channel.send(embed = embed)
+                    return
+                    
+                    
+                    overwrites = {guild.default_role : discord.PermissionOverwrite(read_messages = False,create_instant_invite = False),
+                                 admin : discord.PermissionOverwrite(read_messages = True),
+                                 m : discord.PermissionOverwrite(read_messages = False)}
+                    cat = await guild.create_category_channel(name = "administration" ,overwrites=overwrites, position = 3)
+                    await guild.create_text_channel(name = 'commande', overwrites = overwrites , category = cat, position = 1)
+                    if logé == False:
+                        await guild.create_text_channel(name = 'log', overwrites=overwrites , category = cat, position = 0)
+                    
+                    
+                    
+                    overwrites = { guild.default_role : discord.PermissionOverwrite(read_messages = False,create_instant_invite = False),
+                                  m : discord.PermissionOverwrite(read_messages = True,send_messages = False)}
+                    
+                    
+                    r = "Salon réservé aux information importante"
+                    await guild.create_text_channel(name = '📣│annonce', overwrites = overwrites , position = 2  , category = cata
+                                                   , topic =  r)
+                    
+                    
+                    
+                                
+                            
+                    s = "Salon où sont posté les sondages crées avec la commande !sondage"
+                    await guild.create_text_channel(name = '🗳│sondage', overwrites = overwrites , position = 3 , category = cata
+                                                   , topic =  s)
+                    
+                    c = "Salon d'information sur les commandes"
+                    channel = await guild.create_text_channel(name = 'ℹ️│commande', overwrites=overwrites , position = 4 , category = cata
+                                                   , topic =  c)
+                    t = ''
+                    for k in range(len(liste)):
+                        t += '\n' + liste[k]
+                    if len(dico) != 0:
+                        for k in dico:
+                            t += f" {k} : {dico[k][1]}"
+                    t += info
+                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes:" , description = t)
+                    await channel.send(embed = embed)
+
+                    overwrites = { guild.default_role : discord.PermissionOverwrite(read_messages = False,create_instant_invite = False),
+                                  m : discord.PermissionOverwrite(read_messages = True)}
+                    s = "Salon réservé aux commandes musicals"
+                    await guild.create_text_channel(name = '🎹│song', overwrites = overwrites , position = 5 , category = cata
+                                                   , topic =  s)
+                    
+                    for channel in guild.voice_channels:
+                        await channel.set_permissions(target = m , view_channel = True)
+                        await channel.set_permissions(target = guild.default_role , view_channel = False,create_instant_invite = False)
+                        if channel.name == "Général" or channel.name == "General":
+                            await channel.edit(name = "🎙️│Général", position = 1 )
+                            
+
+                    overwrites = { guild.default_role: discord.PermissionOverwrite(view_channel = False,create_instant_invite = False),
+                                  m : discord.PermissionOverwrite(view_channel = True)}
+                    cata = guild.voice_channels[0].category
+                    for category in guild.categories:
+                        if category.name == "Salons vocaux" or category.name == "Voice Channels":
+                            category.position = 1
+                            cat = category
+                            
+                    await guild.create_voice_channel(name = '📻│Musique', overwrites = overwrites, position = 2 
+                                                      , category = cat)
+                    
+                    await guild.create_voice_channel(name = '🛏️│Afk', overwrites = overwrites, position = 3 
+                                                      , category = cat)
+                    
+                    await message.reply(f"Voici le lien vers le nouveau serveur crée : {inv}")
+
+                elif message.content.startswith('!ghost') and message.author.guild_permissions.administrator:    
+                    nb = await guild.estimate_pruned_members(days = int(message.content.split()[1]))
+                    if int(message.content.split()[1]) != 1:
+                        await message.reply(f"{nb} membres ne se sont pas connecté durant ces {message.content.split()[1]} derniers jours")
+                    else:
+                        await message.reply(f"{nb}  membres ne se sont pas connecté  durant un jour ")
+
+                elif message.content.startswith('!clone') and message.author.guild_permissions.administrator:
+                    channel = get_channel(message,message.content.split()[1])
+                    if len(message.content.split()) == 3:
+                        await channel.clone(name = message.content.split()[2])
+                    else:
+                        await channel.clone()
+
+                elif message.content.startswith('!help'):
+                    try:
+                        if len(message.content.split()) == 2:
+                
+                            if message.content.split()[1] in aide :
+                                embed = discord.Embed(colour =  discord.Colour.blue(),title = f" {message.content.split()[1]} ", description = aide[message.content.split()[1]])
+                                await message.author.send(embed = embed)
+                                return
+                            for guild in message.author.mutual_guilds:   
+                                Moderateur = discord.utils.get(guild.roles, name = "Modérateur")
+                                user = guild.get_member(message.author.id)
+
+                                if message.content.split()[1] in aide_moderator and Moderateur  in user.roles : # message.author.roles
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = f" {message.content.split()[1]} ", description = aide_moderator[message.content.split()[1]])
+                                    await message.author.send(embed = embed)
+                                    return
+
+                                if message.content.split()[1] in aide_administrator and  user.guild_permissions.administrator:
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = f" {message.content.split()[1]} ", description = aide_administrator[message.content.split()[1]])
+                                    await message.author.send(embed = embed)
+
+                                if message.content.split()[1] in aide_owner and  message.author.id == 407189858755280896 :
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = f" {message.content.split()[1]} ", description = aide_owner[message.content.split()[1]])
+                                    await message.author.send(embed = embed)
+                                    return
+
+                                if message.content.split()[1] == 'modérateur' and  Moderateur in message.author.roles:
+                                    t = ''
+                                    for k in range(len(liste_moderator)):
+                                        t += '\n' + liste_moderator[k]
+                                    t += info
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes des modérateurs :" , description = t)
+                                    await message.author.send(embed = embed)
+                                    return
+
+
+                                if message.content.split()[1] == 'administrateur' and  message.author.guild_permissions.administrator:
+                                    t = ''
+                                    for k in range(len(liste_administrator)):
+                                        t += '\n' + liste_administrator[k]
+                                    t += info
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes des administrateur :" , description = t)
+                                    await message.author.send(embed = embed)
+                                    return
+                                
+                                if message.content.split()[1] == 'music':
+                                    t = ''
+                                    for k in range(len(liste_music)):
+                                        t += '\n' + liste_music[k]
+                                    t += '\n\nSyntaxe : !play catégorie'  
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des catégories musicales :" , description = t)
+                                    await message.author.send(embed = embed)
+                                    return
+                                
+                                if message.content.split()[1] == 'son':
+                                    await message.author.send(bad_son)
+                                    return
+
+                                if message.content.split()[1] == 'owner' and  message.author.id == 407189858755280896 :
+                                    t = ''
+                                    for k in range(len(liste_owner)):
+                                        t += '\n' + liste_owner[k]
+                                    t += info
+                                    embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes de l'owner :" , description = t)
+                                    await message.author.send(embed = embed)
+                                    return
+
+                            await message.author.send(f"""Commande "{message.content.split()[1]}" non reconnue, taper !help """
+                                                    """pour voir la liste des commande """)
+
+                        if len(message.content.split()) == 1:       
+                            t = ''
+                            for k in range(len(liste)):
+                                t += '\n' + liste[k]
+                            if len(dico) != 0:
+                                for k in dico:
+                                    t += f"\n{k} : {' '.join(dico[k][1])}"
+                            t += info
+                            embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes :" , description = t)
+                            await message.author.send(embed = embed)
+
+                    except discord.HTTPException or discord.Forbidden:
+                        await message.reply("Une erreur est survenue ,veuillez ouvrir vos messages privées et réessayer")
+
+
                 dico = fichier[str(message.guild.id)]['dico']
                 for cle, valeur in dico.items():
                     if message.content == cle:
-                        await message.reply(valeur)
+                        await message.reply(valeur[0])
                 
                 #else:
                    # if message.content.startswith('!'):
                         #await message.reply("Commande non reconnue taper '!help' pour plus d'information")
 
-        except AttributeError:
-            pass
+    except AttributeError:
+        if message.content.startswith('!help'):#message.author.guild_permissions.administrator
+            if len(message.content.split()) == 2:
+                
+                
+            
+                if message.content.split()[1] in aide :
+                    embed = discord.Embed(colour =  discord.Colour.blue(),title = f" {message.content.split()[1]} ", description = aide[message.content.split()[1]])
+                    await message.author.send(embed = embed)
+                    return
+                for guild in message.author.mutual_guilds:   
+                    Moderateur = discord.utils.get(guild.roles, name = "Modérateur")
+                    user = guild.get_member(message.author.id)
+                    
+                    for k in range(len(guild.members)):
+                        if guild.members[k] == user:
+                            num = k
+                    
+                    
+                    
+                    if message.content.split()[1] in aide_owner and  message.author.id == 407189858755280896 :
+                        embed = discord.Embed(colour =  discord.Colour.blue(),title = f" {message.content.split()[1]} ", description = aide_owner[message.content.split()[1]])
+                        await message.author.send(embed = embed)
+                        return
+                    
+                    if message.content.split()[1] == 'modérateur':
+                        if  Moderateur in guild.members[num].roles or user.guild_permissions.administrator:
+                            t = ''
+                            for k in range(len(liste_moderator)):
+                                t += '\n' + liste_moderator[k]
+                            t += info
+                            embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes des modérateurs :" , description = t)
+                            await message.author.send(embed = embed)
+                            return
+
+
+                    if message.content.split()[1] == 'administrateur' and  user.guild_permissions.administrator:
+                        t = ''
+                        for k in range(len(liste_administrator)):
+                            t += '\n' + liste_administrator[k]
+                        t += info
+                        embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes des administrateur :" , description = t)
+                        await message.author.send(embed = embed)
+                        return
+
+                    if message.content.split()[1] == 'son':
+                        await message.author.send(bad_son)
+                        return
+                    
+                    if message.content.split()[1] == 'music':
+                        t = ''
+                        for k in range(len(liste_music)):
+                            t += '\n' + liste_music[k]
+                        t += '\n\nSyntaxe : !play catégorie'
+                        embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des catégories musicales :" , description = t)
+                        await message.author.send(embed = embed)
+                        return
+                    
+                    if message.content.split()[1] == 'owner' and  message.author.id == 407189858755280896 :
+                        t = ''
+                        for k in range(len(liste_owner)):
+                            t += '\n' + liste_owner[k]
+                        t += info
+                        embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes de l'owner :" , description = t)
+                        await message.author.send(embed = embed)
+                        return
+                
+                await message.author.send(f"""Commande "{message.content.split()[1]}" non reconnue, taper !help """
+                                        """pour voir la liste des commande """)
+
+            if len(message.content.split()) == 1:       
+                t = ''
+                for k in range(len(liste)):
+                    t += '\n' + liste[k]
+                if len(dico) != 0:
+                    for k in dico:
+                        t += f"\n{k} : {' '.join(dico[k][1])}"
+                t += info
+                embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes :" , description = t)
+                await message.author.send(embed = embed)
                         
-client.run(load("données")["TOKEN"]) # (os.getenv("TOKEN"))
-
-
-# In[ ]:
-
-
-
+client.run("ODI2ODkyMzE0MTIyNjQ5NjQw.YGTFeg.SSjfgxgPOjfyFQMrzm8Fiz2htK0")#load("data")["TOKEN"] # (os.getenv("TOKEN"))
 
