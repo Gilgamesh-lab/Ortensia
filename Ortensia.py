@@ -544,7 +544,9 @@ client = discord.Client(intents=intents, max_messages = 1000)
 from discord import Webhook, RequestsWebhookAdapter
 import requests
 import traceback
-import PyNaCl
+
+
+
 
 
 
