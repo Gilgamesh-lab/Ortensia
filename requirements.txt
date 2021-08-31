@@ -4,4 +4,4 @@ discord
 nest_asyncio
 googletrans
 requests
-PyNaCl
+PyNaCl==1.3.0
