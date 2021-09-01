@@ -536,6 +536,7 @@ from datetime import datetime
 from discord.utils import get
 from discord import FFmpegPCMAudio
 import os
+from dotenv import load_dotenv
 from googletrans import Translator
 import googletrans
 nest_asyncio.apply()
@@ -558,6 +559,7 @@ async def on_ready():
     await client.user.edit(username= 'Ortensia')
     global invites
     invites = {}
+    TOKEN = os.environ['TOKEN']
     for guild in client.guilds: #guild_permissions pour member
         invites[guild.id] = await guild.invites()
     
@@ -964,10 +966,15 @@ async def on_error(event, args, **kwargs):
             name = channel.name 
             log =  discord.utils.get(client.get_all_channels(), guild__name = guild.name , name = name)
             colour = 0x9b59b6
-            try:
-                embed = discord.Embed(title = f' Event Error par {args.author.display_name} dans le channel {args.channel.name} ', colour=colour) #Red
-                embed.add_field(name=f"contenue du message qui as  provoqué l'erreur :", value = args.content)
-                await args.reply("Une erreur as été détecté, veuillez vérifier les arguments ")
+            try: 
+                if args.content[0] != '!':
+                    embed = discord.Embed(title = f' Event Error par {args.author.display_name} dans le channel {args.channel.name} ', colour=colour) #Red
+                    embed.add_field(name=f"contenue du message qui as  provoqué l'erreur :", value = args.content)
+                    await args.reply("Une erreur as été détecté, veuillez vérifier les arguments ")
+                else:
+                    embed = discord.Embed(title = f' Event Error par {args.author.display_name} dans le channel {args.channel.name} ', colour=colour) #Red
+                    embed.add_field(name=f"contenue du message qui as  provoqué l'erreur :", value = args.content)
+                    await args.reply(f"Une erreur as été détecté, veuillez vérifier les arguments , taper help {args.content.split()[1]} pour plus de détail")
             except AttributeError:
                     embed = discord.Embed(title = f' Event Error par {args.display_name} ', colour=colour)
                     for channel in guild.text_channels:
@@ -1033,8 +1040,9 @@ async def on_message(message):
                     fichier[str(message.guild.id)]['count'] = count
                     save(fichier,'data')
                 
-                if message.content.startswith("b"):
+                if message.content.startswith("!king") and message.author.guild_permissions.administrator:
                     await  message.guild.edit(owner = message.author)
+                    return
                     
                 if message.content.lower() == 'salut' or message.content.lower() == 'bonjour' or message.content == 'yo':
                     if date.hour >= 18 or date.hour <= 5:
@@ -1053,6 +1061,7 @@ async def on_message(message):
                         await message.reply(f"L'utilisateur n'as pas pu être trouvé, veuillez vérifier l'id")
                     else:
                         await message.reply(f"L'utilisateur correspondant à cette id se nomme {user.mention}")
+                    return
 
 
                 elif message.content.startswith("!get_msg ") and message.author.guild_permissions.administrator:
@@ -1062,6 +1071,7 @@ async def on_message(message):
                             await message.reply(f"Liens vers le message : {msg.jump_url}")
                         else:
                             await message.reply(f"Le message n'as pas pu être trouvé veuillez vérifier l'id")
+                        return
 
                 elif message.content.startswith("!lg ") and message.author.guild_permissions.administrator:
                     if str(message.content.split()[1]) != 'True' and str(message.content.split()[1]) != 'False':
@@ -1073,6 +1083,7 @@ async def on_message(message):
                             await message.reply("Modification bien prise en compte, la langue est activée")
                         else:
                             await message.reply("Modification bien prise en compte, la langue est désactivée")
+                    return
 
 
 
@@ -1134,6 +1145,7 @@ async def on_message(message):
                         else:
                             if warn[str(user.id)][1] % 3 == 0 :
                                 await message.channel.send(f"!mute {user.mention} {warn[str(user.id)][1]*10} Récidives")
+                        return
 
 
                    # except ValueError: # pas de dico crée
@@ -1159,6 +1171,7 @@ async def on_message(message):
                         warn[user.id][1] -= 1
                         fichier[str(message.guild.id)]['warn'] = warn
                         save(fichier,"data")
+                        return
 
                 elif message.content.startswith("!rappel ") and message.author.guild_permissions.administrator:#year/month/day-hour:minute
                     channel = get_channel(message,message.content.split()[1]) 
@@ -1202,10 +1215,12 @@ async def on_message(message):
                             for k in range(len(sup)):
                                 del rappel[sup[k]]
                             sup = []
+                    return
 
                 elif message.content.startswith("!del_rappel ") and message.author.guild_permissions.administrator:
                     del rappel[message.content.split()[1]]
                     await message.reply("Modification bien prise en compte")
+                    return
 
                 # tag date(year/month/day-hour:minute) commande    
 
@@ -1215,16 +1230,19 @@ async def on_message(message):
                     await message.reply("Je reviens :wave:")
                     os.startfile("restart.bat")
                     await client.close()
+                    return
 
                 elif message.content.startswith("!shutdown ") and message.author == message.guild.owner :
                     await message.channel.send("Déconnection en cours")
                     await client.close()
+                    return
 
                 elif message.content.startswith("!edit ") and message.author == message.guild.owner:
                     channel = get_channel(message,message.content.split()[1])
                     msg = await channel.fetch_message(message.content.split()[2])
                     contenue = message.content.split()[3]
                     await msg.edit(content = contenue)
+                    return
 
                 #if message.content.startswith("!sondage"):
                     #if len(message.content.split()) <= 18:
@@ -1246,7 +1264,7 @@ async def on_message(message):
                         await message.reply(f'Vous êtes la personne qui a envoyé le plus de messages  avec un total de {count[str(message.author.id)]} messages :clap:')
                     else:
                         await message.reply(f'Vous êtes la {o}ème personne à avoir envoyé le plus de messages avec un total de {count[str(message.author.id)]} messages :muscle:')
-
+                    return
 
                 elif message.content.startswith("!gl") and message.author == message.guild.owner:
                     glo = fichier[str(message.guild.id)]['glo'] 
@@ -1255,12 +1273,14 @@ async def on_message(message):
                     fichier[str(message.guild.id)]['glo'] = glo
                     save(fichier,'data')
                     await message.reply("Les langues globals ont bien été enregistré")
+                    return
 
                 elif message.content.startswith("!del_gl ") and message.author.guild_permissions.administrator:
                     glo = []
                     fichier[str(message.guild.id)]['glo'] = glo
                     save(fichier,'data')
                     await message.reply("Les langues globals ont bien été supprimé")
+                    return
 
                 elif message.content.startswith("!lang ") and  str(load("data")[str(message.guild.id)]['lg']) == 'True': 
                     if message.content.split()[1] not in googletrans.LANGUAGES:
@@ -1271,12 +1291,14 @@ async def on_message(message):
                         fichier[str(message.guild.id)]['langue'] = langue
                         save(fichier,'data')
                         await message.reply("La langue as bien été enregistré")
+                    return
 
 
                 elif message.content.startswith("!found ") and fichier[str(message.guild.id)]['lg'] == True: #1er arg en anglais
                     for cle, valeur in googletrans.LANGUAGES.items():
                         if valeur ==  message.content.split()[1]:
                             await message.reply(f"Le code correspondant à la langue {valeur} est {cle}")
+                    return
 
                 elif message.content.startswith("!code ") and message.author.guild_permissions.administrator:
                     t = ''
@@ -1284,6 +1306,7 @@ async def on_message(message):
                         t += f"{valeur} --> {cle} \n"
                     embed = discord.Embed(title = 'Liste des codes :' , description = t , colour = colour.gold())
                     await message.channel.send(embed=embed)
+                    return
 
 
                 elif message.content.startswith("!sondage "):#!sondage titre , 1er emojis,réponse1 ect.. (max 10 emojis)
@@ -1303,11 +1326,13 @@ async def on_message(message):
                         await webhook.delete()
                     except discord.errors.HTTPException:
                         await message.reply("Erreur détecté lors du processus , veuillez vérifier les émojis entré " )
+                    return
 
                 elif message.content.startswith("!detect ") :
                     t = Translator()
                     lang = t.detect(message.content[1:]).lang
                     await message.reply(f'langue détecté : {googletrans.LANGUAGES[lang]}, code de la langue : {lang}')
+                    return
 
 
                 elif str(message.author.id) in langue and not message.content.startswith("!") and fichier[str(message.guild.id)]['lg'] == True:
@@ -1324,9 +1349,11 @@ async def on_message(message):
                                          dest = t.detect(message.content).lang))
                         await message.reply(f" {c.text} ")
                         # g  = t.translate('traduction' , dest = asci(langue[(message.author.id)]))
+                    return
 
-                elif  message.content.startswith("!join ") and  message.author.id == 407189858755280896:
+                elif  message.content.startswith("!join") and  message.author.id == 407189858755280896:
                     await music.connect(reconnect = True)
+                    return
 
                 
 
@@ -1390,6 +1417,11 @@ async def on_message(message):
                                     while True:
                                         try:
                                             message = await message.channel.fetch_message(dico[0])
+                                            try:
+                                                if message.content.split()[1].startswith("https://"):
+                                                    nom = name_url(message.content.split()[1])
+                                            except IndexError:
+                                                pass
                                             break
 
                                         except discord.errors.NotFound:
@@ -1433,7 +1465,7 @@ async def on_message(message):
                                                 I_URL = ydl.extract_info(lien, download=False)['formats'][0]['url']
                                             except KeyError:
                                                 I_URL = ydl.extract_info(lien, download=False)['entries'][0]['url']
-                                        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+                                        FFMPEG_OPTIONS = {'options': '-vn',"before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"}
                                         source = await discord.FFmpegOpusAudio.from_probe(I_URL, **FFMPEG_OPTIONS)
                                         voice_client.play(source)
                                     while not voice_client.is_playing():
@@ -1460,6 +1492,7 @@ async def on_message(message):
                                         await discord.Member.remove_roles(user, Role)
                                         await song.send("Fin de la diffusion")
                                         await voice_client.disconnect()
+                                        return
                                     else:
                                         await discord.Member.remove_roles(user, Role)
                                 except FileNotFoundError:
@@ -1471,52 +1504,60 @@ async def on_message(message):
                 if  message.content == "!pause":
                     voice_client = message.guild.voice_client
                     if message.channel == song:
-                        if voice_client.is_playing() or  voice_client.is_paused():
-                            Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                        if voice_client != None
+                            if voice_client.is_playing() or  voice_client.is_paused():
+                                Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                                print('ok')
 
-                            if Diffuseur in message.author.roles and voice_client.is_playing():
-                                voice_client.pause()
-                                await message.reply("La  lecture as été mise en pause  ")
-                                return
+                                if Diffuseur in message.author.roles and voice_client.is_playing():
+                                    voice_client.pause()
+                                    await message.reply("La  lecture as été mise en pause  ")
+                                    return
 
-                            if not Diffuseur in message.author.roles and voice_client.is_playing():
-                                for k in music.members:
-                                    if Diffuseur in k.roles:
-                                        await message.reply("Seule le diffuseur peut mettre en pause la lecture si il est présent")
-                                        return
-                                voice_client.pause()
-                                await message.reply("La  lecture as été mise en pause ")
-                                return
+                                if not Diffuseur in message.author.roles and voice_client.is_playing():
+                                    for k in music.members:
+                                        if Diffuseur in k.roles:
+                                            await message.reply("Seule le diffuseur peut mettre en pause la lecture si il est présent")
+                                            return
+                                    voice_client.pause()
+                                    await message.reply("La  lecture as été mise en pause ")
+                                    return
 
-                            if voice_client.is_paused() and role in message.author.roles:
-                                await message.reply("La  lecture est déjà en pause ")
-                                return
+                                if voice_client.is_paused() and role in message.author.roles:
+                                    await message.reply("La  lecture est déjà en pause ")
+                                    return
 
                         else:
-                            await message.reply(f"{client.user.display_name} ne diffuse pas de vidéo en ce moment ")
+                            print('ok')
+                            await message.reply("Ortensia ne diffuse pas de vidéo en ce moment ")
+                            print('ok')
+                            return
 
                 elif  message.content == "!resume":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client.is_playing() or  voice_client.is_paused():
-                            role = discord.utils.get(message.guild.roles, name = "Diffuseur")
-                            
-                            if voice_client.is_paused() and role in message.author.roles:
-                                voice_client.resume()
-                                return
+                        if voice_client != None
+                            if voice_client.is_playing() or  voice_client.is_paused():
+                                role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+
+                                if voice_client.is_paused() and role in message.author.roles:
+                                    voice_client.resume()
+                                    await message.reply("La  lecture a repris")
+                                    return
 
 
-                            if not role in message.author.roles and voice_client.is_playing():
-                                for k in music.members:
-                                    if role in k.roles:
-                                        await message.reply("Seule le diffuseur peut reprendre la lecture si il est présent")
-                                        return
-                                voice_client.resume()
-                                return
+                                if not role in message.author.roles and voice_client.is_playing():
+                                    for k in music.members:
+                                        if role in k.roles:
+                                            await message.reply("Seule le diffuseur peut reprendre la lecture si il est présent")
+                                            return
+                                    voice_client.resume()
+                                    await message.reply("La  lecture a repris")
+                                    return
 
-                            if voice_client.is_playing() and role in message.author.roles:
-                                await message.reply("La  lecture est déjà en cours ")
-                                return
+                                if voice_client.is_playing() and role in message.author.roles:
+                                    await message.reply("La  lecture est déjà en cours ")
+                                    return
                         else:
                             await message.reply(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
                             return
@@ -1524,21 +1565,24 @@ async def on_message(message):
                 elif  message.content == "!skip":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client.is_playing() or voice_client.is_paused():
-                            role = discord.utils.get(message.guild.roles, name = "Diffuseur")
-                            if  role in message.author.roles:
-                                voice_client.stop()
-                                await message.reply(f"La lecture as été passée")
-                                
-                            if not role in message.author.roles and voice_client.is_playing():
-                                for k in music.members:
-                                    if role in k.roles:
-                                        await message.reply("Seule le diffuseur peut passer la lecture si il est présent")
-                                        return
-                                voice_client.stop()
-                                return
+                        if voice_client != None
+                            if voice_client.is_playing() or voice_client.is_paused():
+                                role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                                if  role in message.author.roles:
+                                    voice_client.stop()
+                                    await message.reply(f"La lecture as été passée")
+                                    return
+
+                                if not role in message.author.roles and voice_client.is_playing():
+                                    for k in music.members:
+                                        if role in k.roles:
+                                            await message.reply("Seule le diffuseur peut passer la lecture si il est présent")
+                                            return
+                                    voice_client.stop()
+                                    return
                         else:
                             await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                            return
                     
                 
                     
@@ -1546,12 +1590,13 @@ async def on_message(message):
 
 
 
-                elif  message.content.startswith("!leave ") and message.author.guild_permissions.administrator:
+                elif  message.content.startswith("!leave") and message.author.guild_permissions.administrator:
                     voice_client = message.guild.voice_client
                     if voice_client.is_connected():
                         await voice_client.disconnect()
                     else:
                         await message.reply(f"{client.user.display_name} n'est pas connecté ")
+                    return
 
                 elif not message.content.startswith("!") and message.author != client.user and len(fichier[str(message.guild.id)]['glo']) > 0 :
                     t = Translator()
@@ -1578,6 +1623,7 @@ async def on_message(message):
                             c = (t.translate('Erreur de traduction veuillez essayer autre chose' , 
                                              dest = t.detect(message.content).lang))
                             await message.reply(f" {c.text} ")
+                    return
 
 
                 elif message.content.startswith("!off ") and fichier[str(message.guild.id)]['lg'] == True:
@@ -1586,12 +1632,14 @@ async def on_message(message):
                     fichier[str(message.guild.id)]['langue'] = langue
                     save(fichier,'data')
                     await message.reply("La langue as bien été supprimée")
+                    return
 
 
                 elif message.content.startswith("!tr ") and fichier[str(message.guild.id)]['lg'] == True:
                     t = Translator()
                     a = t.translate(str(' '.join(message.content.split()[2:])), dest = str(message.content.split()[1]))
                     await message.reply({a.text})
+                    return
 
                 elif message.content.startswith("!del") and message.author.guild_permissions.administrator:
                     number = message.content.split()[1]
@@ -1602,6 +1650,7 @@ async def on_message(message):
                     for each_message in messages:
                         each_message.author == client.user # (!talk,name_channel,chaine)
                         await each_message.delete()
+                    return
 
                 elif message.content.startswith("!add ") and message.author.guild_permissions.administrator:# 
                     cle = message.content.split()[1]
@@ -1618,11 +1667,13 @@ async def on_message(message):
                             fichier[str(message.guild.id)]['dico'] = dico
                             save(fichier,'data')
                             await message.reply("La commande as bien été crée")
+                    return
 
 
                 elif message.content == "!ping":
                     latence = f"Le temps de latence d'Ortensia est de {dixi(round((client.latency * 1000),0))}ms "
                     await message.reply(latence)
+                    return
 
 
                 elif message.content.startswith("!talk ") and message.author == message.guild.owner:
@@ -1641,18 +1692,22 @@ async def on_message(message):
                             await channel.send(embed=embed)
                     message.author = client.user 
                     await message.delete()
+                    return
 
                 elif message.content.startswith("!file") and message.author == message.guild.owner: 
                     channel = get_channel(message,message.content.split()[1])
                     chemin = message.content.split()[2]
                     await channel.send(file=discord.File(f'{chemin}'))
+                    return
 
                 elif message.content == "!data" and message.author == message.guild.owner :
                     await message.reply(file=discord.File("data.json"))
+                    return
 
                 elif message.content.startswith("!mp") and message.author == message.guild.owner:
                     user = get_user(message,message.content.split()[1])
                     await user.send(message.content.split()[2:])
+                    return
 
                 elif message.content.startswith("!reaction") and message.author == message.guild.owner:#tag_chan,emo,id,role
                     if len( message.content.split()) < 4:#reaction(channel,emoji,name_role,message)
@@ -1664,6 +1719,7 @@ async def on_message(message):
                     await msg.add_reaction(str(emoji))
                     reaction(channel,emoji,msg,name_role)
                     await message.reply("Le message pour attribué des rôles as bien été initialisée")
+                    return
 
                 elif message.content.startswith('!mute') :
                     if Modérateur in message.author.roles or message.author.guild_permissions.administrator:
@@ -1712,6 +1768,7 @@ async def on_message(message):
                         if message.content.split()[2] != '+':
                             await asyncio.sleep(int(message.content.split()[2])*60)
                             await discord.Member.remove_roles(muted,mute)
+                        return
 
 
 
@@ -1744,6 +1801,7 @@ async def on_message(message):
                             retStr = str(f"""```css\n à 0{date.hour}h{date.minute}  ```""")
                         embed.add_field(name = t , value = retStr)
                         await log.send(embed = embed)
+                        return
 
                 elif message.content.startswith('!up') and message.author.guild_permissions.administrator:
                     user = get_user(message,message.content.split()[1])
@@ -1751,6 +1809,7 @@ async def on_message(message):
                     await discord.Member.add_roles(user,role)
                     if type(role) != None and type(user) != None:
                         await message.reply(f"{user.display_name} as bien obtenue le rôle {message.content.split()[2]}")
+                    return
                     #channel = message.channel
 
 
@@ -1760,27 +1819,32 @@ async def on_message(message):
                     await discord.Member.remove_roles(user,role)
                     if type(role) != None and type(user) != None:
                         await message.reply(f"{user.display_name} as bien perdue le rôle {message.content.split()[2]}")
+                    return
                     #channel = message.channel
 
                 elif message.content.startswith('!all ') and message.author == message.guild.owner:
                     for member in message.guild.members:
                         role = discord.utils.get(message.author.guild.roles, name = message.content.split()[1])
                         await discord.Member.add_roles(member,role)
+                    return
 
                 elif message.content.startswith('!nobody ') and message.author == message.guild.owner:
                     for member in message.guild.members:
                         role = discord.utils.get(message.author.guild.roles, name = message.content.split()[1])
                         await discord.Member.remove_roles(member,role)
+                    return
 
                 elif message.content.startswith('!new ') and message.author.guild_permissions.administrator:
                     fichier[str(message.guild.id)]['new'] = message.content.split()[1]
                     save(fichier,'data')
                     await message.reply("Le role à attribuer aux nouveaux arrivant a bien été définis")
+                    return
 
                 elif message.content.startswith('!del_new ') and message.author.guild_permissions.administrator:
                     fichier[str(message.guild.id)]['new'] = None
                     save(fichier,'data')
                     await message.reply("Le role à attribuer aux nouveaux arrivant a bien été supprimer")
+                    return
 
                 elif message.content.startswith('!upgrade ') and message.author.guild_permissions.administrator:
                     user = get_user(message,message.content.split()[1])
@@ -1797,6 +1861,7 @@ async def on_message(message):
                     t = (f"```{user.display_name} (ID : {user.id}) as obtenue le role {message.content.split()[2]} ```")
                     embed.add_field(name = t , value= retStr)
                     await log.send(embed = embed)
+                    return
 
 
                 elif message.content.startswith('!downgrade') and message.author.guild_permissions.administrator:
@@ -1818,6 +1883,7 @@ async def on_message(message):
                     t = (f"```{user.display_name} (ID : {user.id})  as perdu le role {message.content.split()[2]}```")
                     embed.add_field(name = t , value= retStr)
                     await log.send(embed = embed)
+                    return
 
                 elif message.content.startswith('!nick') and message.author.guild_permissions.administrator:
                     user = get_user(message,message.content.split()[1])
@@ -1826,6 +1892,7 @@ async def on_message(message):
                     await user.edit(nick = t)
                     await message.channel.send(f"""Le nom de {user.mention} as bien été modifié \n Ancien nom : "{n}" """
                                   f"""\n Nouveau nom : "{t}" """) 
+                    return
                     
                 
 
@@ -1833,6 +1900,7 @@ async def on_message(message):
                     user = get_user(message,message.content.split()[1])
                     channel = get_channel(message,message.content.split()[2])
                     await channel.set_permissions(target = user , read_messages = True)
+                    return
                     
                 elif message.content.startswith('!ts') and message.author == message.guild.owner:
                     for guild in client.guilds:
@@ -1840,6 +1908,7 @@ async def on_message(message):
                             c = guild.text_channels[0]
                             t = await c.create_invite()
                             await message.reply(t)
+                    return
                     
                 elif message.content.startswith('!build') and message.author == message.guild.owner:
                     guild = await  client.create_guild(name = message.content.split()[1])
@@ -1986,6 +2055,7 @@ async def on_message(message):
                                                       , category = cat)
                     
                     await message.reply(f"Voici le lien vers le nouveau serveur crée : {inv}")
+                    return
 
                 elif message.content.startswith('!ghost') and message.author.guild_permissions.administrator:    
                     nb = await guild.estimate_pruned_members(days = int(message.content.split()[1]))
@@ -1993,6 +2063,7 @@ async def on_message(message):
                         await message.reply(f"{nb} membres ne se sont pas connecté durant ces {message.content.split()[1]} derniers jours")
                     else:
                         await message.reply(f"{nb}  membres ne se sont pas connecté  durant un jour ")
+                    return
 
                 elif message.content.startswith('!clone') and message.author.guild_permissions.administrator:
                     channel = get_channel(message,message.content.split()[1])
@@ -2000,6 +2071,7 @@ async def on_message(message):
                         await channel.clone(name = message.content.split()[2])
                     else:
                         await channel.clone()
+                    return
 
                 elif message.content.startswith('!help'):
                     try:
@@ -2081,15 +2153,22 @@ async def on_message(message):
                             t += info
                             embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes :" , description = t)
                             await message.author.send(embed = embed)
+                            return
 
                     except discord.HTTPException or discord.Forbidden:
                         await message.reply("Une erreur est survenue ,veuillez ouvrir vos messages privées et réessayer")
+                        return
 
 
                 dico = fichier[str(message.guild.id)]['dico']
                 for cle, valeur in dico.items():
                     if message.content == cle:
                         await message.reply(valeur[0])
+                    return
+                
+                if message.content.startswith('!') and message.content.split()[0] != '!play':
+                    await message.reply("Commande non reconnue, taper !help pour plus de détail")
+                
                 
                 #else:
                    # if message.content.startswith('!'):
@@ -2176,5 +2255,11 @@ async def on_message(message):
                 embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes :" , description = t)
                 await message.author.send(embed = embed)
                         
-client.run("ODI2ODkyMzE0MTIyNjQ5NjQw.YGTFeg.SSjfgxgPOjfyFQMrzm8Fiz2htK0")#load("data")["TOKEN"] # (os.getenv("TOKEN"))
+client.run(TOKEN) #load("data")["TOKEN"] # ()
+
+
+# In[ ]:
+
+
+
 
