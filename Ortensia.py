@@ -1503,7 +1503,7 @@ async def on_message(message):
                 if  message.content == "!pause":
                     voice_client = message.guild.voice_client
                     if message.channel == song:
-                        if voice_client != None
+                        if voice_client != None:
                             if voice_client.is_playing() or  voice_client.is_paused():
                                 Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
                                 print('ok')
@@ -1535,7 +1535,7 @@ async def on_message(message):
                 elif  message.content == "!resume":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client != None
+                        if voice_client != None:
                             if voice_client.is_playing() or  voice_client.is_paused():
                                 role = discord.utils.get(message.guild.roles, name = "Diffuseur")
 
@@ -1564,7 +1564,7 @@ async def on_message(message):
                 elif  message.content == "!skip":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client != None
+                        if voice_client != None:
                             if voice_client.is_playing() or voice_client.is_paused():
                                 role = discord.utils.get(message.guild.roles, name = "Diffuseur")
                                 if  role in message.author.roles:
