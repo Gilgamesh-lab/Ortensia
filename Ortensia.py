@@ -536,7 +536,6 @@ from datetime import datetime
 from discord.utils import get
 from discord import FFmpegPCMAudio
 import os
-from dotenv import load_dotenv
 from googletrans import Translator
 import googletrans
 nest_asyncio.apply()

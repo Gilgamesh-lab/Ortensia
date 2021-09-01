@@ -5,4 +5,3 @@ nest_asyncio
 googletrans
 requests
 PyNaCl
-dotenv
