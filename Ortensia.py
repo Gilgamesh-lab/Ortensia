@@ -544,6 +544,7 @@ client = discord.Client(intents=intents, max_messages = 1000)
 from discord import Webhook, RequestsWebhookAdapter
 import requests
 import traceback
+TOKEN = os.environ['TOKEN']
 
 
 
@@ -558,7 +559,6 @@ async def on_ready():
     await client.user.edit(username= 'Ortensia')
     global invites
     invites = {}
-    TOKEN = os.environ['TOKEN']
     for guild in client.guilds: #guild_permissions pour member
         invites[guild.id] = await guild.invites()
     
