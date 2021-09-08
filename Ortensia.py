@@ -973,7 +973,7 @@ async def on_error(event, args, **kwargs):
                 else:
                     embed = discord.Embed(title = f' Event Error par {args.author.display_name} dans le channel {args.channel.name} ', colour=colour) #Red
                     embed.add_field(name=f"contenue du message qui as  provoqué l'erreur :", value = args.content)
-                    await args.reply(f"Une erreur as été détecté, veuillez vérifier les arguments , taper help {args.content.split()[1]} pour plus de détail")
+                    await args.reply(f"Une erreur as été détecté, veuillez vérifier les arguments , taper help {args.content.split()[0]} pour plus de détail")
             except AttributeError:
                     embed = discord.Embed(title = f' Event Error par {args.display_name} ', colour=colour)
                     for channel in guild.text_channels:
@@ -1403,99 +1403,99 @@ async def on_message(message):
                         if len(registre) != 0 and len(attente) == 0 and message.content.startswith("!play"):
                             server = message.guild
                             voice_channel = music
-                            voice_client = server.voice_client  
-
-                            while len(registre) != 0 or len(attente) != 0:
-                                try:
-                                    if message.content.split()[1].startswith("https://"):
-                                        nom = name_url(message.content.split()[1])
-                                except IndexError:
-                                    pass
-                                if len(registre) == 0:
-                                    dico = attente[0]
-                                    while True:
-                                        try:
-                                            message = await message.channel.fetch_message(dico[0])
+                            voice_client = server.voice_client
+                            if not voice_client.is_playing():
+                                while len(registre) != 0 or len(attente) != 0:
+                                    try:
+                                        if message.content.split()[1].startswith("https://"):
+                                            nom = name_url(message.content.split()[1])
+                                    except IndexError:
+                                        pass
+                                    if len(registre) == 0:
+                                        dico = attente[0]
+                                        while True:
                                             try:
-                                                if message.content.split()[1].startswith("https://"):
-                                                    nom = name_url(message.content.split()[1])
-                                            except IndexError:
-                                                pass
-                                            break
+                                                message = await message.channel.fetch_message(dico[0])
+                                                try:
+                                                    if message.content.split()[1].startswith("https://"):
+                                                        nom = name_url(message.content.split()[1])
+                                                except IndexError:
+                                                    pass
+                                                break
 
-                                        except discord.errors.NotFound:
+                                            except discord.errors.NotFound:
+                                                attente = load("data")[str(message.guild.id)]['attente']
+                                                del attente[0]
+                                                fichier[str(message.guild.id)]['attente'] = attente
+                                                save(fichier,"data")
+                                                dico = attente[0]
+
+                                    try:           
+                                        lien =  message.content.split()[1]
+                                    except IndexError:
+                                        pass
+                                    if len(message.content.split())  == 2 and not message.content.split()[1].startswith("https://") :
+                                        try:
+                                            if message.content.split()[1] in playlists:# catégorie spécifié
+                                                I = random_music(message.content.split()[1])
+                                                lien,nom = I[0], I[1]
+
+
+                                        except IndexError:
+                                                I = random_music(message.content.split()[1])
+                                                lien,nom = I[0], I[1]
+                                                message.content += ' ' + lien
+
+
+                                    if len(message.content.split())  == 1:#si pas d'argument
+                                        try:
+                                            I = random_music()
+                                            lien,nom = I[0], I[1]
+
+                                        except IndexError:
+                                            I = random_music()
+                                            lien,nom = I[0], I[1]
+
+                                    m = await message.reply("Chargement en cours, veuillez patienter")
+                                    try:
+                                        async with song.typing():
+                                            with youtube_dl.YoutubeDL(ytdlopts) as ydl:
+                                                try:
+                                                    I_URL = ydl.extract_info(lien, download=False)['formats'][0]['url']
+                                                except KeyError:
+                                                    I_URL = ydl.extract_info(lien, download=False)['entries'][0]['url']
+                                            FFMPEG_OPTIONS = {'options': '-vn',"before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"}
+                                            source = await discord.FFmpegOpusAudio.from_probe(I_URL, **FFMPEG_OPTIONS)
+                                            voice_client.play(source)
+                                        while not voice_client.is_playing():
+                                            await asyncio.sleep(1)
+                                        user = get(message.guild.members, id = message.author.id)
+                                        await message.reply(f'{user.display_name} est entrain de jouer : ** {nom} ** 🎵')
+                                        await m.delete()
+                                        Role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                                        await discord.Member.add_roles(user, Role)
+                                        if len(registre) == 0:
                                             attente = load("data")[str(message.guild.id)]['attente']
                                             del attente[0]
                                             fichier[str(message.guild.id)]['attente'] = attente
-                                            save(fichier,"data")
-                                            dico = attente[0]
-
-                                try:           
-                                    lien =  message.content.split()[1]
-                                except IndexError:
-                                    pass
-                                if len(message.content.split())  == 2 and not message.content.split()[1].startswith("https://") :
-                                    try:
-                                        if message.content.split()[1] in playlists:# catégorie spécifié
-                                            I = random_music(message.content.split()[1])
-                                            lien,nom = I[0], I[1]
-                                            
-
-                                    except IndexError:
-                                            I = random_music(message.content.split()[1])
-                                            lien,nom = I[0], I[1]
-                                            message.content += ' ' + lien
-                                
-
-                                if len(message.content.split())  == 1:#si pas d'argument
-                                    try:
-                                        I = random_music()
-                                        lien,nom = I[0], I[1]
-                                        
-                                    except IndexError:
-                                        I = random_music()
-                                        lien,nom = I[0], I[1]
-
-                                m = await message.reply("Chargement en cours, veuillez patienter")
-                                try:
-                                    async with song.typing():
-                                        with youtube_dl.YoutubeDL(ytdlopts) as ydl:
-                                            try:
-                                                I_URL = ydl.extract_info(lien, download=False)['formats'][0]['url']
-                                            except KeyError:
-                                                I_URL = ydl.extract_info(lien, download=False)['entries'][0]['url']
-                                        FFMPEG_OPTIONS = {'options': '-vn',"before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"}
-                                        source = await discord.FFmpegOpusAudio.from_probe(I_URL, **FFMPEG_OPTIONS)
-                                        voice_client.play(source)
-                                    while not voice_client.is_playing():
-                                        await asyncio.sleep(1)
-                                    user = get(message.guild.members, id = message.author.id)
-                                    await message.reply(f'{user.display_name} est entrain de jouer : ** {nom} ** 🎵')
-                                    await m.delete()
-                                    Role = discord.utils.get(message.guild.roles, name = "Diffuseur")
-                                    await discord.Member.add_roles(user, Role)
-                                    if len(registre) == 0:
-                                        attente = load("data")[str(message.guild.id)]['attente']
-                                        del attente[0]
-                                        fichier[str(message.guild.id)]['attente'] = attente
-                                    else:
+                                        else:
+                                            registre = load("data")[str(message.guild.id)]['registre']
+                                            fichier[str(message.guild.id)]['registre'] = []
+                                        save(fichier,"data")
+                                        while voice_client.is_playing() or  voice_client.is_paused():
+                                            await asyncio.sleep(5)
+                                        voice_client.cleanup()
                                         registre = load("data")[str(message.guild.id)]['registre']
-                                        fichier[str(message.guild.id)]['registre'] = []
-                                    save(fichier,"data")
-                                    while voice_client.is_playing() or  voice_client.is_paused():
-                                        await asyncio.sleep(5)
-                                    voice_client.cleanup()
-                                    registre = load("data")[str(message.guild.id)]['registre']
-                                    attente = load("data")[str(message.guild.id)]['attente']
-                                    if len(attente) == 0 and len(registre) == 0:
-                                        await discord.Member.remove_roles(user, Role)
-                                        await song.send("Fin de la diffusion")
-                                        await voice_client.disconnect()
-                                        return
-                                    else:
-                                        await discord.Member.remove_roles(user, Role)
-                                except FileNotFoundError:
-                                    await message.reply(":warning: La vidéo n'as pas pu être trouvé, vérifier l'url")
+                                        attente = load("data")[str(message.guild.id)]['attente']
+                                        if len(attente) == 0 and len(registre) == 0:
+                                            await discord.Member.remove_roles(user, Role)
+                                            await song.send("Fin de la diffusion")
+                                            await voice_client.disconnect()
+                                            return
+                                        else:
+                                            await discord.Member.remove_roles(user, Role)
+                                    except FileNotFoundError:
+                                        await message.reply(":warning: La vidéo n'as pas pu être trouvé, vérifier l'url")
                             
                                     
 
