@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[2]:
 
 
 def sans(phrase):
@@ -16,7 +16,7 @@ def sans(phrase):
     return nouvelle_phrase
 
 
-# In[ ]:
+# In[3]:
 
 
 def asci(phrase, r = False):
@@ -52,7 +52,7 @@ def asci(phrase, r = False):
     return nouvelle_phrase
 
 
-# In[ ]:
+# In[4]:
 
 
 def find_invite_by_code(invite_list, code):
@@ -62,7 +62,7 @@ def find_invite_by_code(invite_list, code):
         
 
 
-# In[ ]:
+# In[5]:
 
 
 def dixi(latence):
@@ -75,7 +75,7 @@ def dixi(latence):
             p += latence[k]
 
 
-# In[ ]:
+# In[6]:
 
 
 def reaction(channel,emoji,message,name_role): # reaction(#channel,'👀','new role')
@@ -87,7 +87,7 @@ def reaction(channel,emoji,message,name_role): # reaction(#channel,'👀','new r
     
 
 
-# In[ ]:
+# In[7]:
 
 
 def get_user(message,tag):
@@ -99,7 +99,7 @@ def get_user(message,tag):
             return user
 
 
-# In[ ]:
+# In[8]:
 
 
 def get_channel(message,tag):#<#857278947066642442>
@@ -110,7 +110,7 @@ def get_channel(message,tag):#<#857278947066642442>
             return channel
 
 
-# In[ ]:
+# In[9]:
 
 
 def sond(phrase):
@@ -134,7 +134,7 @@ def sond(phrase):
     return nouvelle_phrase
 
 
-# In[ ]:
+# In[10]:
 
 
 import json
@@ -148,7 +148,7 @@ def load(file):
     return new_dict
 
 
-# In[ ]:
+# In[11]:
 
 
 def search(phrase, mot):
@@ -170,7 +170,7 @@ def search(phrase, mot):
           
 
 
-# In[ ]:
+# In[12]:
 
 
 def maximun(lien):
@@ -184,7 +184,7 @@ def maximun(lien):
     return t
 
 
-# In[ ]:
+# In[13]:
 
 
 import youtube_dl 
@@ -206,7 +206,7 @@ def random_music(catégorie = None):
     return f"https://www.youtube.com/watch?v={url}",info['entries'][0]['title']
 
 
-# In[ ]:
+# In[14]:
 
 
 random_playlists = ["https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE&index=2",
@@ -228,7 +228,7 @@ playlists = {'rap': "https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_
 
 
 
-# In[ ]:
+# In[15]:
 
 
 import discord
@@ -335,7 +335,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             
 
 
-# In[ ]:
+# In[16]:
 
 
 def name_url(url):
@@ -345,7 +345,7 @@ def name_url(url):
     return info['title']
 
 
-# In[ ]:
+# In[17]:
 
 
 aide = {'!ping': "Retourne la latence du bot (c'est à dire le temps que pourra mettre Ortensia pour vous "
@@ -424,7 +424,7 @@ aide_owner = {"!lg" : "(Dé)bloque le module de traduction d'Ortensia avec \n  \
              "!build" : "Crée un serveur avec les salons nécessaires au bon fonctionnement d'Ortensia \n  \nSyntaxe : !build nom_du_nouveau_serveur"}
 
 
-# In[ ]:
+# In[18]:
 
 
 liste = ["!help : Renvoie des informations sur une fonction  (MP)",
@@ -493,7 +493,7 @@ info = ("\n\nPour plus d'information, notament sur la syntaxe d'une commandes ta
 "\nExemple : !help !sondage")
 
 
-# In[ ]:
+# In[19]:
 
 
 regle = ("__**Règlement du serveur**__ "
@@ -529,7 +529,7 @@ bad_son = ("Si  durant un appel la qualité du son est mauvaise et que vous ête
 "\n- Connecter vous à discord depuis un navigateur en activant la version pour ordinateur de celui-ci")
 
 
-# In[ ]:
+# In[22]:
 
 
 from datetime import datetime
@@ -544,7 +544,15 @@ client = discord.Client(intents=intents, max_messages = 1000)
 from discord import Webhook, RequestsWebhookAdapter
 import requests
 import traceback
+
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from PIL import Image 
+from time import sleep
+
 TOKEN = os.environ['TOKEN']
+surnom = os.environ['surnom']
+mdp = os.environ['mdp']
 
 
 
@@ -1401,6 +1409,8 @@ async def on_message(message):
                 if 'song' in locals():
                     if message.channel == song:
                         if len(registre) != 0 and len(attente) == 0 and message.content.startswith("!play"):
+                            #print('taille registre : ',len(registre))
+                            #print('taille attente : ',len(attente))
                             server = message.guild
                             voice_channel = music
                             voice_client = server.voice_client
@@ -1506,7 +1516,7 @@ async def on_message(message):
                         if voice_client != None:
                             if voice_client.is_playing() or  voice_client.is_paused():
                                 Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
-                                print('ok')
+                                
 
                                 if Diffuseur in message.author.roles and voice_client.is_playing():
                                     voice_client.pause()
@@ -1527,9 +1537,9 @@ async def on_message(message):
                                     return
 
                         else:
-                            print('ok')
+                            
                             await message.reply("Ortensia ne diffuse pas de vidéo en ce moment ")
-                            print('ok')
+                            
                             return
 
                 elif  message.content == "!resume":
@@ -2174,6 +2184,22 @@ async def on_message(message):
                         #await message.reply("Commande non reconnue taper '!help' pour plus d'information")
 
     except AttributeError:
+        if message.content.startswith('!ent'):
+            browser  = webdriver.Chrome(ChromeDriverManager().install())
+            
+
+            browser.get('https://cas.iut.univ-paris8.fr/login?service=https%3a%2f%2fent.iut.univ-paris8.fr%2f')
+
+            browser.find_element_by_name("username").send_keys(surnom)
+            browser.find_element_by_name("password").send_keys(mdp)
+            browser.find_element_by_name('submit').click();
+
+            browser.fullscreen_window()
+            browser.save_screenshot('ent.png')
+            await message.author.send(file=discord.File('ent.png'))
+            browser.close()
+            
+            
         if message.content.startswith('!help'):#message.author.guild_permissions.administrator
             if len(message.content.split()) == 2:
                 

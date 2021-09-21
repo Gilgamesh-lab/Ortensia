@@ -5,3 +5,5 @@ nest_asyncio
 googletrans
 requests
 PyNaCl
+selenium
+webdriver_manager
