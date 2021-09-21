@@ -2195,6 +2195,7 @@ async def on_message(message):
             browser.find_element_by_name('submit').click();
 
             browser.fullscreen_window()
+            sleep(5)
             browser.save_screenshot('ent.png')
             await message.author.send(file=discord.File('ent.png'))
             browser.close()
