@@ -547,7 +547,6 @@ import traceback
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from PIL import Image 
 from time import sleep
 
 TOKEN = os.environ['TOKEN']
