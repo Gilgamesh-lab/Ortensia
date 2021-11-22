@@ -358,7 +358,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
 
 def name_url(url):
-    ydl_opts = {'format': 'bestaudio',"simulate" : True,'noplaylist': True, "skip_download" : True, 'extract_flat' : True, "quiet" : True}
+    ydl_opts = {'format': 'bestaudio'}
     
     with youtube_dl.YoutubeDL() as ydl:
         info = ydl.extract_info(str(url), download=False)
