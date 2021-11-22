@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[13]:
 
 
 def sans(phrase):
@@ -16,7 +16,7 @@ def sans(phrase):
     return nouvelle_phrase
 
 
-# In[3]:
+# In[14]:
 
 
 def asci(phrase, r = False):
@@ -52,7 +52,7 @@ def asci(phrase, r = False):
     return nouvelle_phrase
 
 
-# In[4]:
+# In[15]:
 
 
 def find_invite_by_code(invite_list, code):
@@ -62,7 +62,7 @@ def find_invite_by_code(invite_list, code):
         
 
 
-# In[5]:
+# In[16]:
 
 
 def dixi(latence):
@@ -75,7 +75,7 @@ def dixi(latence):
             p += latence[k]
 
 
-# In[6]:
+# In[17]:
 
 
 def reaction(channel,emoji,message,name_role): # reaction(#channel,'👀','new role')
@@ -87,7 +87,7 @@ def reaction(channel,emoji,message,name_role): # reaction(#channel,'👀','new r
     
 
 
-# In[7]:
+# In[18]:
 
 
 def get_user(message,tag):
@@ -99,7 +99,7 @@ def get_user(message,tag):
             return user
 
 
-# In[8]:
+# In[19]:
 
 
 def get_channel(message,tag):#<#857278947066642442>
@@ -110,7 +110,7 @@ def get_channel(message,tag):#<#857278947066642442>
             return channel
 
 
-# In[9]:
+# In[20]:
 
 
 def sond(phrase):
@@ -134,7 +134,7 @@ def sond(phrase):
     return nouvelle_phrase
 
 
-# In[10]:
+# In[21]:
 
 
 import json
@@ -148,7 +148,7 @@ def load(file):
     return new_dict
 
 
-# In[11]:
+# In[22]:
 
 
 def search(phrase, mot):
@@ -170,7 +170,7 @@ def search(phrase, mot):
           
 
 
-# In[12]:
+# In[23]:
 
 
 def maximun(lien):
@@ -184,7 +184,7 @@ def maximun(lien):
     return t
 
 
-# In[13]:
+# In[24]:
 
 
 import youtube_dl 
@@ -206,7 +206,7 @@ def random_music(catégorie = None):
     return f"https://www.youtube.com/watch?v={url}",info['entries'][0]['title']
 
 
-# In[14]:
+# In[25]:
 
 
 random_playlists = ["https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE&index=2",
@@ -228,7 +228,7 @@ playlists = {'rap': "https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_
 
 
 
-# In[15]:
+# In[27]:
 
 
 import discord
@@ -247,7 +247,7 @@ from youtube_dl import YoutubeDL
 
 
 # Suppress noise about console usage from errors
-youtube_dl.utils.bug_reports_message = lambda: ''
+#youtube_dl.utils.bug_reports_message = lambda: ''
 
 
 
@@ -335,7 +335,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             
 
 
-# In[16]:
+# In[28]:
 
 
 def name_url(url):
@@ -345,7 +345,7 @@ def name_url(url):
     return info['title']
 
 
-# In[17]:
+# In[29]:
 
 
 aide = {'!ping': "Retourne la latence du bot (c'est à dire le temps que pourra mettre Ortensia pour vous "
@@ -424,7 +424,7 @@ aide_owner = {"!lg" : "(Dé)bloque le module de traduction d'Ortensia avec \n  \
              "!build" : "Crée un serveur avec les salons nécessaires au bon fonctionnement d'Ortensia \n  \nSyntaxe : !build nom_du_nouveau_serveur"}
 
 
-# In[18]:
+# In[30]:
 
 
 liste = ["!help : Renvoie des informations sur une fonction  (MP)",
@@ -493,7 +493,7 @@ info = ("\n\nPour plus d'information, notament sur la syntaxe d'une commandes ta
 "\nExemple : !help !sondage")
 
 
-# In[19]:
+# In[31]:
 
 
 regle = ("__**Règlement du serveur**__ "
@@ -529,7 +529,7 @@ bad_son = ("Si  durant un appel la qualité du son est mauvaise et que vous ête
 "\n- Connecter vous à discord depuis un navigateur en activant la version pour ordinateur de celui-ci")
 
 
-# In[22]:
+# In[36]:
 
 
 from datetime import datetime
@@ -2175,6 +2175,39 @@ async def on_message(message):
                         await message.reply(valeur[0])
                     return
                 
+                
+                
+                if message.content.startswith('!lgt') and message.author.guild_permissions.administrator:
+                    #vi est le role que doivent avoir les personnes pour jouer
+                    vi = discord.utils.get(guild.roles, name = "Joueurs")
+                    nb_villageois = message.content.split()[1]
+                    nb_lg = message.content.split()[2]
+                    if len(vi.members) != nb_villageois + nb_lg :
+                        await message.reply("le nombre de villageois + le nombre de loup garous n'est pas égale au nombre de joueurs")
+                    else:
+                        role = []
+                        identite = {}
+                        vivant = []
+                        #if Diffuseur in message.author.roles
+                        #user = await client.fetch_user(id) 
+                        for k in range(len(vi.members)):
+                            vivant.append(vi.members[k].display_name)
+                            
+                        for k in range(nb_villageois): # nb villageois dans le nombre de role totaux
+                            role.append("Villageois")
+
+                        for k in range(nb_lg): # nb loup garous dans le nombre de role totaux
+                            role.append("Loup-Garous")
+
+                        for k in range(len(vi.members)): #distribution des roles
+                            nb = randint(0,len(role))
+                            identite[vi.members[k].id] = role[nb]
+                            await vi.members[k].send({role_explication[role[nb]]})
+                            del role[nb]
+
+                        #créer un channel de discussion pour les lg et un pour le vote des lg(ou commande)
+                        #mettre une musique d'ambiance
+                
                 if message.content.startswith('!') and message.content.split()[0] != '!play':
                     await message.reply("Commande non reconnue, taper !help pour plus de détail")
                 
@@ -2195,7 +2228,8 @@ async def on_message(message):
             browser.find_element_by_name('submit').click();
 
             browser.fullscreen_window()
-            sleep(5)
+            browser.execute_script("scroll(0, 250);")
+            await asyncio.sleep(5)
             browser.save_screenshot('ent.png')
             await message.author.send(file=discord.File('ent.png'))
             browser.close()
@@ -2281,7 +2315,7 @@ async def on_message(message):
                 embed = discord.Embed(colour =  discord.Colour.blue(),title = "Liste des commandes :" , description = t)
                 await message.author.send(embed = embed)
                         
-client.run(TOKEN) #load("data")["TOKEN"] # ()
+client.run(TOKEN) # # () 
 
 
 # In[ ]:
