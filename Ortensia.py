@@ -2225,7 +2225,7 @@ async def on_message(message):
 
             browser.find_element_by_name("username").send_keys(surnom)
             browser.find_element_by_name("password").send_keys(mdp)
-            browser.find_element_by_name("submit").click();
+            #browser.find_element_by_name("submit").click();
 
             browser.fullscreen_window()
             browser.execute_script("scroll(0, 250);")
