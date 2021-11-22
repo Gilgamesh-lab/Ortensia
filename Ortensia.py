@@ -1556,11 +1556,11 @@ async def on_message(message):
                                     await message.reply("La  lecture est déjà en pause ")
                                     return
 
-                        else:
-                            
-                            await message.reply("Ortensia ne diffuse pas de vidéo en ce moment ")
-                            
-                            return
+                            else:
+
+                                await message.reply("Ortensia ne diffuse pas de vidéo en ce moment ")
+
+                                return
 
                 elif  message.content == "!resume":
                     if message.channel == song:
@@ -1587,9 +1587,9 @@ async def on_message(message):
                                 if voice_client.is_playing() and role in message.author.roles:
                                     await message.reply("La  lecture est déjà en cours ")
                                     return
-                        else:
-                            await message.reply(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
-                            return
+                            else:
+                                await message.reply(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                                return
 
                 elif  message.content == "!skip":
                     if message.channel == song:
@@ -1609,9 +1609,9 @@ async def on_message(message):
                                             return
                                     voice_client.stop()
                                     return
-                        else:
-                            await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
-                            return
+                            else:
+                                await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                                return
                     
                 
                     
