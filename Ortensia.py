@@ -184,7 +184,7 @@ def maximun(lien):
     return t
 
 
-# In[24]:
+# In[62]:
 
 
 import youtube_dl 
@@ -201,15 +201,34 @@ def random_music(catégorie = None):
     ydl_opts = {"simulate" : True,'noplaylist': True, "skip_download" : True,'playliststart': nb, 'playlistend' : nb, 'extract_flat' : True, "quiet" : True}
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(playlist, download = False)
-        url = info['entries'][0]['url']
+        try:
+            url = info['entries'][0]['url']
+            return f"https://www.youtube.com/watch?v={url}",info['entries'][0]['title']
+        except KeyError:
+            url = info['url']
+            return f"https://www.youtube.com/watch?v={url}",name_url(url)
     
-    return f"https://www.youtube.com/watch?v={url}",info['entries'][0]['title']
+    
+    
 
 
-# In[25]:
+# In[ ]:
 
 
-random_playlists = ["https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE&index=2",
+{'_type': 'url',
+ 'url': 'jj0xIgP8VHk',
+ 'ie_key': 'Youtube',
+ 'id': 'jj0xIgP8VHk',
+ 'extractor': 'youtube:tab',
+ 'webpage_url': 'https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE&index=2',
+ 'webpage_url_basename': 'watch',
+ 'extractor_key': 'YoutubeTab'}
+
+
+# In[51]:
+
+
+random_playlists = ["https://www.youtube.com/playlist?list=jj0xIgP8VHk&list=RDCLAK5uy_mK9RSAOLuO3PT_u74S1YJzlUneNOgTUTE",
              "https://youtube.com/playlist?list=RDCLAK5uy_ly6s4irLuZAcjEDwJmqcA_UtSipMyGgbQ&playnext=1",
              "https://youtube.com/playlist?list=RDCLAK5uy_mztvVkPbbOgYQFQUOi9VbLcZ4ewdmBczw&playnext=1",
              "https://youtube.com/playlist?list=RDCLAK5uy_mCvOm3kQy1RTBwDOGYkNhtHwMO89ffquk&playnext=1",
@@ -335,11 +354,12 @@ class YTDLSource(discord.PCMVolumeTransformer):
             
 
 
-# In[28]:
+# In[65]:
 
 
 def name_url(url):
-    ydl_opts = {'format': 'bestaudio'}
+    ydl_opts = {'format': 'bestaudio',"simulate" : True,'noplaylist': True, "skip_download" : True, 'extract_flat' : True, "quiet" : True}
+    
     with youtube_dl.YoutubeDL() as ydl:
         info = ydl.extract_info(str(url), download=False)
     return info['title']
@@ -2316,10 +2336,4 @@ async def on_message(message):
                 await message.author.send(embed = embed)
                         
 client.run(TOKEN) # # () 
-
-
-# In[ ]:
-
-
-
 
