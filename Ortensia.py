@@ -242,7 +242,7 @@ playlists = {'rap': "https://www.youtube.com/watch?v=jj0xIgP8VHk&list=RDCLAK5uy_
      'released' : "https://youtube.com/playlist?list=RDCLAK5uy_mztvVkPbbOgYQFQUOi9VbLcZ4ewdmBczw&playnext=1",
      'pop_fr' : "https://youtube.com/playlist?list=RDCLAK5uy_mCvOm3kQy1RTBwDOGYkNhtHwMO89ffquk&playnext=1",
       'tendance_fr' : "https://youtube.com/playlist?list=PLsa-dEwv56FaoevRy1iSkp2YWt9udgkdJ",
-      'global' : "https://youtube.com/playlist?list=PL4fGSI1pDJn6puJdseH2Rt9sMvt9E2M4i",
+      'best' : "https://youtube.com/playlist?list=PL4fGSI1pDJn6puJdseH2Rt9sMvt9E2M4i",
       'fr' : "https://youtube.com/playlist?list=PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs"}
 
 
