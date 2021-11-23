@@ -1534,7 +1534,7 @@ async def on_message(message):
                     voice_client = message.guild.voice_client
                     if message.channel == song:
                         if voice_client.is_playing() or  voice_client.is_paused():
-                                Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                            Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
                                 
 
                             if Diffuseur in message.author.roles and voice_client.is_playing():
