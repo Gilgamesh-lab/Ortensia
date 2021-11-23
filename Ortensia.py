@@ -1533,85 +1533,82 @@ async def on_message(message):
                 if  message.content == "!pause":
                     voice_client = message.guild.voice_client
                     if message.channel == song:
-                        if voice_client != None:
-                            if voice_client.is_playing() or  voice_client.is_paused():
+                        if voice_client.is_playing() or  voice_client.is_paused():
                                 Diffuseur = discord.utils.get(message.guild.roles, name = "Diffuseur")
                                 
 
-                                if Diffuseur in message.author.roles and voice_client.is_playing():
-                                    voice_client.pause()
-                                    await message.reply("La  lecture as été mise en pause  ")
-                                    return
-
-                                if not Diffuseur in message.author.roles and voice_client.is_playing():
-                                    for k in music.members:
-                                        if Diffuseur in k.roles:
-                                            await message.reply("Seule le diffuseur peut mettre en pause la lecture si il est présent")
-                                            return
-                                    voice_client.pause()
-                                    await message.reply("La  lecture as été mise en pause ")
-                                    return
-
-                                if voice_client.is_paused() and role in message.author.roles:
-                                    await message.reply("La  lecture est déjà en pause ")
-                                    return
-
-                            else:
-
-                                await message.reply("Ortensia ne diffuse pas de vidéo en ce moment ")
-
+                            if Diffuseur in message.author.roles and voice_client.is_playing():
+                                voice_client.pause()
+                                await message.reply("La  lecture as été mise en pause  ")
                                 return
+
+                            if not Diffuseur in message.author.roles and voice_client.is_playing():
+                                for k in music.members:
+                                    if Diffuseur in k.roles:
+                                        await message.reply("Seule le diffuseur peut mettre en pause la lecture si il est présent")
+                                        return
+                                voice_client.pause()
+                                await message.reply("La  lecture as été mise en pause ")
+                                return
+
+                            if voice_client.is_paused() and role in message.author.roles:
+                                await message.reply("La  lecture est déjà en pause ")
+                                return
+
+                        else:
+
+                            await message.reply("Ortensia ne diffuse pas de vidéo en ce moment ")
+
+                            return
 
                 elif  message.content == "!resume":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client != None:
-                            if voice_client.is_playing() or  voice_client.is_paused():
-                                role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                        if voice_client.is_playing() or  voice_client.is_paused():
+                            role = discord.utils.get(message.guild.roles, name = "Diffuseur")
 
-                                if voice_client.is_paused() and role in message.author.roles:
-                                    voice_client.resume()
-                                    await message.reply("La  lecture a repris")
-                                    return
-
-
-                                if not role in message.author.roles and voice_client.is_playing():
-                                    for k in music.members:
-                                        if role in k.roles:
-                                            await message.reply("Seule le diffuseur peut reprendre la lecture si il est présent")
-                                            return
-                                    voice_client.resume()
-                                    await message.reply("La  lecture a repris")
-                                    return
-
-                                if voice_client.is_playing() and role in message.author.roles:
-                                    await message.reply("La  lecture est déjà en cours ")
-                                    return
-                            else:
-                                await message.reply(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                            if voice_client.is_paused() and role in message.author.roles:
+                                voice_client.resume()
+                                await message.reply("La  lecture a repris")
                                 return
+
+
+                            if not role in message.author.roles and voice_client.is_playing():
+                                for k in music.members:
+                                    if role in k.roles:
+                                        await message.reply("Seule le diffuseur peut reprendre la lecture si il est présent")
+                                        return
+                                voice_client.resume()
+                                await message.reply("La  lecture a repris")
+                                return
+
+                            if voice_client.is_playing() and role in message.author.roles:
+                                await message.reply("La  lecture est déjà en cours ")
+                                return
+                        else:
+                            await message.reply(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                            return
 
                 elif  message.content == "!skip":
                     if message.channel == song:
                         voice_client = message.guild.voice_client
-                        if voice_client != None:
-                            if voice_client.is_playing() or voice_client.is_paused():
-                                role = discord.utils.get(message.guild.roles, name = "Diffuseur")
-                                if  role in message.author.roles:
-                                    voice_client.stop()
-                                    await message.reply(f"La lecture as été passée")
-                                    return
-
-                                if not role in message.author.roles and voice_client.is_playing():
-                                    for k in music.members:
-                                        if role in k.roles:
-                                            await message.reply("Seule le diffuseur peut passer la lecture si il est présent")
-                                            return
-                                    voice_client.stop()
-                                    return
-                            else:
-                                await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                        if voice_client.is_playing() or voice_client.is_paused():
+                            role = discord.utils.get(message.guild.roles, name = "Diffuseur")
+                            if  role in message.author.roles:
+                                voice_client.stop()
+                                await message.reply(f"La lecture as été passée")
                                 return
+
+                            if not role in message.author.roles and voice_client.is_playing():
+                                for k in music.members:
+                                    if role in k.roles:
+                                        await message.reply("Seule le diffuseur peut passer la lecture si il est présent")
+                                        return
+                                voice_client.stop()
+                                return
+                        else:
+                            await message.channel.send(f"{client.user.display_name} ne lit pas de vidéo en ce moment ")
+                            return
                     
                 
                     
@@ -2248,7 +2245,8 @@ async def on_message(message):
             #browser.find_element_by_name("submit").click();
 
             browser.fullscreen_window()
-            browser.execute_script("scroll(0, 250);")
+            browser.execute_script("scroll(0, 500);");
+            browser.execute_script("window.scrollBy(0,500)", "");
             await asyncio.sleep(5)
             browser.save_screenshot('ent.png')
             await message.author.send(file=discord.File('ent.png'))
@@ -2336,4 +2334,36 @@ async def on_message(message):
                 await message.author.send(embed = embed)
                         
 client.run(TOKEN) # # () 
+
+
+# In[17]:
+
+
+#from selenium import webdriver
+#from webdriver_manager.chrome import ChromeDriverManager
+#from webdriver_manager.utils import ChromeType
+#from time import sleep
+
+#browser  = webdriver.Chrome(ChromeDriverManager().install())
+            
+
+#browser.get('https://cas.iut.univ-paris8.fr/login?service=https%3a%2f%2fent.iut.univ-paris8.fr%2f')
+
+#browser.find_element_by_name("username").send_keys('famegadjen')
+#browser.find_element_by_name("password").send_keys('snake124')
+#browser.find_element_by_name("submit").click();
+#sleep(10)
+
+#browser.fullscreen_window()
+#browser.execute_script("scroll(0, 500);");
+#browser.execute_script("window.scrollBy(0,500)", "");
+#sleep(5)
+#browser.save_screenshot('ent4.png')
+#browser.close()
+
+
+# In[ ]:
+
+
+
 
