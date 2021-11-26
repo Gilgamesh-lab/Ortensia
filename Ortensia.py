@@ -2234,7 +2234,7 @@ async def on_message(message):
                         #await message.reply("Commande non reconnue taper '!help' pour plus d'information")
 
     except AttributeError:
-        if message.content.startswith('!ent'):
+        if message.content.startswith('!ent') and   message.author.id == 407189858755280896:
             browser  = webdriver.Chrome(ChromeDriverManager().install())
             
 
@@ -2245,12 +2245,28 @@ async def on_message(message):
             #browser.find_element_by_name("submit").click();
 
             browser.fullscreen_window()
-            browser.execute_script("scroll(0, 500);");
-            browser.execute_script("window.scrollBy(0,500)", "");
-            await asyncio.sleep(5)
+
+            browser.execute_script("scroll(0, 1000);");
+            
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+
             browser.save_screenshot('ent.png')
             await message.author.send(file=discord.File('ent.png'))
+
+            homeLink = browser.find_element_by_link_text("famegadjen")
+            homeLink.click() #clicking on the Home button and mouse cursor should? stay here
+
+            homeLink = browser.find_element_by_link_text("Quitter")
+            homeLink.click()
+
             browser.close()
+            browser.close()
+            
+           
             
             
         if message.content.startswith('!help'):#message.author.guild_permissions.administrator
@@ -2336,13 +2352,27 @@ async def on_message(message):
 client.run(TOKEN) # # () 
 
 
-# In[17]:
+# In[68]:
 
 
 #from selenium import webdriver
 #from webdriver_manager.chrome import ChromeDriverManager
 #from webdriver_manager.utils import ChromeType
+#from selenium.webdriver.common.keys import Keys
 #from time import sleep
+#from datetime import datetime
+
+#date = datetime.now()
+#date.hour
+
+#from datetime import datetime
+#today = datetime(date.year, date.month, date.day)
+#today.weekday()
+
+#from datetime import datetime
+
+#date = datetime.now()
+#date
 
 #browser  = webdriver.Chrome(ChromeDriverManager().install())
             
@@ -2352,18 +2382,22 @@ client.run(TOKEN) # # ()
 #browser.find_element_by_name("username").send_keys('famegadjen')
 #browser.find_element_by_name("password").send_keys('snake124')
 #browser.find_element_by_name("submit").click();
-#sleep(10)
 
-#browser.fullscreen_window()
-#browser.execute_script("scroll(0, 500);");
-#browser.execute_script("window.scrollBy(0,500)", "");
+#sleep(5)
+#elements = browser.find_elements_by_xpath("//*[@id=joursuiv_mercredi]")
+#print(elements)
+ #clicking on the Home button and mouse cursor should? stay here
+
+#element = browser.find_element_by_tag_name('div')
+#element.click()
+#browser.find_element_by_id("mardigris").click();
+#browser.find_element_by_css_selector("#mercredi.journee").click();
+#browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+#homeLink = browser.find_element_by_link_text("famegadjen")
+#homeLink.click() #clicking on the Home button and mouse cursor should? stay here
+#browser.execute_script("scroll(0, 1000);");
+#browser.execute_script("window.scrollBy(0,1000)", "");
 #sleep(5)
 #browser.save_screenshot('ent4.png')
 #browser.close()
-
-
-# In[ ]:
-
-
-
 
