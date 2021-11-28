@@ -2246,9 +2246,9 @@ async def on_message(message):
             #browser.find_element_by_name("submit").click();
 
             browser.fullscreen_window()
-            date = datetime.now()
-            today = datetime(date.year, date.month, date.day)
-            t = today.weekday()
+            #date = datetime.now()
+            #today = datetime(date.year, date.month, date.day)
+            #t = today.weekday()
             
             
             browser.execute_script("scroll(0, 1000);");
@@ -2257,22 +2257,24 @@ async def on_message(message):
             browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             
             
             
 
             browser.save_screenshot('ent.png')
             await message.author.send(file=discord.File('ent.png'))
+            
+            try:
+                homeLink = browser.find_element_by_link_text("famegadjen")
+                homeLink.click() #clicking on the Home button and mouse cursor should? stay here
 
-            homeLink = browser.find_element_by_link_text("famegadjen")
-            homeLink.click() #clicking on the Home button and mouse cursor should? stay here
-
-            homeLink = browser.find_element_by_link_text("Quitter")
-            homeLink.click()
-
-            browser.close()
-            browser.close()
+                homeLink = browser.find_element_by_link_text("Quitter")
+                homeLink.click()
+                
+            except:
+                browser.close()
+                browser.close()
             
            
             
