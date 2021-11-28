@@ -549,7 +549,7 @@ bad_son = ("Si  durant un appel la qualité du son est mauvaise et que vous ête
 "\n- Connecter vous à discord depuis un navigateur en activant la version pour ordinateur de celui-ci")
 
 
-# In[36]:
+# In[ ]:
 
 
 from datetime import datetime
@@ -2235,7 +2235,7 @@ async def on_message(message):
                         #await message.reply("Commande non reconnue taper '!help' pour plus d'information")
 
     except AttributeError:
-        if message.content.startswith('!ent') and   message.author.id == 407189858755280896:
+        if message.content.startswith('!ent') :
             browser  = webdriver.Chrome(ChromeDriverManager().install())
             
 
@@ -2246,15 +2246,18 @@ async def on_message(message):
             #browser.find_element_by_name("submit").click();
 
             browser.fullscreen_window()
-
-            browser.execute_script("scroll(0, 1000);");
+            date = datetime.now()
+            today = datetime(date.year, date.month, date.day)
+            t = today.weekday()
+            if t != 5 or t != 6:
+                browser.execute_script("scroll(0, 1000);");
+                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             
             
 
@@ -2354,6 +2357,21 @@ async def on_message(message):
                 await message.author.send(embed = embed)
                         
 client.run(TOKEN) # # () 
+
+
+# In[4]:
+
+
+from datetime import datetime
+date = datetime.now()
+today = datetime(date.year, date.month, date.day)
+today.weekday()
+
+
+# In[ ]:
+
+
+
 
 
 # In[68]:
