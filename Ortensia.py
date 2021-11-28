@@ -594,8 +594,13 @@ async def on_ready():
     if os.path.exists('data.json') == True:
         fichier = load("data")
         async for guild in client.fetch_guilds(limit=150): #guild_permissions pour member
-            fichier[str(guild.id)]['attente'] = []
-            fichier[str(guild.id)]['registre'] = []
+            try:
+                fichier[str(guild.id)]['attente'] = []
+                fichier[str(guild.id)]['registre'] = []
+            except KeyError:
+                t = str(guild.id)
+                fichier[t] = {'lol': {}  ,'count' : {} ,'langue' : {} ,'dico' : {} , 'glo': [] , 'rappel' : {},
+                         'lg' : False , 'new' : None , 'warn' : {} ,'attente' : [] , 'registre' : []}
         save(fichier,"data")
         
     else:
@@ -2257,7 +2262,7 @@ async def on_message(message):
             browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             browser.find_element_by_tag_name('iframe').send_keys('\ue015')
             browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+        
             
             
             
