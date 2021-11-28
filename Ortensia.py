@@ -2249,14 +2249,15 @@ async def on_message(message):
             date = datetime.now()
             today = datetime(date.year, date.month, date.day)
             t = today.weekday()
-            if t != 5 or t != 6:
-                browser.execute_script("scroll(0, 1000);");
-                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
-                browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            
+            
+            browser.execute_script("scroll(0, 1000);");
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            browser.find_element_by_tag_name('iframe').send_keys('\ue015')
+            
             
             
             
