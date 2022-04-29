@@ -570,6 +570,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.utils import ChromeType
 from selenium.webdriver.common.keys import Keys
 from time import sleep
+from pytube import YouTube
 
 TOKEN = os.environ['TOKEN']
 surnom = os.environ['surnom']
@@ -1617,8 +1618,11 @@ async def on_message(message):
                             return
                     
                 
-                    
-
+                
+                  
+                
+                     
+                
 
 
 
@@ -2287,8 +2291,18 @@ async def on_message(message):
                 browser.close()
                 #browser.close()
             
+        elif  message.content.startswith("!download") and message.author.guild_permissions.administrator:   
+            link = message.content.split()[1:]
+            video = YouTube(link)
+            stream = video.streams.get_highest_resolution()
+            stream.download()
+            await message.author.send(file=discord.File(f'{stream.title}.mp4'))
+            os.remove(f"{stream.title}.mp4")
+            return
            
             
+        elif  message.content.startswith("!repertoire") and message.author.guild_permissions.administrator:
+            await message.author.send(os.listdir())
             
         if message.content.startswith('!help'):#message.author.guild_permissions.administrator
             if len(message.content.split()) == 2:

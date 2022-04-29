@@ -7,3 +7,4 @@ requests
 PyNaCl
 selenium
 webdriver_manager
+pytube
