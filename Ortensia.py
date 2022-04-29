@@ -2292,7 +2292,7 @@ async def on_message(message):
                 #browser.close()
             
         elif  message.content.startswith("!download"):   
-            link = message.content.split()[1:]
+            link = message.content.split()[1]
             video = YouTube(link)
             stream = video.streams.get_highest_resolution()
             m = await message.reply("Téléchargement en cours en cours, veuillez patienter")
