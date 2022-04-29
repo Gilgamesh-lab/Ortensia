@@ -7,4 +7,4 @@ requests
 PyNaCl
 selenium
 webdriver_manager
-pytube
+pytube == 12.0.0
