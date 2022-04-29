@@ -2393,10 +2393,6 @@ client.run(TOKEN) # # ()
 # In[4]:
 
 
-from datetime import datetime
-date = datetime.now()
-today = datetime(date.year, date.month, date.day)
-today.weekday()
 
 
 # In[ ]:
