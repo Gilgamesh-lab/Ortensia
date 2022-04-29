@@ -2291,17 +2291,20 @@ async def on_message(message):
                 browser.close()
                 #browser.close()
             
-        elif  message.content.startswith("!download") and message.author.guild_permissions.administrator:   
+        elif  message.content.startswith("!download"):   
             link = message.content.split()[1:]
             video = YouTube(link)
             stream = video.streams.get_highest_resolution()
-            stream.download()
+            m = await message.reply("Téléchargement en cours en cours, veuillez patienter")
+            async with song.typing():
+                stream.download()
+            await m.delete()
             await message.author.send(file=discord.File(f'{stream.title}.mp4'))
             os.remove(f"{stream.title}.mp4")
             return
            
             
-        elif  message.content.startswith("!repertoire") and message.author.guild_permissions.administrator:
+        elif  message.content.startswith("!repertoire") :
             await message.author.send(os.listdir())
             
         if message.content.startswith('!help'):#message.author.guild_permissions.administrator
